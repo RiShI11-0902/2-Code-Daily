@@ -1,0 +1,95 @@
+#box {
+  background: linear-gradient(to right, #070F2B, #1B1A55);
+  font-size: larger;
+  padding: 10px 20px;
+  display: flex;
+  flex-direction: column;
+  height: 450px;
+  width: 350px;
+  justify-content: center;
+  border-radius: 2%;
+  color: #9290C3;
+}
+
+.leetcode_ai_widget {
+  position: fixed;
+  bottom: 20px;
+  right: 40px;
+  background-color: #1B1A55;
+  border: 1px solid #535C91;
+  padding: 10px;
+  z-index: 1000;
+  color: #9290C3;
+}
+
+.leetcode_ai_widget button {
+  background-color: #535C91;
+  border: none;
+  padding: 10px 20px;
+  cursor: pointer;
+  font-size: 16px;
+  color: #9290C3;
+  border-radius: 5px;
+}
+
+.leetcode_ai_widget button:hover {
+  background-color: #070F2B;
+  color: #9290C3;
+}
+
+.interviewBox {
+  padding: 20px;
+  height: 500px;
+  width: 400px;
+  position: fixed;
+  top: 20px;
+  left: 40px;
+  background-color: #070F2B;
+  color: #9290C3;
+  border: 1px solid #1B1A55;
+  overflow-y: auto;
+  z-index: 1001;
+}
+
+input[type="email"] {
+  width: 90%;
+  padding: 10px;
+  margin-bottom: 10px;
+  border: 1px solid #535C91;
+  border-radius: 5px;
+  background-color: #1B1A55;
+  color: #9290C3;
+}
+
+input[type="email"]::placeholder {
+  color: #9290C3;
+}
+
+#btns{
+  display: flex;
+  flex-direction: row;
+  justify-content: space-around;
+  align-items: center;
+}
+
+button {
+  background-color: #535C91;
+  border: none;
+  padding: 5px 10px;
+  margin-top: 10px;
+  cursor: pointer;
+  font-size: 15px;
+  color: #9290C3;
+  border-radius: 5px;
+}
+
+button:hover {
+  background-color: #070F2B;
+  color: #9290C3;
+}
+
+.note {
+  margin-top: 10px;
+  font-size: 12px;
+  color: #535C91;
+}
