@@ -3,6 +3,7 @@ import { FiMenu, FiX } from "react-icons/fi";
 import {AiOutlineGoogle} from 'react-icons/ai'
 import Register from "./Register";
 import useUserStore from "../store/store";
+import { Link } from "react-router";
 
 const Navbar = ({setopenForm,openForm, SignIn}) => {
   const [menuOpen, setMenuOpen] = useState(false);
@@ -15,9 +16,9 @@ const Navbar = ({setopenForm,openForm, SignIn}) => {
   //   window.open("http://localhost:5000/auth/google/callback","_self ")
   // }
 
-  const user = useUserStore((state) => state.user)
+  // const user = useUserStore((state) => state.user)
 
-  // const {user} = useUserStore()
+  const {user} = useUserStore()
 
   console.log(user);
   
@@ -53,13 +54,19 @@ const Navbar = ({setopenForm,openForm, SignIn}) => {
             </a>
           </li>
           <li className="mx-4 my-4 md:my-0">
-            <a
-              href="#about"
+            <Link
+              to={"/pricing"}
               className="text-[#9290C3] hover:text-[#535C91] transition duration-300"
             >
               Pricing
-            </a>
+            </Link>
           </li>
+          {
+            user &&  <Link to={"/dashboard"} className="mx-4 my-4 md:my-0 text-[#9290C3] hover:text-[#535C91] transition duration-300">
+
+              Dashboard
+          </Link>
+          }
           <li className="mx-4 my-4 md:my-0">
             {
                user ? <img src={user.image} className="w-10 rounded-full" /> : <button

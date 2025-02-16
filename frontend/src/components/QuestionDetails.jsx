@@ -1,66 +1,86 @@
-import React from 'react'
-import { X } from 'lucide-react'
-import { useState } from 'react';
+import React, { useState } from "react";
+import { X } from "lucide-react";
+import { motion } from "framer-motion";
+
 const QuestionDetails = ({ question, setToggle }) => {
     console.log(question);
 
-    const [activeIndex, setActiveIndex] = useState()
+    const [activeIndex, setActiveIndex] = useState(null);
 
     const toggle = (index) => {
-        setActiveIndex((prevIndex) => prevIndex == index ? null : index)
-    }
+        setActiveIndex((prevIndex) => (prevIndex === index ? null : index));
+    };
 
     return (
-        <>
-            <section className='bg-black text-white min-w-full h-screen z-10 bg-opacity-75 absolute top-0 left-0'>
-                <div className='p-5 flex justify-end '>
+        <section className="fixed inset-0 bg-black bg-opacity-80 z-50 flex justify-center items-center p-4 overflow-y-auto ">
+            <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 p-4 overflow-y-auto">
+                <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 p-4">
+                    <div className="bg-[#070F2B] w-full max-w-2xl sm:max-w-lg md:max-w-4xl p-6 rounded-lg shadow-lg text-white 
+      relative max-h-[90vh] overflow-y-auto">
 
-                    <button
-                        onClick={() => setToggle(null)}
-                        className="p-2 rounded-full bg-red-500 hover:bg-[#070F2B] text-white "
-                    >
+                        {/* Close Button */}
+                        <button
+                            onClick={() => setToggle(null)}
+                            className="absolute top-3 right-3 p-2 rounded-full bg-red-500 hover:bg-red-700 transition duration-300"
+                        >
+                            <X className="w-5 h-5" />
+                        </button>
 
-                        <X className="w-5 h-5" />
-                    </button>
-                </div>
-
-
-
-
-                <div className='p-5 text-left '>
-                    <div className='cursor-pointer'>
-                        <div className='text-left p-5 mt-10'>
-                            <p><span className='text-2xl text-[#adbef9]'>Question:</span> {question.problem}</p>
+                        {/* Question Section */}
+                        <div className="p-4 border border-white rounded-lg">
+                            <p className="break-words text-lg sm:text-sm">
+                                <span className="text-sm md:text-lg sm:text-xl text-[#adbef9] font-semibold">Question:</span>{" "}
+                                <span className="text-sm md:text-lg">{question.problem}</span>
+                            </p>
+                            {/* Correctness */}
+                            <p className="text-green-400 mt-2 text-sm">
+                                <span className="font-semibold">Correctness:</span> {question.correctness}
+                            </p>
+                            {/* Feedback */}
+                            <p className="text-gray-300 mt-2 text-sm">
+                                <span className="font-semibold">Feedback:</span> {question.feedback}
+                            </p>
                         </div>
 
-                        {
-                            question?.questions?.map((q, index) => {
-                                return <div className='border border-blue-300 p-5 mt-5 rounded-3xl transition-transform '>
-
-
-                                    <div className=' flex flex-row justify-between rounded-lg' onClick={() => toggle(index)}>
-                                        <p>Q{index + 1} {q}</p>
-                                        <span>
-                                            {activeIndex === index ? "▲" : "▼"}
-                                        </span>
-                                    </div>
-
-                                    {
-                                        activeIndex == index && (<div>
-                                            <p> <span  className='text-2xl text-[#adbef9]'>Answer:</span> {question.answers[index]}</p>
-                                        </div>)
-                                    }
-
+                        {/* Questions List */}
+                        {question?.questions?.map((q, index) => (
+                            <motion.div
+                                key={index}
+                                initial={{ scale: 0.9 }}
+                                animate={{ scale: 1 }}
+                                transition={{ duration: 0.3 }}
+                                className="border border-blue-300 p-4 sm:p-3 mt-5 rounded-lg bg-[#10193a]"
+                            >
+                                <div
+                                    className="flex justify-between items-center cursor-pointer py-2"
+                                    onClick={() => toggle(index)}
+                                >
+                                    <p className="text-sm sm:text-base font-semibold">Q{index + 1}. {q}</p>
+                                    <span className="text-xl">{activeIndex === index ? "▲" : "▼"}</span>
                                 </div>
 
-
-                            })
-                        }
+                                {activeIndex === index && (
+                                    <motion.div
+                                        initial={{ opacity: 0, y: -5 }}
+                                        animate={{ opacity: 1, y: 0 }}
+                                        transition={{ duration: 0.3 }}
+                                        className="mt-3 text-gray-300 text-sm"
+                                    >
+                                        <p>
+                                            <span className="text-xl sm:text-lg text-[#adbef9] font-semibold">Answer:</span>{" "}
+                                            {question.answers[index]}
+                                        </p>
+                                    </motion.div>
+                                )}
+                            </motion.div>
+                        ))}
                     </div>
                 </div>
-            </section>
-        </>
-    )
-}
 
-export default QuestionDetails
+            </div>
+
+        </section>
+    );
+};
+
+export default QuestionDetails;

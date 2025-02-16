@@ -1,28 +1,26 @@
 import React, { useEffect, useState } from 'react'
 import axios from "axios"
 import useUserStore from '../store/store'
+import { FiLoader } from "react-icons/fi";
+
 const QuestionBox = ({ question, index, setToggle, id }) => {
 
     const [isSolved, setIsSolved] = useState(false)
+    const [loading, setLoading] = useState()
     const [fetchedQuestion, setFetchedQuestion] = useState()
-
-    const {solvedQ,addQuestions} = useUserStore()
-
-    // console.log(id);
-
-
+    const { addQuestions } = useUserStore()
 
     const fetchquestion = async (id) => {
         console.log(id);
-
+        setLoading(true)
         try {
-            const question = await axios.post("http://localhost:5000/auth/solvedQuestions", { id })
+            const question = await axios.post("http://localhost:5000/user/solvedQuestions", { id })
             console.log(question);
             setFetchedQuestion(question.data.question)
-
+            setLoading(false)
         } catch (error) {
             console.log(error);
-
+            setLoading(false)
         }
     }
 
@@ -36,9 +34,7 @@ const QuestionBox = ({ question, index, setToggle, id }) => {
         }
     }, [id])
 
-
     return (
-
         <div>
             {
                 <div
@@ -48,13 +44,15 @@ const QuestionBox = ({ question, index, setToggle, id }) => {
                 >
                     <p className="text-sm md:text-base">{`Q ${question?.id ? question.id : ""}`}</p>
                     <p className="text-base md:text-lg flex-1 text-center md:text-left">
-                        {question?.title ? question?.title : fetchedQuestion?.problem.substring(44, 90) + "..."}
+                        {
+                            question?.title ? question?.title :
+                               ( loading ? <FiLoader className="animate-spin w-20 text-purple-900 flex items-center justify-center " /> : fetchedQuestion?.problem.substring(44, 90) + "...")
+                        }
                     </p>
-
 
                     {
                         question?.id && <div className='flex space-x-3'>
-                            <input type="checkbox" name="solved" onChange={()=>addQuestions(question.id)} />
+                            <input type="checkbox" name="solved" onChange={() => addQuestions(question.id)} />
                             <a
                                 href={question?.url ? question?.url : ""}
                                 target="_blank"

@@ -2,21 +2,37 @@ import React, { useState } from 'react'
 import "../App.css"
 import Navbar from './Navbar'
 import { AiOutlineGoogle } from 'react-icons/ai'
+import handlePayment from '../utils/paymentFunction'// import from 'razo'
+import { Link } from 'react-router'
 import axios from 'axios'
 const HomePage = () => {
     const [openForm, setopenForm] = useState(false)
+    const [name, setName] = useState()
+    const [suggestion, setSuggestion] = useState()
+    const [message, setMessage] = useState()
 
     const SignIn = () => {
         window.open("http://localhost:5000/auth/google/callback", "_self ")
     }
 
-    const handlePayment = async ()=>{
+    const handleSubmit = async (e) => {
+        e.preventDefault();
+        if (!suggestion.trim()) return;
+        console.log("Suggestion submitted:", { name, suggestion });
+        try {
+            const response = await axios.post("http://localhost:5000/user/suggestion", { name, suggestion })
+            console.log(response);
 
-        const data = await axios.post("http://localhost:5000/user/checkout", {amount: 1000})
+            if (response.status == 200) {
+                setMessage(response.data.message)
+            }
+        } catch (error) {
+            setMessage(error)
+            console.log(error);
 
-        console.log(data);
-        
-    }
+        }
+
+    };
 
     return (
         <>
@@ -84,7 +100,7 @@ const HomePage = () => {
             </section>
             <section id='free' className='mt-5 p-5'>
                 <div className='montserrat-heading text-center flex flex-col sm:flex-row items-center sm:space-x-5 justify-center'>
-                    <p className='text-[15rem] font-extrabold text-[#9290C3]'>3</p>
+                    <p className='text-8xl md:text-[10rem] font-extrabold text-[#9290C3]'>3</p>
                     <div className='text-[#535C91] text-2xl flex flex-col space-y-5 '>
                         <p>Mock Interview are Free on Registration</p>
                         <button
@@ -120,7 +136,7 @@ const HomePage = () => {
                     {/* Price Section */}
                     <div className=" text-[#9290C3] flex items-center justify-center w-full md:w-1/3 p-8">
                         <div className="text-center">
-                            <h2 className="text-[12rem] font-extrabold text-[#9290C3] leading-none">$10</h2>
+                            <h2 className=" text-8xl md:text-[10rem] font-extrabold text-[#9290C3] leading-none">₹100</h2>
                             <p className="text-lg text-[#535C91] mt-2">/ month</p>
                         </div>
                     </div>
@@ -146,12 +162,46 @@ const HomePage = () => {
                                 Monthly updates
                             </li>
                         </ul>
-                        <button className=" bg-[#535C91] text-white font-semibold py-3 px-6 rounded-lg shadow-md hover:bg-[#434B7B] transition duration-300 w-full md:w-auto" onClick={handlePayment}>
+                        {/* <button className=" bg-[#535C91] text-white font-semibold py-3 px-6 rounded-lg shadow-md hover:bg-[#434B7B] transition duration-300 w-full md:w-auto mt-5" onClick={()=>handlePayment()}>
                             Pay Now
-                        </button>
+                        </button> */}
                     </div>
                 </div>
             </section>
+
+            <div className="flex flex-col items-center justify-center min-h-screen bg-gradient-to-r from-[#070F2B] to-[#1B1A55] p-4">
+                <div className=" shadow-lg rounded-xl p-6 max-w-md w-full">
+                    <h2 className="text-2xl font-bold text-[#9290C3] mb-4 text-center">
+                        Have any suggestions?
+                    </h2>
+                    <p className="text-[#9290C3] text-center mb-4">
+                        We'd love to hear your thoughts on the extension or website. Any ideas to improve?
+                    </p>
+                    <form onSubmit={handleSubmit} className="space-y-4">
+                        <input
+                            type="text"
+                            placeholder="Your Name (optional)"
+                            value={name}
+                            onChange={(e) => setName(e.target.value)}
+                            className="w-full p-3 border border-[#535C91] bg-[#070F2B] text-white rounded-lg focus:ring-2 focus:ring-[#535C91] outline-none"
+                        />
+                        <textarea
+                            placeholder="Share your suggestions..."
+                            value={suggestion}
+                            style={{ resize: 'none' }}
+                            onChange={(e) => setSuggestion(e.target.value)}
+                            className="w-full p-3 border border-[#535C91] bg-[#070F2B] text-white rounded-lg focus:ring-2 focus:ring-[#535C91] outline-none h-32"
+                        />
+                        <button
+                            type="submit"
+                            className="w-full bg-[#535C91] text-white font-bold py-2 rounded-lg hover:bg-[#9290C3] transition"
+                        >
+                            Submit
+                        </button>
+                        {/* <p>{message}</p> */}
+                    </form>
+                </div>
+            </div>
 
             <footer class="bg-gradient-to-r  from-[#070F2B] to-[#1B1A55] montserrat-heading text-white py-8 text-lavender  shadow-2xl shadow-[#a9a8d8]">
                 <div class="container mx-auto px-4">
@@ -167,13 +217,10 @@ const HomePage = () => {
                             <h3 class="text-xl font-semibold mb-4 text-[#9290C3]">Quick Links</h3>
                             <ul class="space-y-2 text-[#535C91] ">
                                 <li>
-                                    <a href="#home" class="text-[#535C91] hover:text-lavender transition">Home</a>
+                                    <Link to={"/"} class="text-[#535C91] hover:text-lavender transition">Home</Link>
                                 </li>
                                 <li>
-                                    <a href="#about" class="text-[#535C91] hover:text-lavender transition">Pricing</a>
-                                </li>
-                                <li>
-                                    <a href="#contact" class="text-[#535C91] hover:text-lavender transition">Contact</a>
+                                    <Link to={"/pricing"} class="text-[#535C91] hover:text-lavender transition">Pricing</Link>
                                 </li>
                             </ul>
                         </div>
@@ -181,8 +228,7 @@ const HomePage = () => {
                         <div class="text-center md:text-right">
                             <h3 class="text-xl font-semibold mb-4 text-[#9290C3]">Contact Us</h3>
                             <p class="text-[#535C91]">Email: <a href="mailto:support@2codedaily.com" class="hover:text-lavender transition">support@2codedaily.com</a></p>
-                            <p class="text-[#535C91]">Phone: <a href="tel:+1234567890" class="hover:text-lavender transition">+1 234 567 890</a></p>
-                            <div class="flex justify-center md:justify-end mt-4 space-x-4">
+                            {/* <div class="flex justify-center md:justify-end mt-4 space-x-4">
                                 <a href="#" class="text-[#535C91] hover:text-lavender transition">
                                     <i class="fab fa-facebook"></i>
                                 </a>
@@ -195,7 +241,7 @@ const HomePage = () => {
                                 <a href="#" class="text-[#535C91] hover:text-lavender transition">
                                     <i class="fab fa-github"></i>
                                 </a>
-                            </div>
+                            </div> */}
                         </div>
                     </div>
 

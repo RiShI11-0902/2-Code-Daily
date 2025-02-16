@@ -2,8 +2,13 @@ import axios from 'axios'
 import React from 'react'
 import useUserStore from '../store/store'
 import { Link, Navigate, useNavigate } from 'react-router'
+import handlePayment from '../utils/paymentFunction'
 
-const Sidebar = ({ setShowSolved, setProgressBar }) => {
+
+const Sidebar = ({notify, setShowSolved, setProgressBar }) => {
+
+
+    const { user } = useUserStore()
 
     const navigate = useNavigate()
 
@@ -20,13 +25,17 @@ const Sidebar = ({ setShowSolved, setProgressBar }) => {
 
     }
 
+
+
+
     return (
         <>
+            
             <section className="sidebar fixed montserrat-heading h-screen w-64 bg-gray-900 text-white">
                 <div className="p-4">
-                    <p className='text-2xl text-[#9290C3] font-semibold  p-2 cursor-pointer transition duration-200'>
+                    <Link to={"/"} className='text-2xl text-[#9290C3] font-semibold  p-2 cursor-pointer transition duration-200'>
                         2Code Daily
-                    </p>
+                    </Link>
                     <ul className="space-y-4 flex flex-col mt-5 text-[#535C91]">
                         <li onClick={() => {
                             setShowSolved(false)
@@ -34,14 +43,16 @@ const Sidebar = ({ setShowSolved, setProgressBar }) => {
                         }} className="text-lg font-semibold hover:bg-gray-800 rounded-md p-2 cursor-pointer transition duration-200">
                             Coding Sheet
                         </li>
-                        <li onClick={() =>{
+                        <li onClick={() => {
                             setShowSolved(true)
                             setProgressBar(false)
                         }} className="text-lg font-semibold hover:bg-gray-800 rounded-md p-2 cursor-pointer transition duration-200">
                             Solved
                         </li>
 
-                        <li onClick={()=>setProgressBar(true)} className="text-lg font-semibold hover:bg-gray-800 rounded-md p-2 cursor-pointer transition duration-200">Progress</li>
+                        <li onClick={() => setProgressBar(true)} className="text-lg font-semibold hover:bg-gray-800 rounded-md p-2 cursor-pointer transition duration-200">Progress</li>
+{/* //*/}
+                        <li onClick={ ()=> user.isSubscribed ? notify() : handlePayment(user)} className="text-lg font-semibold hover:bg-gray-800 rounded-md p-2 cursor-pointer transition duration-200">Go Premium</li>
 
                         <li onClick={logout} className="text-lg font-semibold hover:bg-gray-800 rounded-md p-2 cursor-pointer transition duration-200">
                             Log Out

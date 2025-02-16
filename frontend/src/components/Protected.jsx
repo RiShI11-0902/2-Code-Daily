@@ -6,6 +6,7 @@ import useUserStore from "../store/store";
 const Protected = ({ children }) => {
     const [authenticate, setAuthenticate] = useState(null); // null for loading state
     const userData = useUserStore((state) => state.userData);
+    // const {user} = useUserStore()
 
     const getUser = async () => {
         try {
@@ -21,6 +22,7 @@ const Protected = ({ children }) => {
             }
         } catch (error) {
             setAuthenticate(false); // Handle errors gracefully
+            useUserStore.getState().removeUser()
             console.error("Error during authentication check:", error);
         }
     };
