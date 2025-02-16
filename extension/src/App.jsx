@@ -4,11 +4,16 @@ import "./App.css";
 function App() {
 
   const [email, setEmail] = useState()
+  const [loading, setloading] = useState()
 
   const handleSubmit = async () => {
+    setloading(true)
     // Redirect user to the landing page for registration
     // window.open("https://your-landing-page-url.com", "_blank"); // Replace with your actual landing page URL
-    await chrome.storage.local.set({ email: email })
+    setTimeout( async ()  =>{
+      await chrome.storage.local.set({ email: email })
+      setloading(false)
+    },500)
   };
 
   return (
@@ -29,8 +34,8 @@ function App() {
       <footer className="cta-section">
         <input type="email" onChange={(e) => setEmail(e.target.value)} placeholder="Enter same email you entered on our website." />
         <div id='btns'>
-          <button onClick={handleSubmit}>Register Email</button>
-          <button class="cta-button">Unlock Premium Features</button>
+          <button onClick={handleSubmit}>{loading ? "Registering..." : "Register Email"}</button>
+          <button class="cta-button"> <a href="http://localhost:5173" target="_blank">Unlock Premium Features</a></button>
         </div>
       </footer>
     </div>
