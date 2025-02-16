@@ -3,14 +3,15 @@ const express = require('express')
 const cors = require('cors')
 const app = express()
 const connect = require('./dbConfig')
-const cookieParser = require('cookie-parser')
 const session = require('express-session')
 const { initializingPassport } = require("./passportConfig")
 const passport = require('passport')
 
 const problemRoute = require("./routes/problemRoutes")
-const userRoute = require("./routes/user")
+const authRoute = require("./routes/auth")
 const paymentRoute = require("./routes/paymentRoute")
+const userRoute = require("./routes/user")
+
 
 const allowedOrigins = [
     "https://leetcode.com",
@@ -43,8 +44,9 @@ app.use(session({
 app.use(passport.initialize())
 app.use(passport.session())
 
-app.use("/auth", userRoute )
+app.use("/auth", authRoute )
+app.use("/user", userRoute )
 app.use("/api", problemRoute )
-app.use("/user", paymentRoute )
+app.use("/userpayment", paymentRoute )
 
 app.listen(5000)

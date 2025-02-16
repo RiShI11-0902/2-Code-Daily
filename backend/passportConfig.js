@@ -18,7 +18,7 @@ exports.initializingPassport = (passport) =>{
                     googleId:profile.id,
                     displayName: profile.displayName,
                     email: profile.emails[0].value,
-                    image:profile.photos[0].value
+                    image:profile.photos[0].value,
                 })
 
                 await user.save();

@@ -8,9 +8,13 @@ const userSchema = new Schema({
     email: String,
     image: String,
     isSubscribed: {type: String},
+    earlySubscriber: {type: Boolean},
     password:{type:String},
     questions:{
         type:[String]
+    },
+    isSubscribed: {
+        type: Boolean
     },
     solvedQuestions:[
         {
@@ -18,6 +22,20 @@ const userSchema = new Schema({
             ref:'interview'
         }
     ],
+    payments: [
+        {
+            order_id: { type: String, required: true },
+            payment_id: { type: String, required: true },
+            signature: { type: String, required: true },
+            amount: { type: Number, required: true },
+            status: { type: String, enum: ["Pending", "Paid", "Failed"], default: "Pending" },
+            createdAt: { type: Date, default: Date.now },
+            expiresAt:{type: Date},
+        }
+    ],
+    currentExpiryDate: {type: Date,  default: null, required: false},
+    freeInterview: {type: Number, default: 0},
+    improvements: {type: String}
 })
 
 const User = mongoose.model('User',userSchema)
