@@ -7,5 +7,7 @@ router
 .post("/solvedQuestions", userCotroller.solvedQuestions)
 .post("/getProgress" , userCotroller.getProgress)
 .post("/suggestion" , userCotroller.suggestions)
+.post("/analyze-progress" , userCotroller.analyzeAndGeneratePlan)
+
 
 module.exports = router

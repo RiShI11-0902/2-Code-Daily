@@ -1,3 +1,4 @@
+const { chatSession } = require("../aiConfig");
 const { generateToken } = require("../helpers/jwt");
 const Interview = require("../models/interviewSchema");
 const Suggestion = require("../models/suggestionSchme");
@@ -25,7 +26,7 @@ exports.getProgress = async (req, res) => {
     const user = await User.findById(id).populate("solvedQuestions");
 
     if (!user) {
-     return res.status(401).json({ message: "user not found" });
+      return res.status(401).json({ message: "user not found" });
     }
 
     const totalCorrectness = user.solvedQuestions.reduce((sum, interview) => {
@@ -34,43 +35,110 @@ exports.getProgress = async (req, res) => {
 
     const avg = totalCorrectness / user.solvedQuestions.length;
 
-    const progressData = user.solvedQuestions.map((interview)=>({
+    const progressData = user.solvedQuestions.map((interview) => ({
       date: interview.createdAt,
-      correctness: interview.correctness
-    }))
+      correctness: interview.correctness,
+    }));
 
     console.log(avg);
 
-    res.status(200).json({ average: avg, progressData:progressData });
+    res.status(200).json({ average: avg, progressData: progressData });
   } catch (error) {
     console.log(error);
   }
 };
 
-exports.totalUsers = async (req,res)=>{
+exports.totalUsers = async (req, res) => {
   try {
-    const total = await User.find().countDocuments()
-    res.status(200).json({success: true, totalUsers: total})
+    const total = await User.find().countDocuments();
+    res.status(200).json({ success: true, totalUsers: total });
   } catch (error) {
-    res.json({success: false, message: error})
+    res.json({ success: false, message: error });
   }
-}
+};
 
+exports.suggestions = async (req, res) => {
+  console.log("called");
 
-exports.suggestions = async (req,res)=>{
   try {
-    const {name, suggestion} = req.body
+    const { name, suggestion } = req.body;
+
+    console.log(req.body);
 
     const newSuggestion = new Suggestion({
       name: name,
-      suggestion: suggestion
-    })
+      suggestion: suggestion,
+    });
 
-    await newSuggestion.save()
+    await newSuggestion.save();
 
-    res.staus(200).json({success: true, message:'Thank You for your Suggestion!'})
+    res
+      .status(200)
+      .json({ success: true, message: "Thank You for your Suggestion!" });
   } catch (error) {
-    res.status(400).json({message:"Server Error"})
+    res.status(400).json({ message: "Server Error" });
   }
-}
+};
 
+exports.analyzeAndGeneratePlan = async (req, res) => {
+  try {
+    const { id } = req.body;
+
+    const sevenDaysAgo = new Date();
+    sevenDaysAgo.setDate(sevenDaysAgo.getDate() - 7);    
+
+    const user = await User.findOne({ _id: id }).populate("solvedQuestions");
+
+    const recentQuestions = user?.solvedQuestions?.filter((q) => {
+      return new Date(q.createdAt) >= sevenDaysAgo;
+    });
+
+    if (recentQuestions?.length == 0) {
+      res.status(200).json({ message: "No Recently Solved Questions" });
+      return;
+    }
+
+    const extractText = (str)=>{
+      let strIndex = str.indexOf('?') + 1
+      let end = str.indexOf('\n', strIndex)
+      return str.substring(strIndex,end).trim()
+    }
+
+    const userProgress = recentQuestions.map((q)=>({
+      question: extractText(q.problem),
+      feedback: q.feedback,
+      correctness: q.correctness
+    }))
+  //  console.log(userProgress.map((i)=> i)); 
+    const prompt = `
+        This is the progress ${JSON.stringify(userProgress,null,2)} of last seven days of coding interview given by the user. your task is to analyze this data and create a future plan for the user on what they have to study and focus on which topics and also the difficult level of the problems they should solve. make it like a feedback don't just name the topics and make the feedback acheivable in seven days for the user. also include the time and days they should give them make it personalize to them.
+
+        IMPORTANT: Give your response in json with the following keys:
+        1) topics: contains the name of topics they have to study in future as an string only in detail.
+        2) focus: contains the focus area e.g focus on efficieny,optimixation etc in string only
+        3) difficult: contains the difficult level of problem to solve in string in string
+
+        Give your response in JSON only format with the keys given above only
+      `;
+
+    const aiAnalyze = await chatSession.sendMessage(prompt);
+    const markUpJSON = aiAnalyze.response
+      .text()
+      .replace(/```json/, "")
+      .replace(/```/, "")
+      .replace(/```$/, "");
+
+    const finalJson = JSON.parse(markUpJSON);
+
+    console.log(finalJson);
+
+    user?.improvements?.push({ analysis: finalJson, dateCreated: Date.now() });
+
+    await user.save()
+
+    res.status(200).json({messsage:"Generated", analysis: finalJson, dateCreated: Date.now() })
+  } catch (error) {
+    console.log(error);
+    res.status(400).json({ message: error });
+  }
+};

@@ -25,26 +25,27 @@ exports.getProblem = async (req, res) => {
       .replace(/```$/, "");
   
     const finalJson = JSON.parse(markupJson);
-  
-    // console.log(finalJson);
-  
+    
     const user = await User.findOne({ email: email });
   
     if (user) {
-      const newInterview = new Interview();
-      newInterview.problem = problem;
-      newInterview.questions.push(finalJson.question);
-      newInterview.createdAt = Date.now()
-      user.solvedQuestions.push(newInterview.id);
-  
-      // console.log(newInterview);
-  
-      await newInterview.save();
-      await user.save();
-  
-      res.status(200).json({ interview: newInterview });
-    } else {
-      res.status(401).json({ message: "user is not registered" });
+      if(user.isSubscribed || user.freeInterview <= 3){
+        const newInterview = new Interview();
+        newInterview.problem = problem;
+        newInterview.questions.push(finalJson.question);
+        newInterview.createdAt = Date.now()
+        user.solvedQuestions.push(newInterview.id);
+        
+        await newInterview.save();
+        await user.save();
+    
+        res.status(200).json({ interview: newInterview });
+      }else{
+        res.status(400).json({message:'Frremium Ended Please Update to Premium'})
+      }
+    } 
+    else {
+      res.status(401).json({ message: "User is Not Registered" });
     }
   } catch (error) {
     res.status(400).json({message: error})
@@ -94,7 +95,7 @@ Follow this structured approach:
      a. Politely point out the issue and offer a hint to nudge them in the right direction.
      b. Provide step-by-step guidance if asked by the user, while encouraging them to solve the problem independently.
 4. As the conversation progresses, ask increasingly refined and challenging questions, ensuring the user thinks critically about optimizations, edge cases, and scalability.
-6. Avoid overwhelming the user with too much information at once—guide them one step at a time ask for space nd time complexity of optimal solution.
+6. Avoid overwhelming the user with too much information keep your questions small at once—guide them one step at a time ask for space nd time complexity of optimal solution.
 7. if you are satisfied or user is not able to solve the question even after your help then End the interaction with a summary of their areas for improvement, motivating them to continue honing their skills and if they are unable to solve tell them.
 
 . 
@@ -134,16 +135,14 @@ Follow this structured approach:
   
 };
 
-
-
 exports.verifyEmail = async (req, res) => {
   try {
     const { email } = req.body;
     const verifedEmail = await User.findOne({ email: email });
     // console.log(verifedEmail);
-    res.json({"messsage": "user Verified start Practising Leetcode "})
+    res.json({messsage: "user Verified start Practising Leetcode "})
   } catch (error) {
     // console.log(error);
-    res.json({"messsage": error})
+    res.json({messsage: error})
   }
 };

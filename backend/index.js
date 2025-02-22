@@ -6,6 +6,9 @@ const connect = require('./dbConfig')
 const session = require('express-session')
 const { initializingPassport } = require("./passportConfig")
 const passport = require('passport')
+const {serve} = require('inngest/express')
+const { inngest } = require("./inggestConfig.js/inngest");
+
 
 const problemRoute = require("./routes/problemRoutes")
 const authRoute = require("./routes/auth")
@@ -43,6 +46,8 @@ app.use(session({
 
 app.use(passport.initialize())
 app.use(passport.session())
+
+// app.use('/inngest', serve(inngest))
 
 app.use("/auth", authRoute )
 app.use("/user", userRoute )

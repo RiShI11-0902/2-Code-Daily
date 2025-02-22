@@ -7,7 +7,6 @@ const userSchema = new Schema({
     name: String,
     email: String,
     image: String,
-    isSubscribed: {type: String},
     earlySubscriber: {type: Boolean},
     password:{type:String},
     questions:{
@@ -35,7 +34,12 @@ const userSchema = new Schema({
     ],
     currentExpiryDate: {type: Date,  default: null, required: false},
     freeInterview: {type: Number, default: 0},
-    improvements: {type: String}
+    improvements: [
+        {
+            analysis: { type: Object, required: true }, // Change from String to Object
+            dateCreated: { type: Date, default: Date.now }, // Default to current date
+        },
+    ],
 })
 
 const User = mongoose.model('User',userSchema)
