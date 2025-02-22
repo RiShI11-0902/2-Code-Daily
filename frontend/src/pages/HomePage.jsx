@@ -27,7 +27,7 @@ const HomePage = () => {
                 setMessage(response.data.message)
             }
         } catch (error) {
-            setMessage(error)
+            setMessage(error.data.message)
             console.log(error);
 
         }
@@ -198,7 +198,7 @@ const HomePage = () => {
                         >
                             Submit
                         </button>
-                        {/* <p>{message}</p> */}
+                        <p className='text-white font-semibold'>{message}</p>
                     </form>
                 </div>
             </div>
