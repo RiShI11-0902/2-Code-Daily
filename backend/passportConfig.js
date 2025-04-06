@@ -8,7 +8,7 @@ exports.initializingPassport = (passport) =>{
     passport.use(new OAuth2Strategy({
         clientID: process.env.CLIENT_ID,
         clientSecret: process.env.CLIENT_SEC,
-        callbackURL: '/auth/google/callback',
+        callbackURL: 'https://two-code-daily-1.onrender.com/auth/google/callback',
         scope:["profile","email"]
     }, async (accessToken, refreshToken,profile,done)=>{
         try {
