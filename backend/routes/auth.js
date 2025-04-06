@@ -6,7 +6,7 @@ const passport = require('passport')
 router
 .get("/google",passport.authenticate('google',{scope:["profile","email"]}))
 .get("/google/callback",passport.authenticate("google",{
-    successRedirect:"http://localhost:5173/dashboard",
+    successRedirect:"https://2-code-daily.netlify.app/dashboard",
     failureRedirect:"/"
 }))
 .get("/isLoggedIn", async (req,res)=>{
