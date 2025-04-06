@@ -8,4 +8,7 @@ export default defineConfig({
     react(),
     crx({ manifest }),
   ],
+  define: {
+    'process.env': {}, // this is required to prevent crash due to process.env in React
+  },
 })

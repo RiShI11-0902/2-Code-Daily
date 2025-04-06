@@ -3,6 +3,8 @@ import axios from 'axios'
 import "./css files/Button.css"
 import RecordAnswer from './RecordAnswer';
 import Draggable from 'react-draggable'
+import { FaVolumeUp, FaPause, FaPlay } from 'react-icons/fa';
+import { useSpeechSynthesis } from 'react-speech-kit';
 
 const Button = () => {
   console.log("computed");
@@ -13,26 +15,100 @@ const Button = () => {
   const [error, setError] = useState(null)
   const [loading, setLoading] = useState(true)
   const [email, setEmail] = useState()
+  const [isPaused, setIsPaused] = useState(false);
+  const [isSpeaking, setIsSpeaking] = useState(false);
+
+
+  // const startInterView = async () => {
+  //   const descriptionEle = document.querySelector('meta[name=description]')
+  //   const problemState = descriptionEle?.getAttribute('content')
+  //   console.log(chrome);
+
+  //   // const userEmail = await chrome?.storage?.local?.get('email')
+  //    chrome.runtime.sendMessage({ type: 'GET_EMAIL' }, (response) => {
+  //     if (response?.email) {
+  //       setEmail(response.email);
+  //     }
+  //   });
+  //   // setEmail(userEmail)
+
+  //   setBox(true)
+  //   try {
+  //     const sendInterviewProblem = await axios.post("http://localhost:5000/api/getProblem", { problem: problemState, email: userEmail?.email })
+  //     setQuestion(sendInterviewProblem?.data?.interview?.questions[0])
+  //     setInterviewId(sendInterviewProblem?.data?.interview?._id)
+  //     setLoading(false)
+  //   } catch (error) {
+  //     setError(error.response.data.message)
+  //     setLoading(false)
+  //   }
+  // }
+
+  // const { speak } = useSpeechSynthesis();
+
+  const { speak, cancel, supported } = useSpeechSynthesis({
+    onEnd: () => {
+      setIsSpeaking(false);
+      setIsPaused(false);
+    },
+  });
 
 
   const startInterView = async () => {
     const descriptionEle = document.querySelector('meta[name=description]')
     const problemState = descriptionEle?.getAttribute('content')
-    const userEmail = await chrome.storage.local.get('email')
-    setEmail(userEmail)
+    console.log(chrome);
 
-    setBox(true)
-    try {
-      const sendInterviewProblem = await axios.post("http://localhost:5000/api/getProblem", { problem: problemState, email: userEmail?.email })
-      setQuestion(sendInterviewProblem?.data?.interview?.questions[0])
-      setInterviewId(sendInterviewProblem?.data?.interview?._id)
-      setLoading(false)
-    } catch (error) {
-      setError(error.response.data.message)
-      setLoading(false)
+    setBox(true);
+
+    chrome.runtime.sendMessage({ type: 'GET_EMAIL' }, async (response) => {
+      if (response?.email) {
+        setEmail(response.email);
+
+        try {
+          const sendInterviewProblem = await axios.post("http://localhost:5000/api/getProblem", {
+            problem: problemState,
+            email: response.email
+          });
+
+          setQuestion(sendInterviewProblem?.data?.interview?.questions[0]);
+          setInterviewId(sendInterviewProblem?.data?.interview?._id);
+          setLoading(false);
+        } catch (error) {
+          setError(error.response?.data?.message || "Something went wrong");
+          setLoading(false);
+        }
+      } else {
+        setError("Email not found");
+        setLoading(false);
+      }
+    });
+  };
+
+  const getIcon = () => {
+    if (isSpeaking && isPaused) return <FaPlay />;
+    if (isSpeaking && !isPaused) return <FaPause />;
+    return <FaVolumeUp />;
+  };
+
+  // const clickSpeak = () => {
+  //   // TextToSpeech.talk(question);
+  //   speak({ text: question })
+  // }
+
+  const clickSpeak = () => {
+    if (isSpeaking && !isPaused) {
+      window.speechSynthesis.pause();
+      setIsPaused(true);
+    } else if (isSpeaking && isPaused) {
+      window.speechSynthesis.resume();
+      setIsPaused(false);
+    } else {
+      speak({ text: question });
+      setIsSpeaking(true);
+      setIsPaused(false);
     }
-  }
-
+  };
 
   return (
     <>
@@ -43,15 +119,20 @@ const Button = () => {
       {
         box ? <Draggable className='bg-black'>
           <div style={{ padding: '10px 10px 50px 5px', height: '100vh', width: '45%', cursor: "move", position: 'absolute', top: '2.5rem', left: '0px' }} className=' convoBox bg-black  fixed top-10 left-0 text-white w-[45%] max-h-screen p-10   '>
-            <div className="text-lg font-bold fixed bottom-20 border border-white p-2 right-0 bg-red-600 cursor-pointer " onClick={()=>{
+            <button className="text-lg font-bold fixed bottom-20 border border-white p-2 right-0  cursor-pointer rounded-lg " onClick={() => {
               setBox(false)
               setError(null)
               setLoading(true)
+              setQuestion("")
             }}>
               Close Interview
-            </div>
+            </button>
 
-            <p className='font-semibold mt-9 text-white text-lg p-5 '>{loading ? "Loading...." : question}</p>
+            <div className='font-semibold mt-9 text-white text-lg p-5 '>
+              <p>{loading ? "Loading...." : question} <button className='ml-2' onClick={clickSpeak}>
+                {getIcon()}
+              </button></p>
+            </div>
 
             <p className='text-lg p-5 '><RecordAnswer loading={loading} setLoading={setLoading} id={interviewId} setQuestion={setQuestion} question={question} error={error} email={email} /></p>
 

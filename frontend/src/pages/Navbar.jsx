@@ -1,3 +1,4 @@
+"use client"
 import React, { useState } from "react";
 import { FiMenu, FiX } from "react-icons/fi";
 import {AiOutlineGoogle} from 'react-icons/ai'
@@ -13,7 +14,7 @@ const Navbar = ({setopenForm,openForm, SignIn}) => {
   };
 
   // const SignIn = ()=>{
-  //   window.open("http://localhost:5000/auth/google/callback","_self ")
+  //   window.open("https://two-code-daily-1.onrender.com/auth/google/callback","_self ")
   // }
 
   // const user = useUserStore((state) => state.user)

@@ -17,9 +17,12 @@ const PaymentSuccess = () => {
     const referenceid = queryParams.get("referenceid")
     const expiryDate = queryParams.get("expiry")
 
+    const options = { year: 'numeric', month: 'long', day: 'numeric' };
+
     if (referenceid && expiryDate) {
       setPaymentId(referenceid);
-      const format = expiryDate.toString().split('T')[0]
+      const newDate = new Date(expiryDate)
+      const format = newDate.toLocaleDateString('en-US', options)
       setExpiry(format)
     }
     console.log(referenceid);

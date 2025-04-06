@@ -7,7 +7,7 @@ import axios from 'axios';
 
 const RecordAnswer = ({ setQuestion, id, question, error, email }) => {
 
-    const [editableText, setEditableText] = useState()
+    const [editableText, setEditableText] = useState("")
     const [userCode, setUserCode] = useState()
     const [settingCode, setSettingCode] = useState(false)
     const [issubmitting, setisSubmitting] = useState(null)
@@ -50,6 +50,7 @@ const RecordAnswer = ({ setQuestion, id, question, error, email }) => {
         setisSubmitting(true)
         const response = await axios.post("http://localhost:5000/api/getAnswer", { answer: editableText, id: id, question: question, code: userCode, email:email })
         if (response?.data?.question?.feedback) {
+            alert(response?.data?.question?.feedback)
             setQuestion(response?.data?.question?.feedback)
             setendInterview(true)
             setisSubmitting(false)
@@ -69,7 +70,6 @@ const RecordAnswer = ({ setQuestion, id, question, error, email }) => {
 
     return (
         <>
-
             {
                 error ? <p>{error} <a href='http://localhost:5173' target='_blank' className='' ><span className='text-blue-400 cursor-pointer text-lg border border-white p-2 bg-blue-700'>Register here</span>  </a></p> : <section>
                     <div className='w-fit mx-auto' >
@@ -89,12 +89,12 @@ const RecordAnswer = ({ setQuestion, id, question, error, email }) => {
 
                     {
                         !endInterview && <div className='flex flex-row space-x-4'>
-                            <button className='border-2 border-purple-300 p-2 ' onClick={setCode}>
+                            <button className='border-2 border-purple-300 text-blue-700 p-2 ' onClick={setCode}>
                                 {
                                     settingCode ? "Attaching Code.." : "Attach Code"
                                 }
                             </button>
-                            <button className='border-2 border-purple-300 p-2 ' onClick={submitAnswer}>
+                            <button className='border-2 border-purple-300 text-blue-700 p-2 ' onClick={submitAnswer}>
                                 {
                                     issubmitting ? "Submitting.." : "Sumit Answer"
                                 }

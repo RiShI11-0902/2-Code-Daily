@@ -1,30 +1,47 @@
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import "../App.css"
 import Navbar from './Navbar'
 import { AiOutlineGoogle } from 'react-icons/ai'
 import handlePayment from '../utils/paymentFunction'// import from 'razo'
 import { Link } from 'react-router'
 import axios from 'axios'
+import { Loader } from 'lucide-react'
+import { time } from 'framer-motion'
 const HomePage = () => {
     const [openForm, setopenForm] = useState(false)
     const [name, setName] = useState()
     const [suggestion, setSuggestion] = useState()
     const [message, setMessage] = useState()
+    const [email, setEmail] = useState()
+    const [loading, setLoading] = useState()
+    const [duration, setduration] = useState(3000)
+    const [visible, setVisible] = useState(true);
 
     const SignIn = () => {
-        window.open("http://localhost:5000/auth/google/callback", "_self ")
+        window.open("https://two-code-daily-1.onrender.com/auth/google/callback", "_self")
     }
+///https://two-code-daily.onrender.com
+    useEffect(() => {
+        const timer = setTimeout(() => {
+            setMessage(false)
+        }, duration);
+
+        return () => clearInterval(timer)
+    }, [duration])
+
 
     const handleSubmit = async (e) => {
         e.preventDefault();
-        if (!suggestion.trim()) return;
+        setLoading(true)
+        // if (!suggestion.trim()) return;
         console.log("Suggestion submitted:", { name, suggestion });
         try {
-            const response = await axios.post("http://localhost:5000/user/suggestion", { name, suggestion })
+            const response = await axios.post("http://localhost:5000/user/email", { email })
             console.log(response);
 
             if (response.status == 200) {
                 setMessage(response.data.message)
+                setLoading(false)
             }
         } catch (error) {
             setMessage(error.data.message)
@@ -42,13 +59,42 @@ const HomePage = () => {
                     <h1 className='montserrat-heading text-6xl p-1 md:text-7xl text-[#9290C3] '>Practice LeetCode Like a Pro</h1>
                     <p className='text-2xl montserrat-heading text-[#535C91]'>"Turn LeetCode problems into interactive mock interviews."</p>
                     <div className='flex flex-row items-center justify-center space-x-5'>
-                        <button className="bg-[#6983de] text-white py-2 px-6 rounded-lg hover:bg-[#1B1A55] hover:scale-105 transition duration-300 ease-in-out shadow-md transform">
+                        <form onSubmit={handleSubmit} className="space-y-4">
+                            {/* <h2 className="text-xl font-bold text-white text-center">
+                                Get Early Access to Our AI Mock Interview Extension!
+                            </h2> */}
+                            <p className="text-sm text-gray-300 text-center">
+                                Sign up to be notified when we launch.
+                            </p>
+                            <div className='flex flex-row space-x-5'>
+                                <input
+                                    type="email"
+                                    placeholder="Enter your email"
+                                    value={email}
+                                    onChange={(e) => setEmail(e.target.value)}
+                                    required
+                                    className="w-96 p-3 border border-[#535C91] bg-[#070F2B] text-white rounded-lg focus:ring-2 focus:ring-[#535C91] outline-none"
+                                />
+                                <button
+                                    type="submit"
+                                    className="w-40 bg-[#535C91] text-white font-bold py-2 rounded-lg hover:bg-[#9290C3] transition"
+                                >
+                                    {loading ? <Loader className='animate-spin mx-auto w-fit' /> : "Notify Me"}
+                                </button>
+
+                            </div>
+                            {
+                                visible && <p className="text-white font-semibold text-center">{message}</p>
+                            }
+                        </form>
+
+                        {/* <button className="bg-[#6983de] text-white py-2 px-6 rounded-lg hover:bg-[#1B1A55] hover:scale-105 transition duration-300 ease-in-out shadow-md transform">
                             How it Works
                         </button>
 
                         <button className="bg-[#adbef9] text-black py-2 px-6 rounded-lg hover:bg-[#1B1A55] hover:text-white hover:scale-105 transition duration-300 ease-in-out shadow-md transform ml-4">
                             Get Extension
-                        </button>
+                        </button> */}
                     </div>
                 </div>
             </section>
@@ -169,7 +215,7 @@ const HomePage = () => {
                 </div>
             </section>
 
-            <div className="flex flex-col items-center justify-center min-h-screen bg-gradient-to-r from-[#070F2B] to-[#1B1A55] p-4">
+            {/* <div className="flex flex-col items-center justify-center min-h-screen bg-gradient-to-r from-[#070F2B] to-[#1B1A55] p-4">
                 <div className=" shadow-lg rounded-xl p-6 max-w-md w-full">
                     <h2 className="text-2xl font-bold text-[#9290C3] mb-4 text-center">
                         Have any suggestions?
@@ -201,7 +247,7 @@ const HomePage = () => {
                         <p className='text-white font-semibold'>{message}</p>
                     </form>
                 </div>
-            </div>
+            </div> */}
 
             <footer class="bg-gradient-to-r  from-[#070F2B] to-[#1B1A55] montserrat-heading text-white py-8 text-lavender  shadow-2xl shadow-[#a9a8d8]">
                 <div class="container mx-auto px-4">

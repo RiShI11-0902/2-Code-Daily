@@ -15,7 +15,7 @@ exports.getProblem = async (req, res) => {
       return
     }
   
-    const prompt = `You are an expert coding interviewer working in an faang and taking an interview of the user. you have to ask this ${problem} to the user in a short concise way, ask the user for their initial thought process only not any coding or anything. give them an small example  Give your output in json format with question as a single key  `;
+    const prompt = `You are an expert coding interviewer working in an faang and taking an interview of the user. you have to ask this ${problem} to the user in a short concise way as an real person who takes the interview, ask the user for their initial thought process only not any coding or anything. give them an small example  Give your output in json format with question as a single key  `;
     const aiResponse = await chatSession.sendMessage(prompt);
   
     const markupJson = aiResponse.response
@@ -59,13 +59,18 @@ exports.getAnswer = async (req, res) => {
   try {
     const { answer, id, question, code, email } = req.body;
 
-  console.log(code);
+  console.log(email);
+  console.log("called");
+  
 
   // const userAns = answer.map((res) => res.transcript);
 
   const cuurInterview = await Interview.findById(id);
 
-  const user = await User.findOne({email: email})
+  const user = await User.findOne({email})
+
+  console.log(email);
+  
 
   const prompt = `You are an experienced coding interviewer conducting a mock technical interview. Your role is to evaluate the candidate's problem-solving abilities and guide them toward better solutions.
 
@@ -111,7 +116,7 @@ Follow this structured approach:
     .replace(/```/, "")
     .replace(/```$/, "");
 
-  // console.log(markUpJSON);
+  console.log(markUpJSON);
 
   const finalJson = JSON.parse(markUpJSON);
 
@@ -131,6 +136,8 @@ Follow this structured approach:
   res.status(200).json({ question: finalJson });
   } catch (error) {
     res.status(400).json({message:"Internal Server Error"})
+    console.log(error);
+    
   }
   
 };

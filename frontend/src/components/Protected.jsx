@@ -10,11 +10,13 @@ const Protected = ({ children }) => {
 
     const getUser = async () => {
         try {
-            const res = await axios.get("http://localhost:5000/auth/isLoggedIn", {
+            const res = await axios.get("https://two-code-daily-1.onrender.com/auth/isLoggedIn", {
                 withCredentials: true,
             });
             console.log("Response from /auth/isLoggedIn:", res.data);
             if (res.status === 200 && res.data?.data) {
+                console.log(res.data.data);
+                
                 userData(res.data.data); // Set user data in the store
                 setAuthenticate(true); // User is authenticated
             } else {

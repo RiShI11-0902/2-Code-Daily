@@ -24,15 +24,18 @@ const ProgressComponent = () => {
         data: null
     })
     const [analyzing, setAnalyzing] = useState()
+    const [error, setError] = useState()
 
     const { user } = useUserStore();
 
     // console.log(user?.improvements[0].dateCreated.split('T')[0]);
-
+////https://two-code-daily-1.onrender.com   http://localhost:5000
     const getProgress = async () => {
         try {
-            const { data } = await axios.post("http://localhost:5000/user/getProgress", { id: user._id });
+            const { data } = await axios.post("https://two-code-daily-1.onrender.com/user/getProgress", { id: user._id });
             setAvg(data.average);
+            console.log(data);
+
             setProgressData(data.progressData);  // Store full progress data
             updateChart(data.progressData); // Initially set full data in chart
             setLoading(false)
@@ -83,35 +86,38 @@ const ProgressComponent = () => {
     };
 
     const analyze = async () => {
-        const lastUpdate = new Date(user?.improvements[0].dateCreated)
-        const newUpdate = new Date()
-        newUpdate.setDate(lastUpdate.getDate() + 7)
+        const lastUpdate = new Date(user?.improvements[0].dateCreated);
+        const newUpdate = new Date(lastUpdate); // clone it
+        newUpdate.setDate(newUpdate.getDate() + 7); // add 7 days properly
 
-        if (newUpdate == Date.now()) {
+
+        if (Date.now() >= newUpdate.getDate()) {
             setAnalyzing(true)
             try {
                 const res = await axios.post("http://localhost:5000/user/analyze-progress", { id: user._id })
                 // console.log(res);
                 setShowAnalysis({
                     show: true,
-                    data: res.data.improvements[0].analysis
+                    data: res?.data?.improvements[0]?.analysis
                 })
                 setAnalyzing(false)
             } catch (error) {
                 console.log(error);
+                setError(error.response.data.message)
+                setAnalyzing(false)
             }
         } else {
-            // setshowAnalysis(true)
-            setShowAnalysis({
-                show: true,
-                data: user?.improvements[0]?.analysis
-            })
             setUpdate({
                 lastDate: lastUpdate,
                 newDate: newUpdate,
                 show: false
             })
         }
+        setAnalyzing(false)
+        setShowAnalysis({
+            show: true,
+            data: user?.improvements[0]?.analysis
+        })
     }
 
     return (
@@ -120,14 +126,17 @@ const ProgressComponent = () => {
             <section className="flex flex-col items-center w-full p-4 space-y-10">
                 {/* Stats Section */}
                 <div className="w-full flex flex-col md:flex-row justify-center items-center space-y-4 md:space-y-0 md:space-x-10">
-                    <div className="text-[#3d37ef] text-lg bg-[#ababf5] p-3 rounded-2xl w-52 max-w-xs text-center shadow-md flex flex-col items-center">
-                        <button onClick={analyze} className="text-lg font-bold">{analyzing ? "Analyzing.." :  "Analyze Progress"}</button>
+                {
+                        user.solvedQuestions.length > 0 && <div className="text-[#3d37ef] text-lg bg-[#ababf5] p-3 rounded-2xl w-52 max-w-xs text-center shadow-md flex flex-col items-center">
+                        <button onClick={analyze} className="text-lg font-bold">{analyzing ? "Analyzing.." : "Analyze Progress"}</button>
                     </div>
+                       }
+                    
                     <div className="text-[#635efc] text-lg bg-[#e6e6eb] p-3 rounded-2xl w-full max-w-xs text-center shadow-md">
                         Interview Given: <span className="text-xl font-bold">{user?.solvedQuestions?.length}</span>
                     </div>
                     <div className="text-lg text-[#635efc] bg-[#e6e6eb] p-3 rounded-2xl w-full max-w-xs text-center shadow-md">
-                        Avg. Accuracy: <span className={`text-xl font-bold ${avg < 40 ? 'text-red-600' : (avg < 70 ? 'text-yellow-800' : 'text-green-700')}`}>{Number(avg.toFixed(1))}%</span>
+                        Avg. Accuracy: <span className={`text-xl font-bold ${avg < 40 ? 'text-red-600' : (avg < 70 ? 'text-yellow-800' : 'text-green-700')}`}>{ avg == NaN ? "0" : Number(avg?.toFixed(1))}%</span>
                     </div>
                 </div>
 
@@ -168,13 +177,15 @@ const ProgressComponent = () => {
                             <span className="text-sm"> Last Updated On: {new Date(user?.improvements[0].dateCreated.split('T')[0]).toDateString()}</span>
                             {!update.show && `New Update will be on: ${update?.newDate?.toDateString()}`}
                         </div>
-                        <div className="bg-[#1B1A55] p-4 rounded-lg text-[#9290C3] space-y-5">
 
+                        { error && <p className="text-red-700 mt-2">{error}</p>}
+                       
+                         <div className="bg-[#1B1A55] p-4 rounded-lg text-[#9290C3] space-y-5">
                             <p className="font-semibold text-blue-300"><span className="text-lg text-blue-50 font-bold">Topics:</span> {showAnalysis?.data?.topics || "No topics available."}</p>
                             <p className="font-semibold text-blue-300"><span className="text-lg text-blue-50 font-bold">Focus:</span> {showAnalysis?.data?.focus || "Nothing to Focus."}</p>
                             <p className="font-semibold text-blue-300"><span className="text-lg text-blue-50 font-bold">Difficulty:</span> {showAnalysis?.data?.difficult || "No difficulty available."}</p>
-
                         </div>
+                       
                     </div>
                 </div>
 

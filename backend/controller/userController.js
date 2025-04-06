@@ -1,7 +1,8 @@
 const { chatSession } = require("../aiConfig");
 const { generateToken } = require("../helpers/jwt");
 const Interview = require("../models/interviewSchema");
-const Suggestion = require("../models/suggestionSchme");
+const Email = require("../models/emailSchema");
+// const Email = require("../models/suggestionSchme");
 const User = require("../models/user");
 
 exports.solvedQuestions = async (req, res) => {
@@ -30,15 +31,20 @@ exports.getProgress = async (req, res) => {
     }
 
     const totalCorrectness = user.solvedQuestions.reduce((sum, interview) => {
-      return sum + interview.correctness;
+      return sum + ( (interview.correctness != undefined ? interview.correctness  : 0)  && interview.correctness);
     }, 0);
 
+    console.log(user.solvedQuestions.length, totalCorrectness);
+    
     const avg = totalCorrectness / user.solvedQuestions.length;
 
     const progressData = user.solvedQuestions.map((interview) => ({
       date: interview.createdAt,
       correctness: interview.correctness,
     }));
+
+    console.log(progressData);
+    
 
     console.log(avg);
 
@@ -57,24 +63,23 @@ exports.totalUsers = async (req, res) => {
   }
 };
 
-exports.suggestions = async (req, res) => {
+exports.emails = async (req, res) => {
   console.log("called");
 
   try {
-    const { name, suggestion } = req.body;
+    const { email } = req.body;
 
     console.log(req.body);
 
-    const newSuggestion = new Suggestion({
-      name: name,
-      suggestion: suggestion,
+    const newEmail = new Email({
+      email
     });
 
-    await newSuggestion.save();
+    await newEmail.save();
 
     res
       .status(200)
-      .json({ success: true, message: "Thank You for your Suggestion!" });
+      .json({ success: true, message: "Thank You for your Email!" });
   } catch (error) {
     res.status(400).json({ message: "Server Error" });
   }
@@ -94,7 +99,7 @@ exports.analyzeAndGeneratePlan = async (req, res) => {
     });
 
     if (recentQuestions?.length == 0) {
-      res.status(200).json({ message: "No Recently Solved Questions" });
+      res.status(400).json({ message: "You have not Solved any Question Recently" });
       return;
     }
 
@@ -142,3 +147,13 @@ exports.analyzeAndGeneratePlan = async (req, res) => {
     res.status(400).json({ message: error });
   }
 };
+
+exports.checked_question = (req,res)=>{
+  try {
+    const {qId, userId} = req.body
+    // const 
+  } catch (error) {
+    console.log(error);
+    
+  }
+}

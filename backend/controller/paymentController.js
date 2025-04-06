@@ -76,7 +76,7 @@ exports.paymentVerification = async (req, res) => {
     findUser.isSubscribed = true;
     await findUser.save();
 
-    return res.json({ success: true, refernceid: razorpay_payment_id, expiriyDate: findUser.currentExpiryDate });
+    return res.json({ success: true, refernceid: razorpay_payment_id, expiriyDate: findUser.currentExpiryDate, user: findUser });
   }
 
   // res.status(200).json({ sucess: true });

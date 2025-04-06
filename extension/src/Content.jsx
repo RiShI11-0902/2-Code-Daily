@@ -9,6 +9,12 @@ root.id = "ai_Interview"
 document.body.appendChild(root)
 const rootDiv = ReactDOM.createRoot(root);
 
+console.log("Hello from content script!");
+console.log("chrome:", chrome);
+console.log("chrome.storage:", chrome?.storage);
+console.log("chrome.storage.local:", chrome?.storage?.local);
+
+
 rootDiv.render(
     <Button />
 );

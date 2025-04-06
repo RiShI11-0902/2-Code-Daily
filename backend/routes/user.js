@@ -6,7 +6,7 @@ router
 .get("/totalusers", userCotroller.totalUsers)
 .post("/solvedQuestions", userCotroller.solvedQuestions)
 .post("/getProgress" , userCotroller.getProgress)
-.post("/suggestion" , userCotroller.suggestions)
+.post("/email" , userCotroller.emails)
 .post("/analyze-progress" , userCotroller.analyzeAndGeneratePlan)
 
 
