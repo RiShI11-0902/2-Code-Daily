@@ -7,23 +7,19 @@ router
     "/google",
     passport.authenticate("google", { scope: ["profile", "email"] })
   )
-  .get(
+  router.get(
     "/google/callback",
-    passport.authenticate(
-      "google",
-      {
-        failureRedirect: "/",
-      },
-      (req, res) => {
-        console.log("✅ Google OAuth Success");
-        console.log("Session ID:", req.sessionID);
-        console.log("User:", req.user);
-
-        // Now the session is established and cookie should be set
-        res.redirect("https://2-code-daily.netlify.app/dashboard");
-      }
-    )
-  )
+    passport.authenticate("google", {
+      failureRedirect: "/",
+    }),
+    (req, res) => {
+      console.log("✅ Google OAuth Success");
+      console.log("Session ID:", req.sessionID);
+      console.log("User:", req.user);
+  
+      res.redirect("https://2-code-daily.netlify.app/dashboard");
+    }
+  )  
   .get("/isLoggedIn", async (req, res) => {
     console.log("called");
     if (req.user) {
