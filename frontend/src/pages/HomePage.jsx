@@ -19,7 +19,7 @@ const HomePage = () => {
 
     const SignIn = () => {
         // window.open("https://two-code-daily-1.onrender.com/auth/google/callback", "_self")
-        const popup = window.open("https://your-backend.com/auth/google", "_blank", "width=500,height=600");
+        const popup = window.open("https://two-code-daily-1.onrender.com/auth/google", "_blank", "width=500,height=600");
 
         // Listen for auth success message from popup
         window.addEventListener("message", (event) => {
