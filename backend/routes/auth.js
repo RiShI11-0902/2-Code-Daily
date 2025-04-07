@@ -2,6 +2,8 @@ const express = require("express");
 const router = express.Router();
 const authController = require("../controller/authController");
 const passport = require("passport");
+const jwt = require("jsonwebtoken");
+const { generateToken } = require("../helpers/jwt");
 router
   .get(
     "/google",
@@ -11,12 +13,15 @@ router
     "/google/callback",
     passport.authenticate("google", {
       failureRedirect: "/",
+      session: true
     }),
     (req, res) => {
       console.log("✅ Google OAuth Success");
       console.log("Session ID:", req.sessionID);
       console.log("Cookie:", req.headers.cookie);
       console.log("User:", req.user);
+
+      generateToken(res,req.user._id)
   
       res.redirect("https://2-code-daily.netlify.app/dashboard");
     }

@@ -6,10 +6,10 @@ exports.generateToken = (res, id) => {
   console.log("token", token);
 
   res.cookie("token", token, {
-    // httpOnly: true, // safe from xss attacks
-    // secure: false , ///process.env.NODE_ENV === "production"
-    // sameSite: "none", // safe from attacks
-    maxAge: 7 * 24 * 60 * 1000, // 7 days
+    httpOnly: true, // safe from xss attacks
+    secure: false , ///process.env.NODE_ENV === "production"
+    sameSite: "none", // safe from attacks
+    maxAge: 7 * 24 * 60 * 60 * 1000,
   });
 };
 
@@ -38,6 +38,5 @@ exports.verifyToken = (req, res, next) => {
     next();
   } catch (error) {
     console.log(error);
-    
   }
 };
