@@ -43,9 +43,9 @@ const HomePage = () => {
         e.preventDefault();
         setLoading(true)
         // if (!suggestion.trim()) return;
-        console.log("Suggestion submitted:", { name, suggestion });
+        // console.log("Suggestion submitted:", { name, suggestion });
         try {
-            const response = await axios.post("http://localhost:5000/user/email", { email })
+            const response = await axios.post("https://two-code-daily-1.onrender.com/user/email", { email })
             console.log(response);
 
             if (response.status == 200) {
