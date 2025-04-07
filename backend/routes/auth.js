@@ -15,6 +15,7 @@ router
     (req, res) => {
       console.log("✅ Google OAuth Success");
       console.log("Session ID:", req.sessionID);
+      console.log("Cookie:", req.headers.cookie);
       console.log("User:", req.user);
   
       res.redirect("https://2-code-daily.netlify.app/dashboard");

@@ -22,8 +22,11 @@ const allowedOrigins = [
 ];
 
 connect();
+app.use(express.json());
+app.use(cookieParser())
 
 initializingPassport(passport);
+
 app.use(
   cors({
     origin: (origin, callback) => {
@@ -38,8 +41,6 @@ app.use(
     credentials: true,
   })
 );
-app.use(express.json());
-app.use(cookieParser())
 app.use(
   session({
     secret: "ejf935u849itjier",
