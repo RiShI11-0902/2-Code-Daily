@@ -158,13 +158,13 @@ const HomePage = () => {
                     <p className='text-8xl md:text-[10rem] font-extrabold text-[#9290C3]'>3</p>
                     <div className='text-[#535C91] text-2xl flex flex-col space-y-5 '>
                         <p>Mock Interview are Free on Registration</p>
-                        <button
+                        {/* <button
                             onClick={SignIn}
                             className="flex montserrat-heading  items-center justify-center w-full px-4 py-2 text-sm font-medium text-white bg-blue-500 rounded-lg shadow-md hover:bg-blue-600 focus:outline-none focus:ring-2 focus:ring-blue-400 focus:ring-offset-1 transition"
                         >
                             <AiOutlineGoogle className="w-5 h-5 mr-2" />
                             Sign in with Google
-                        </button>
+                        </button> */}
                     </div>
                 </div>
             </section>
@@ -192,7 +192,7 @@ const HomePage = () => {
                     <div className=" text-[#9290C3] flex items-center justify-center w-full md:w-1/3 p-8">
                         <div className="text-center">
                             <h2 className=" text-8xl md:text-[10rem] font-extrabold text-[#9290C3] leading-none">₹100</h2>
-                            <p className="text-lg text-[#535C91] mt-2">/ month</p>
+                            <p className="text-lg text-[#535C91] mt-2">/ month for first 100 Subscribers</p>
                         </div>
                     </div>
 

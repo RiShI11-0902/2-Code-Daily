@@ -21,7 +21,6 @@ const Sidebar = ({ visible, scrollToTop, notify, setShowSolved, setProgressBar, 
         } catch (error) {
             console.log(error);
         }
-
     }
     return (
         <>
