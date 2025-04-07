@@ -8,6 +8,7 @@ exports.logout = (req, res, next) => {
       console.log("Suucess");
   
       res.clearCookie("connect.sid");
+      res.clearCookie("token");
       // res.redirect("/");
       res.status(200).json({ message: "success" });
     });
