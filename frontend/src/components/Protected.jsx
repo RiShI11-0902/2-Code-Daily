@@ -7,7 +7,7 @@ const Protected = ({ children }) => {
     const [authenticate, setAuthenticate] = useState(null); // null for loading state
     const userData = useUserStore((state) => state.userData);
     // const {user} = useUserStore()
-
+////("https://2-code-daily.netlify.app/dashboard");
     const getUser = async () => {
         try {
             const res = await axios.get("https://two-code-daily-1.onrender.com/auth/isLoggedIn", {

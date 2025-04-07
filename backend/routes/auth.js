@@ -23,18 +23,22 @@ router
       console.log("User:", req.user);
 
       generateToken(res, req.user._id);
-
-
-      res.redirect("https://2-code-daily.netlify.app/dashboard");
+      res.send(`
+        <script>
+          window.opener.postMessage("auth-success", "*");
+          window.close();
+        </script>
+      `);
+    //   res.send(200).json({success: true});
     }
   )
   .get("/isLoggedIn", verifyToken, async (req, res) => {
     try {
       const user = await User.findById(req.userId).select("-password"); // Exclude password field if present
-      if (!user || !req.user) {
+      if (!user) {
         return res.status(401).json({ message: "User not found" });
       }
-      return res.status(200).json({ message: "Success", data: req.user });
+      return res.status(200).json({ message: "Success", data: user });
     } catch (error) {
       console.error("Error verifying user:", error);
       return res.status(500).json({ message: "Internal Server Error" });

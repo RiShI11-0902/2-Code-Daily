@@ -18,9 +18,18 @@ const HomePage = () => {
     const [visible, setVisible] = useState(true);
 
     const SignIn = () => {
-        window.open("https://two-code-daily-1.onrender.com/auth/google/callback", "_self")
+        // window.open("https://two-code-daily-1.onrender.com/auth/google/callback", "_self")
+        const popup = window.open("https://your-backend.com/auth/google", "_blank", "width=500,height=600");
+
+        // Listen for auth success message from popup
+        window.addEventListener("message", (event) => {
+            if (event.data === "auth-success") {
+                // Auth was successful and cookie is set
+                window.location.href = "/dashboard";
+            }
+        });
     }
-///https://two-code-daily.onrender.com
+    ///https://two-code-daily.onrender.com
     useEffect(() => {
         const timer = setTimeout(() => {
             setMessage(false)
