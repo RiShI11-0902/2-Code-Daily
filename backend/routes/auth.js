@@ -2,11 +2,10 @@ const express = require('express')
 const router = express.Router()
 const authController = require("../controller/authController")
 const passport = require('passport')
-
 router
 .get("/google",passport.authenticate('google',{scope:["profile","email"]}))
 .get("/google/callback",passport.authenticate("google",{
-    successRedirect:"https://2-code-daily.netlify.app/dashboard",
+    successRedirect:"https://2-code-daily.netlify.app/dashboard", 
     failureRedirect:"/"
 }))
 .get("/isLoggedIn", async (req,res)=>{
