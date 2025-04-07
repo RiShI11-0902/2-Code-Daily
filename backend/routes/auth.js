@@ -24,6 +24,7 @@ router
 
       generateToken(res, req.user._id);
 
+
       res.redirect("https://2-code-daily.netlify.app/dashboard");
     }
   )

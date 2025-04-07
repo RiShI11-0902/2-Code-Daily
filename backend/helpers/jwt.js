@@ -14,10 +14,10 @@ exports.generateToken = (res, id) => {
 };
 
 exports.verifyToken = (req, res, next) => {
-  console.log(req.cookies);
+  // console.log(req.cookies);
 
   const token = req.cookies.token;
-  console.log(token);
+  console.log("cookie from frontend is ",token);
 
   try {
     if (!token) {
