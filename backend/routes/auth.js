@@ -30,11 +30,9 @@ router
   .get("/isLoggedIn", verifyToken, async (req, res) => {
     try {
       const user = await User.findById(req.userId).select("-password"); // Exclude password field if present
-
       if (!user) {
         return res.status(401).json({ message: "User not found" });
       }
-
       return res.status(200).json({ message: "Success", data: user });
     } catch (error) {
       console.error("Error verifying user:", error);

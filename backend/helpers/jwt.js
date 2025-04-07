@@ -7,7 +7,7 @@ exports.generateToken = (res, id) => {
 
   res.cookie("token", token, {
     httpOnly: true, // safe from xss attacks
-    secure: false, ///process.env.NODE_ENV === "production"
+    secure: true, ///process.env.NODE_ENV === "production"
     sameSite: "none", // safe from attacks
     maxAge: 7 * 24 * 60 * 60 * 1000,
   });
