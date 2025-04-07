@@ -12,7 +12,7 @@ const Pricing = () => {
 
     useEffect(() => {
       const totalUsers = async ()=>{
-        const data = await axios.get("http://localhost:5000/user/totalusers")
+        const data = await axios.get("https://two-code-daily-1.onrender.com/user/totalusers")
         console.log(data);
         if(data.status == 200){
             setNumUsers(data.data.totalUsers)

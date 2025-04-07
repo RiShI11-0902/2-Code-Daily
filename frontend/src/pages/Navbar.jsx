@@ -47,12 +47,12 @@ const Navbar = ({setopenForm,openForm, SignIn}) => {
           }`}
         >
           <li className="mx-4 my-4 md:my-0">
-            <a
-              href="#home"
+            <Link
+              to={"/"}
               className="text-[#9290C3] hover:text-[#535C91] transition duration-300"
             >
               Home
-            </a>
+            </Link>
           </li>
           <li className="mx-4 my-4 md:my-0">
             <Link
