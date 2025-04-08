@@ -48,7 +48,7 @@ const RecordAnswer = ({ setQuestion, id, question, error, email }) => {
 
     const submitAnswer = async () => {
         setisSubmitting(true)
-        const response = await axios.post("http://localhost:5000/api/getAnswer", { answer: editableText, id: id, question: question, code: userCode, email:email })
+        const response = await axios.post("https://two-code-daily-1.onrender.com/api/getAnswer", { answer: editableText, id: id, question: question, code: userCode, email:email })
         if (response?.data?.question?.feedback) {
             alert(response?.data?.question?.feedback)
             setQuestion(response?.data?.question?.feedback)
@@ -70,43 +70,102 @@ const RecordAnswer = ({ setQuestion, id, question, error, email }) => {
 
     return (
         <>
-            {
-                error ? <p>{error} <a href='http://localhost:5173' target='_blank' className='' ><span className='text-blue-400 cursor-pointer text-lg border border-white p-2 bg-blue-700'>Register here</span>  </a></p> : <section>
-                    <div className='w-fit mx-auto' >
-                        {/* <h1>Recording: {isRecording.toString()}</h1> */}
-                        <button id='recordBtn' className='flex flex-row space-x-5 items-center' onClick={isRecording ? stopSpeechToText : startSpeechToText}>
-                            <p>{isRecording ? 'Stop Recording' : 'Start Recording'}</p>
-                            <p>{isRecording ? <FaMicrophoneSlash /> : <FaMicrophone />}</p>
-                        </button>
+  {error ? (
+    <p className="text-center">
+      {error}{' '}
+      <a
+        href="https://2-code-daily.netlify.app"
+        target="_blank"
+        rel="noopener noreferrer"
+      >
+        <span className="text-blue-400 cursor-pointer text-sm border border-white px-3 py-1 bg-blue-700 rounded">
+          Register here
+        </span>
+      </a>
+    </p>
+  ) : (
+    <section className="flex flex-col items-center space-y-4 text-sm">
+      {/* Record Button */}
+      <button
+        id="recordBtn"
+        className="flex items-center space-x-2 px-4 py-2 bg-gray-800 text-white rounded hover:bg-gray-700"
+        onClick={isRecording ? stopSpeechToText : startSpeechToText}
+      >
+        <span>{isRecording ? 'Stop Recording' : 'Start Recording'}</span>
+        <span>{isRecording ? <FaMicrophoneSlash /> : <FaMicrophone />}</span>
+      </button>
 
-                    </div>
-                    <div className='font-semibold text-center mt-5 p-2 text-lg text-white'>
+      {/* Textarea */}
+      <textarea
+        onChange={(e) => setEditableText(e.target.value)}
+        value={editableText}
+        rows="6"
+        placeholder="Your answer..."
+        className="w-full rounded p-3 bg-gray-900 text-white border border-gray-600 resize-none"
+      ></textarea>
 
-                        <textarea style={{ color: 'white' }} onChange={(e) => setEditableText(e.target.value)} value={editableText} cols="60" rows="10" className='p-3'>
-                        </textarea>
+      {/* Action Buttons */}
+      {!endInterview && (
+        <div className="flex justify-between space-x-3 w-full">
+          <button
+            className="flex-1 py-2 px-3 border border-purple-300 text-purple-400 rounded hover:bg-purple-800"
+            onClick={setCode}
+          >
+            {settingCode ? 'Attaching Code...' : 'Attach Code'}
+          </button>
+          <button
+            className="flex-1 py-2 px-3 border border-blue-300 text-blue-400 rounded hover:bg-blue-800"
+            onClick={submitAnswer}
+          >
+            {issubmitting ? 'Submitting...' : 'Submit Answer'}
+          </button>
+        </div>
+      )}
+    </section>
+  )}
+</>
 
-                    </div>
+        // <>
+        //     {
+        //         error ?
+        //          <p>{error} <a href='https://2-code-daily.netlify.app' target='_blank' className='' ><span className='text-blue-400 cursor-pointer text-lg border border-white p-2 bg-blue-700'>Register here</span>  </a></p>
+        //           : 
+        //           <section>
+        //             <div className='w-fit mx-auto' >
+        //                 {/* <h1>Recording: {isRecording.toString()}</h1> */}
+        //                 <button id='recordBtn' className='flex flex-row space-x-5 items-center' onClick={isRecording ? stopSpeechToText : startSpeechToText}>
+        //                     <p>{isRecording ? 'Stop Recording' : 'Start Recording'}</p>
+        //                     <p>{isRecording ? <FaMicrophoneSlash /> : <FaMicrophone />}</p>
+        //                 </button>
 
-                    {
-                        !endInterview && <div className='flex flex-row space-x-4'>
-                            <button className='border-2 border-purple-300 text-blue-700 p-2 ' onClick={setCode}>
-                                {
-                                    settingCode ? "Attaching Code.." : "Attach Code"
-                                }
-                            </button>
-                            <button className='border-2 border-purple-300 text-blue-700 p-2 ' onClick={submitAnswer}>
-                                {
-                                    issubmitting ? "Submitting.." : "Sumit Answer"
-                                }
-                            </button>
-                        </div>
-                    }
+        //             </div>
+        //             <div className='font-semibold text-center mt-5 p-2 text-lg text-white'>
+
+        //                 <textarea style={{ color: 'white' }} onChange={(e) => setEditableText(e.target.value)} value={editableText} cols="60" rows="10" className='p-3'>
+        //                 </textarea>
+
+        //             </div>
+
+        //             {
+        //                 !endInterview && <div className='flex flex-row space-x-4'>
+        //                     <button className='border-2 border-purple-300 text-blue-700 p-2 ' onClick={setCode}>
+        //                         {
+        //                             settingCode ? "Attaching Code.." : "Attach Code"
+        //                         }
+        //                     </button>
+        //                     <button className='border-2 border-purple-300 text-blue-700 p-2 ' onClick={submitAnswer}>
+        //                         {
+        //                             issubmitting ? "Submitting.." : "Sumit Answer"
+        //                         }
+        //                     </button>
+        //                 </div>
+        //             }
 
 
-                </section>
-            }
+        //         </section>
+        //     }
 
-        </>
+        // </>
 
 
     )

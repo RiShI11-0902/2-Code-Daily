@@ -42,7 +42,7 @@ const Pricing = () => {
       <div className="grid md:grid-cols-2 gap-8 w-full max-w-4xl">
         {/* First 100 Users Plan */}
         {
-            numUsers < 100 && <div className="bg-[#1B1A55] p-6 rounded-2xl shadow-lg text-center">
+            numUsers <= 100 && <div className="bg-[#1B1A55] p-6 rounded-2xl shadow-lg text-center">
             <h2 className="text-2xl font-semibold mb-4 text-[#535C91]">Early Bird Offer</h2>
             <p className="text-lg">For the first 100 users </p>
             <p className='text-sm font-thin'>{ (100 - numUsers ) + " Users are " + 'Remaining'}</p>
