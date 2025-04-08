@@ -50,7 +50,7 @@ const RecordAnswer = ({ setQuestion, id, question, error, email }) => {
         setisSubmitting(true)
         const response = await axios.post("https://two-code-daily-1.onrender.com/api/getAnswer", { answer: editableText, id: id, question: question, code: userCode, email:email })
         if (response?.data?.question?.feedback) {
-            alert(response?.data?.question?.feedback)
+            // alert(response?.data?.question?.feedback)
             setQuestion(response?.data?.question?.feedback)
             setendInterview(true)
             setisSubmitting(false)
