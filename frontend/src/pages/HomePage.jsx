@@ -63,50 +63,33 @@ const HomePage = () => {
     return (
         <>
             <Navbar SignIn={SignIn} setopenForm={setopenForm} openForm={openForm} />
-            <section id='herosection' className=' bg-gradient-to-r from-[#070F2B] to-[#1B1A55] h-screen flex items-center justify-center'>
-                <div className='   font-extrabold space-y-6 text-center items-center'>
-                    <h1 className='montserrat-heading text-6xl p-1 md:text-7xl text-[#9290C3] '>Practice LeetCode Like a Pro</h1>
-                    <p className='text-2xl montserrat-heading text-[#535C91]'>"Turn LeetCode problems into interactive mock interviews."</p>
-                    <div className='flex flex-row items-center justify-center space-x-5'>
-                        <form onSubmit={handleSubmit} className="space-y-4">
-                            {/* <h2 className="text-xl font-bold text-white text-center">
-                                Get Early Access to Our AI Mock Interview Extension!
-                            </h2> */}
-                            <p className="text-sm text-gray-300 text-center">
-                                Sign up to be notified when we launch.
-                            </p>
-                            <div className='flex flex-row space-x-5'>
-                                <input
-                                    type="email"
-                                    placeholder="Enter your email"
-                                    value={email}
-                                    onChange={(e) => setEmail(e.target.value)}
-                                    required
-                                    className="w-96 p-3 border border-[#535C91] bg-[#070F2B] text-white rounded-lg focus:ring-2 focus:ring-[#535C91] outline-none"
-                                />
-                                <button
-                                    type="submit"
-                                    className="w-40 bg-[#535C91] text-white font-bold py-2 rounded-lg hover:bg-[#9290C3] transition"
-                                >
-                                    {loading ? <Loader className='animate-spin mx-auto w-fit' /> : "Notify Me"}
-                                </button>
 
-                            </div>
-                            {
-                                visible && <p className="text-white font-semibold text-center">{message}</p>
-                            }
-                        </form>
+            <section id='herosection' className='bg-gradient-to-r from-[#070F2B] to-[#1B1A55] min-h-screen flex items-center justify-center px-4'>
+                <div className='font-extrabold space-y-6 text-center'>
+                    <h1 className='montserrat-heading text-4xl sm:text-5xl md:text-6xl lg:text-7xl text-[#9290C3]'>Practice LeetCode Like a Pro</h1>
+                    <p className='text-base sm:text-lg md:text-2xl text-[#535C91]'>"Turn LeetCode problems into interactive mock interviews."</p>
 
-                        {/* <button className="bg-[#6983de] text-white py-2 px-6 rounded-lg hover:bg-[#1B1A55] hover:scale-105 transition duration-300 ease-in-out shadow-md transform">
-                            How it Works
+                    <form onSubmit={handleSubmit} className="space-y-4 flex flex-col sm:flex-row sm:items-center sm:justify-center gap-4">
+                        <input
+                            type="email"
+                            placeholder="Enter your email"
+                            value={email}
+                            onChange={(e) => setEmail(e.target.value)}
+                            required
+                            className="w-full sm:w-80 p-3 border border-[#535C91] bg-[#070F2B] text-white rounded-lg focus:ring-2 focus:ring-[#535C91] outline-none"
+                        />
+                        <button
+                            type="submit"
+                            className="w-full sm:w-40 bg-[#535C91] text-white font-bold py-2 rounded-lg hover:bg-[#9290C3] transition"
+                        >
+                            {loading ? <Loader className='animate-spin mx-auto' /> : "Notify Me"}
                         </button>
+                    </form>
 
-                        <button className="bg-[#adbef9] text-black py-2 px-6 rounded-lg hover:bg-[#1B1A55] hover:text-white hover:scale-105 transition duration-300 ease-in-out shadow-md transform ml-4">
-                            Get Extension
-                        </button> */}
-                    </div>
+                    {visible && <p className="text-white font-semibold">{message}</p>}
                 </div>
             </section>
+
             <section id="how-it-works" class="text-[#9290C3] py-16 text-center -mt-20 montserrat-heading">
                 <div class="container mx-auto">
                     {/* <!-- Title --> */}
