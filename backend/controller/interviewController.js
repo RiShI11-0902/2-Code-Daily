@@ -4,75 +4,63 @@ const Interview = require("../models/interviewSchema");
 const User = require("../models/user");
 
 exports.getProblem = async (req, res) => {
-
   try {
     const { problem, email } = req.body;
 
-    const findUSer = await User.findOne({email: email})
+    const findUSer = await User.findOne({ email: email });
 
-    if(findUSer.freeInterview > 3){
-      res.status(200).json({message: "You have Completed Your Free Trial!"})
-      return
+    if (findUSer.freeInterview == 3 && !findUSer.isSubscribed) {
+      res.status(200).json({ message: "You have Completed Your Free Trial!" });
+      return;
     }
-  
+
     const prompt = `You are an expert coding interviewer working in an faang and taking an interview of the user. you have to ask this ${problem} to the user in a short concise way as an real person who takes the interview, ask the user for their initial thought process only not any coding or anything. give them an small example  Give your output in json format with question as a single key  `;
     const aiResponse = await chatSession.sendMessage(prompt);
-  
+
     const markupJson = aiResponse.response
       .text()
       .replace(/```json/, "")
       .replace(/```/, "")
       .replace(/```$/, "");
-  
+
     const finalJson = JSON.parse(markupJson);
-    
+
     const user = await User.findOne({ email: email });
-  
+
     if (user) {
-      if(user.isSubscribed || user.freeInterview <= 3){
+      if (user.isSubscribed || user.freeInterview <= 3) {
         const newInterview = new Interview();
         newInterview.problem = problem;
         newInterview.questions.push(finalJson.question);
-        newInterview.createdAt = Date.now()
+        newInterview.createdAt = Date.now();
         user.solvedQuestions.push(newInterview.id);
-        
+
         await newInterview.save();
         await user.save();
-    
+
         res.status(200).json({ interview: newInterview });
-      }else{
-        res.status(400).json({message:'Frremium Ended Please Update to Premium'})
+      } else {
+        res
+          .status(400)
+          .json({ message: "Frremium Ended Please Update to Premium" });
       }
-    } 
-    else {
+    } else {
       res.status(401).json({ message: "User is Not Registered" });
     }
   } catch (error) {
-    res.status(400).json({message: error})
+    res.status(400).json({ message: error });
   }
-
- 
 };
 
 exports.getAnswer = async (req, res) => {
-
   try {
     const { answer, id, question, code, email } = req.body;
 
-  console.log(email);
-  console.log("called");
-  
+    const cuurInterview = await Interview.findById(id);
 
-  // const userAns = answer.map((res) => res.transcript);
+    const user = await User.findOne({ email });
 
-  const cuurInterview = await Interview.findById(id);
-
-  const user = await User.findOne({email})
-
-  console.log(email);
-  
-
-  const prompt = `You are an experienced coding interviewer conducting a mock technical interview. Your role is to evaluate the candidate's problem-solving abilities and guide them toward better solutions.
+    const prompt = `You are an experienced coding interviewer conducting a mock technical interview. Your role is to evaluate the candidate's problem-solving abilities and guide them toward better solutions.
 
   Here's the scenario:
 - Previous question asked: ${question}
@@ -106,40 +94,35 @@ Follow this structured approach:
 . 
  `;
 
-  const aiReply = await chatSession.sendMessage(prompt);
+    const aiReply = await chatSession.sendMessage(prompt);
 
-  // console.log(aiReply);
+    const markUpJSON = aiReply.response
+      .text()
+      .replace(/```json/, "")
+      .replace(/```/, "")
+      .replace(/```$/, "");
 
-  const markUpJSON = aiReply.response
-    .text()
-    .replace(/```json/, "")
-    .replace(/```/, "")
-    .replace(/```$/, "");
+    console.log(markUpJSON);
 
-  console.log(markUpJSON);
+    const finalJson = JSON.parse(markUpJSON);
 
-  const finalJson = JSON.parse(markUpJSON);
+    if (finalJson.next_question) {
+      cuurInterview.questions.push(finalJson.next_question);
+      cuurInterview.answers.push(answer);
+    } else {
+      cuurInterview.feedback = finalJson.feedback;
+      cuurInterview.correctness = finalJson.correctness;
+      cuurInterview.answers.push(answer);
+      user.freeInterview += 1;
+      await user.save();
+    }
 
-  if(finalJson.next_question){
-    cuurInterview.questions.push(finalJson.next_question);
-    cuurInterview.answers.push(answer)
-  }else{
-    cuurInterview.feedback = finalJson.feedback
-    cuurInterview.correctness = finalJson.correctness
-    cuurInterview.answers.push(answer)
-    user.freeInterview += 1
-    await user.save()
-  }
+    await cuurInterview.save();
 
-  await cuurInterview.save();
-
-  res.status(200).json({ question: finalJson });
+    res.status(200).json({ question: finalJson });
   } catch (error) {
-    res.status(400).json({message:"Internal Server Error"})
-    console.log(error);
-    
+    res.status(400).json({ message: "Internal Server Error" });
   }
-  
 };
 
 exports.verifyEmail = async (req, res) => {
@@ -147,9 +130,9 @@ exports.verifyEmail = async (req, res) => {
     const { email } = req.body;
     const verifedEmail = await User.findOne({ email: email });
     // console.log(verifedEmail);
-    res.json({messsage: "user Verified start Practising Leetcode "})
+    res.json({ messsage: "user Verified start Practising Leetcode " });
   } catch (error) {
     // console.log(error);
-    res.json({messsage: error})
+    res.json({ messsage: error });
   }
 };
