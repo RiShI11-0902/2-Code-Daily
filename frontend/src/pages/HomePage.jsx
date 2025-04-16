@@ -17,6 +17,9 @@ const HomePage = () => {
     const [duration, setduration] = useState(3000)
     const [visible, setVisible] = useState(true);
 
+    console.log("Backend URL:", process.env.REACT_APP_BACKEND_BASE_URL);
+
+
     const SignIn = () => {
         // window.open("https://two-code-daily-1.onrender.com/auth/google/callback", "_self")
         const popup = window.open("https://two-code-daily-1.onrender.com/auth/google", "_blank", "width=500,height=600");
