@@ -7,11 +7,29 @@ exports.getProblem = async (req, res) => {
   try {
     const { problem, email } = req.body;
 
-    const findUSer = await User.findOne({ email: email });
+    const findUser = await User.findOne({ email: email });
 
-    if (findUSer.freeInterview == 3 && !findUSer.isSubscribed) {
-      res.status(200).json({ message: "You have Completed Your Free Trial!" });
+    if (findUser.freeInterview == 3 && !findUser.isSubscribed) {
+      res.status(200).json({
+        message: "You have Completed Your Free Trial Please Subscribed!",
+      });
       return;
+    }
+
+    const lastPayment = findUser.payments
+      .filter((p) => p.status === "Paid" && p.totalInterviews !== undefined)
+      .pop(); // get latest valid plan
+
+    if (!lastPayment) {
+      return res
+        .status(400)
+        .json({ message: "No active plan found, please subscribe." });
+    }
+
+    if (lastPayment.usedInterviews >= lastPayment.totalInterviews) {
+      return res
+        .status(200)
+        .json({ message: "You have used all interviews in your plan." });
     }
 
     const prompt = `You are an expert coding interviewer working in an faang and taking an interview of the user. you have to ask this ${problem} to the user in a short concise way as an real person who takes the interview, ask the user for their initial thought process only not any coding or anything. give them an small example  Give your output in json format with question as a single key  `;
@@ -113,7 +131,12 @@ Follow this structured approach:
       cuurInterview.feedback = finalJson.feedback;
       cuurInterview.correctness = finalJson.correctness;
       cuurInterview.answers.push(answer);
-      user.freeInterview += 1;
+      if (!user.isSubscribed) {
+        user.freeInterview += 1;
+      } else {
+        const lastPayment = user.payments[user.payments.length - 1];
+        lastPayment.usedInterviews += 1;
+      }
       await user.save();
     }
 
