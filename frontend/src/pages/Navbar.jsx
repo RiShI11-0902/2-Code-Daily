@@ -68,7 +68,7 @@ const Navbar = ({setopenForm,openForm, SignIn}) => {
               Dashboard
           </Link>
           }
-          {/* <li className="mx-4 my-4 md:my-0">
+          <li className="mx-4 my-4 md:my-0">
             {
                user ? <img src={user.image} className="w-10 rounded-full" /> : <button
                onClick={SignIn}
@@ -78,7 +78,7 @@ const Navbar = ({setopenForm,openForm, SignIn}) => {
                Sign in with Google
              </button>
             }
-          </li> */}
+          </li>
         </ul>
       </div>
     </nav>

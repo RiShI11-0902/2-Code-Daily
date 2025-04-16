@@ -13,7 +13,8 @@ const userSchema = new Schema({
         type:[String]
     },
     isSubscribed: {
-        type: Boolean
+        type: Boolean,
+        default:false
     },
     solvedQuestions:[
         {
