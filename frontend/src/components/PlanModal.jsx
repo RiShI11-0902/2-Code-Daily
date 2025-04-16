@@ -17,7 +17,7 @@ const PlanModal = ({ showModal, setShowModal, handlePayment, user }) => {
         <h2 className="text-xl font-semibold text-center mb-4">Choose Your Plan</h2>
         <div className="space-y-4">
           <button
-            onClick={() => handleSelectPlan('Standard')}
+            onClick={() => handleSelectPlan('Starter')}
             className="w-full p-3 bg-blue-600 text-white rounded-md hover:bg-blue-700"
           >
             Standard - ₹100
