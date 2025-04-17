@@ -14,7 +14,7 @@ const QuestionBox = ({ question, index, setToggle, id }) => {
         console.log(id);
         setLoading(true)
         try {
-            const question = await axios.post(`${process.env.REACT_APP_BACKEND_BASE_URL}/user/solvedQuestions`, { id })
+            const question = await axios.post(`${import.meta.env.VITE_BACKEND_BASE_URL}/user/solvedQuestions`, { id })
             console.log(question);
             setFetchedQuestion(question.data.question)
             setLoading(false)
