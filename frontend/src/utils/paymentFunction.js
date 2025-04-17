@@ -60,13 +60,13 @@ import axios from "axios";
 const handlePayment = async (user, selectedPlan) => {
     try {
       // 1. Create Razorpay order with user email and selected plan
-      const { data: { order } } = await axios.post(`${process.env.REACT_APP_BACKEND_BASE_URL}/userpayment/checkout`, {
+      const { data: { order } } = await axios.post(`${import.meta.env.VITE_BACKEND_BASE_URL}/userpayment/checkout`, {
         email: user.email,
         plan: selectedPlan, 
       });
   
       // 2. Get Razorpay key
-      const { data: { key } } = await axios.get(`${process.env.REACT_APP_BACKEND_BASE_URL}/userpayment/getKey`);
+      const { data: { key } } = await axios.get(`${import.meta.env.VITE_BACKEND_BASE_URL}/userpayment/getKey`);
   
       // 3. Set up Razorpay options
       const options = {
@@ -77,7 +77,7 @@ const handlePayment = async (user, selectedPlan) => {
         description: "Interview Plan Purchase",
         image: "https://example.com/your_logo",
         order_id: order.id,
-        callback_url: `${process.env.REACT_APP_BACKEND_BASE_URL}/userpayment/paymentverification`,
+        callback_url: `${import.meta.env.VITE_BACKEND_BASE_URL}/userpayment/paymentverification`,
         prefill: {
           name: user.name || "Customer",
           email: user.email,
@@ -90,7 +90,7 @@ const handlePayment = async (user, selectedPlan) => {
         },
         handler: async function (response) {
           // 4. Verify payment
-          await axios.post(`${process.env.REACT_APP_BACKEND_BASE_URL}/userpayment/paymentverification`, {
+          await axios.post(`${import.meta.env.VITE_BACKEND_BASE_URL}/userpayment/paymentverification`, {
             razorpay_order_id: response.razorpay_order_id,
             razorpay_payment_id: response.razorpay_payment_id,
             razorpay_signature: response.razorpay_signature,
@@ -99,7 +99,7 @@ const handlePayment = async (user, selectedPlan) => {
             console.log(res);
             if (res.data.success) {
               // Redirect to payment success
-              window.location.href = `${process.env.REACT_APP_FRONTEND_BASE_URL}/paymentsuccess?referenceid=${res.data.referenceId}`;
+              window.location.href = `${import.meta.env.VITE_FRONTEND_BASE_URL}/paymentsuccess?referenceid=${res.data.referenceId}`;
             }
           });
         }

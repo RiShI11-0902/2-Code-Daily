@@ -12,7 +12,7 @@ const Sidebar = ({ scrollToTop, notify, setShowSolved, setProgressBar, isExpired
 
   const logout = async () => {
     try {
-      const res = await axios.get(`${process.env.REACT_APP_BACKEND_BASE_URL}/auth/logout`, { withCredentials: true });
+      const res = await axios.get(`${import.meta.env.VITE_BACKEND_BASE_URL}/auth/logout`, { withCredentials: true });
       if (res.status === 200) {
         useUserStore.getState().removeUser();
       }

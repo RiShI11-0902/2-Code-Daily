@@ -10,7 +10,7 @@ const Protected = ({ children }) => {
 ////("https://2-code-daily.netlify.app/dashboard");
     const getUser = async () => {
         try {
-            const res = await axios.get(`${process.env.REACT_APP_BACKEND_BASE_URL}/auth/isLoggedIn`, {
+            const res = await axios.get(`${import.meta.env.VITE_BACKEND_BASE_URL}/auth/isLoggedIn`, {
                 withCredentials: true,
             });
             console.log("Response from /auth/isLoggedIn:", res.data);

@@ -32,7 +32,7 @@ const ProgressComponent = () => {
 ////https://two-code-daily-1.onrender.com   http://localhost:5000
     const getProgress = async () => {
         try {
-            const { data } = await axios.post(`${process.env.REACT_APP_BACKEND_BASE_URL}/user/getProgress`, { id: user._id });
+            const { data } = await axios.post(`${import.meta.env.VITE_BACKEND_BASE_URL}/user/getProgress`, { id: user._id });
             setAvg(data.average);
             console.log(data);
 
