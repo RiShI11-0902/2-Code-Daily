@@ -20,19 +20,19 @@ const PlanModal = ({ showModal, setShowModal, handlePayment, user }) => {
             onClick={() => handleSelectPlan('Starter')}
             className="w-full p-3 bg-blue-600 text-white rounded-md hover:bg-blue-700"
           >
-            Standard - ₹100
+            Starter - ₹200
           </button>
           <button
             onClick={() => handleSelectPlan('Pro')}
             className="w-full p-3 bg-blue-600 text-white rounded-md hover:bg-blue-700"
           >
-            Pro - ₹200
+            Pro - ₹500
           </button>
           <button
             onClick={() => handleSelectPlan('Elite')}
             className="w-full p-3 bg-blue-600 text-white rounded-md hover:bg-blue-700"
           >
-            Elite - ₹500
+            Elite - ₹1000
           </button>
         </div>
         <button
