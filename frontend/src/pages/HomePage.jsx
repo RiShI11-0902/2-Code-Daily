@@ -142,7 +142,7 @@ const HomePage = () => {
             <section id='free' className='mt-5 p-5'>
                 <div className='montserrat-heading text-center flex flex-col sm:flex-row items-center sm:space-x-5 justify-center'>
                     <p className='text-8xl md:text-[10rem] font-extrabold text-[#9290C3]'>3</p>
-                    <div className='text-[#535C91] text-2xl flex flex-col space-y-5 '>
+                    {/* <div className='text-[#535C91] text-2xl flex flex-col space-y-5 '>
                         <p>Mock Interview are Free on Registration</p>
                         <button
                             onClick={SignIn}
@@ -151,7 +151,7 @@ const HomePage = () => {
                             <AiOutlineGoogle className="w-5 h-5 mr-2" />
                             Sign in with Google
                         </button>
-                    </div>
+                    </div> */}
                 </div>
             </section>
 
