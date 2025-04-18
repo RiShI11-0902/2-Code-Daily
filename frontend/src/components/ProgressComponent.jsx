@@ -103,6 +103,9 @@ const ProgressComponent = () => {
             setAnalyzing(true);
             try {
                 const res = await axios.post(`${import.meta.env.VITE_BACKEND_BASE_URL}/user/analyze-progress`, { id: user._id });
+                console.log(res);
+                console.log(res?.data?.improvements[0]?.analysis);
+                
                 setShowAnalysis({
                     show: true,
                     data: res?.data?.improvements[0]?.analysis
