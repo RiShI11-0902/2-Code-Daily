@@ -6,7 +6,7 @@ import axios from 'axios'
 
 const InterviewPage = () => {
 
-    // const { user } = useUserStore()
+    const { user } = useUserStore()
     const [loading, setLoading] = useState()
     const [fetchedQuestion, setFetchedQuestion] = useState()
     const [showQuestion, setShowQuestion] = useState();
