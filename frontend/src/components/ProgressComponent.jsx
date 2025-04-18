@@ -104,11 +104,11 @@ const ProgressComponent = () => {
             try {
                 const res = await axios.post(`${import.meta.env.VITE_BACKEND_BASE_URL}/user/analyze-progress`, { id: user._id });
                 console.log(res);
-                console.log(res?.data?.improvements[0]?.analysis);
+                console.log(res?.data?.analysis);
                 
                 setShowAnalysis({
                     show: true,
-                    data: res?.data?.improvements[0]?.analysis
+                    data: res?.data?.analysis
                 });
             } catch (error) {
                 console.error(error);
@@ -185,16 +185,17 @@ const ProgressComponent = () => {
                         {/* Modal Content */}
                         <h2 className="text-2xl font-bold mb-4 text-center">Your Future Plan to Study</h2>
                         <div className="flex justify-around">
-                            <span className="text-sm"> Last Updated On: {new Date(user?.improvements[0].dateCreated.split('T')[0]).toDateString()}</span>
+                            <span className="text-sm"> Last Updated On: { user.improvements.length > 0 && new Date(user?.improvements[0].dateCreated.split('T')[0]).toDateString()}</span>
+                            <span className="text-sm"> Last Updated On: { user.improvements.length == 0 && new Date(user?.improvements[0].dateCreated.split('T')[0]).toDateString()}</span>
                             {!update.show && `New Update will be on: ${update?.newDate?.toDateString()}`}
                         </div>
 
                         {error && <p className="text-red-700 mt-2">{error}</p>}
 
                         <div className="bg-[#1B1A55] p-4 rounded-lg text-[#9290C3] space-y-5">
-                            <p className="font-semibold text-blue-300"><span className="text-lg text-blue-50 font-bold">Topics:</span> {showAnalysis?.data?.topics || "No topics available."}</p>
-                            <p className="font-semibold text-blue-300"><span className="text-lg text-blue-50 font-bold">Focus:</span> {showAnalysis?.data?.focus || "Nothing to Focus."}</p>
-                            <p className="font-semibold text-blue-300"><span className="text-lg text-blue-50 font-bold">Difficulty:</span> {showAnalysis?.data?.difficult || "No difficulty available."}</p>
+                            <p className="font-semibold text-blue-300"><span className="text-lg text-blue-50 font-bold">Topics:</span> {showAnalysis?.topics || "No topics available."}</p>
+                            <p className="font-semibold text-blue-300"><span className="text-lg text-blue-50 font-bold">Focus:</span> {showAnalysis?.focus || "Nothing to Focus."}</p>
+                            <p className="font-semibold text-blue-300"><span className="text-lg text-blue-50 font-bold">Difficulty:</span> {showAnalysis?.difficult || "No difficulty available."}</p>
                         </div>
 
                     </div>
