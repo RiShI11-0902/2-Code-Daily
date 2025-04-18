@@ -1,7 +1,8 @@
-import React from 'react'
+import React, { useEffect, useState } from 'react'
 import useUserStore from '../store/store'
 import QuestionDetails from '../components/QuestionDetails'
 import QuestionBox from '../components/QuestionBox'
+import axios from 'axios'
 
 const InterviewPage = () => {
 
@@ -13,7 +14,7 @@ const InterviewPage = () => {
     const getSolved = async () => {
         setLoading(true)
         try {
-            const questions = await axios.post(`${import.meta.env.VITE_BACKEND_BASE_URL}/user/solvedQuestions`, { id: user._id })
+            const questions = await axios.post(`${import.meta.env.VITE_BACKEND_BASE_URL}/user/solvedQuestions`, { id: '68007fcf588386c12c02f0cf' }) /////68007fcf588386c12c02f0cf   user._id
             setFetchedQuestion(questions.data.questions.solvedQuestions);            
             setLoading(false)
         } catch (error) {
