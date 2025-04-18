@@ -8,7 +8,7 @@ const QuestionBox = ({ question, index, setShowQuestion, id, key }) => {
     const [isSolved, setIsSolved] = useState(false)
     const [loading, setLoading] = useState()
     const [fetchedQuestion, setFetchedQuestion] = useState()
-    const { addQuestions } = useUserStore()
+    const { addQuestions, solvedQ } = useUserStore()
 
 
     // const fetchquestion = async (id) => {
