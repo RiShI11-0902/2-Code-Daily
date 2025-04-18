@@ -127,7 +127,7 @@ const ProgressComponent = () => {
                 {/* Stats Section */}
                 <div className="w-full flex flex-col md:flex-row justify-center items-center space-y-4 md:space-y-0 md:space-x-10">
                 {
-                        user.solvedQuestions.length > 0 && <div className="text-[#3d37ef] text-lg bg-[#ababf5] p-3 rounded-2xl w-52 max-w-xs text-center shadow-md flex flex-col items-center">
+                        user?.solvedQuestions?.length > 0 && <div className="text-[#3d37ef] text-lg bg-[#ababf5] p-3 rounded-2xl w-52 max-w-xs text-center shadow-md flex flex-col items-center">
                         <button onClick={analyze} className="text-lg font-bold">{analyzing ? "Analyzing.." : "Analyze Progress"}</button>
                     </div>
                        }
