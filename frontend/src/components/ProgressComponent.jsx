@@ -86,12 +86,12 @@ const ProgressComponent = () => {
     };
 
     const analyze = async () => {
-        const lastUpdate = new Date(user?.improvements[0].dateCreated);
+        const lastUpdate = new Date(user?.improvements[0]?.dateCreated);
         const newUpdate = new Date(lastUpdate); // clone it
         newUpdate.setDate(newUpdate.getDate() + 7); // add 7 days properly
 
 
-        if (Date.now() >= newUpdate.getDate()) {
+        if (Date.now() >= newUpdate.getDate() || !lastUpdate) {
             setAnalyzing(true)
             try {
                 const res = await axios.post("http://localhost:5000/user/analyze-progress", { id: user._id })

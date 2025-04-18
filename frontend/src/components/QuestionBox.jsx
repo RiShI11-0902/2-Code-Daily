@@ -23,26 +23,15 @@ const QuestionBox = ({ question, index, setToggle, id }) => {
             setLoading(false)
         }
     }
-
-    // const addQuestions = async (id) => {
-    //     try {
-    //         const res = axios.post("/checked-question", { qId: id, userId: user._id })
-
-    //     } catch (error) {
-    //         console.log(error);
-    //     }
-    // }
-
     useEffect(() => {
-        // console.log(id);
-        if (question?.id && solvedQ.includes(question.id)) {
+        if (id && solvedQ.includes(id)) {
             setIsSolved(true);
-            fetchquestion(question.id);
+            fetchquestion(id);
         } else {
             setIsSolved(false);
         }
-    }, [question?.id, solvedQ])
-    ////`Q ${question?.id ? question.id : ""}`
+    }, [id, solvedQ])
+
     return (
         <div>
             {
