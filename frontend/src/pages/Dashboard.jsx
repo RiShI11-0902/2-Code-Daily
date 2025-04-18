@@ -7,10 +7,9 @@ import useUserStore from "../store/store";
 import { X, AlignJustify } from 'lucide-react'
 import ProgressComponent from "../components/ProgressComponent";
 import { ToastContainer, toast } from "react-toastify";
-import HandleSearch from "../utils/handleSearch";
+import InterviewPage from "./InterviewPage";
 
 const Dashboard = () => {
-  const [toggle, setToggle] = useState();
   const [questions, setQuestions] = useState();
   const [filteredQuestions, setFilteredQuestions] = useState();
   const [showSolved, setShowSolved] = useState(false);
@@ -31,39 +30,30 @@ const Dashboard = () => {
   };
 
 
-  const { user, addQuestions, solvedQ } = useUserStore();
+  const { user, solvedQ } = useUserStore();
+
 
   // useEffect(() => {
-  //   const newDate = new Date(user?.currentExpiryDate?.toString().split('T')[0])
-  //   const options = { year: 'numeric', month: 'long', day: 'numeric' };
-  //   const format = newDate.toLocaleDateString('en-US', options)
-  //   setisExpired(new Date() > format ? true : false)
-  //   // if(user){
-      
-  //   // }
-  // }, [])
+  //   if (user?.currentExpiryDate) {
+  //     const expiryDate = new Date(user.currentExpiryDate);
+  //     const currentDate = new Date();
 
-  useEffect(() => {
-    if (user?.currentExpiryDate) {
-      const expiryDate = new Date(user.currentExpiryDate);
-      const currentDate = new Date();
-
-      const options = { year: 'numeric', month: 'long', day: 'numeric' };
-      const format = expiryDate.toLocaleDateString('en-US', options)
-      setexpiryDate(format)
+  //     const options = { year: 'numeric', month: 'long', day: 'numeric' };
+  //     const format = expiryDate.toLocaleDateString('en-US', options)
+  //     setexpiryDate(format)
   
-      // Calculate the time difference in milliseconds
-      const timeDiff = currentDate - expiryDate;
+  //     // Calculate the time difference in milliseconds
+  //     const timeDiff = currentDate - expiryDate;
   
-      // Convert milliseconds to days
-      const daysDiff = timeDiff / (1000 * 60 * 60 * 24);
+  //     // Convert milliseconds to days
+  //     const daysDiff = timeDiff / (1000 * 60 * 60 * 24);
 
-      console.log(daysDiff);
+  //     console.log(daysDiff);
       
   
-      setisExpired(daysDiff >= 30);
-    }
-  }, []);
+  //     setisExpired(daysDiff >= 30);
+  //   }
+  // }, []);
   
 
   const notify = () => toast.success(`Already Subscribed!! Expiry On: ${expiryDate}`, {
@@ -191,15 +181,7 @@ const Dashboard = () => {
           className="flex flex-col sm:grid-cols-2 lg:grid-cols-3 gap-5 pb-3 ">
           {showSolved
             ? user?.solvedQuestions?.length > 0
-              ? user.solvedQuestions.slice().reverse().map((id, index) => (
-                <QuestionBox
-                  key={index}
-                  setToggle={setToggle}
-                  id={id}
-                  question={null}
-                  index={index}
-                />
-              ))
+              ? <InterviewPage/>
               : <p className="text-center text-gray-500 col-span-full">No solved questions yet.</p>
             : (filteredQuestions || questions)?.map((question, index) => (
               <QuestionBox
@@ -213,12 +195,7 @@ const Dashboard = () => {
 
       </div>
 
-      {/* Question Details Modal */}
-      {toggle && (
-        <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 ">
-          <QuestionDetails question={toggle} setToggle={setToggle} />
-        </div>
-      )}
+    
 
 
     </div>

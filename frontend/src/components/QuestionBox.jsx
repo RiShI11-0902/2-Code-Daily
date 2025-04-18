@@ -3,34 +3,34 @@ import axios from "axios"
 import useUserStore from '../store/store'
 import { FiLoader } from "react-icons/fi";
 
-const QuestionBox = ({ question, index, setToggle, id }) => {
+const QuestionBox = ({ question, index, setToggle, id, key }) => {
 
     const [isSolved, setIsSolved] = useState(false)
     const [loading, setLoading] = useState()
     const [fetchedQuestion, setFetchedQuestion] = useState()
-    const { user, solvedQ, addQuestions } = useUserStore()
+    const { addQuestions } = useUserStore()
 
-    const fetchquestion = async (id) => {
-        console.log(id);
-        setLoading(true)
-        try {
-            const question = await axios.post(`${import.meta.env.VITE_BACKEND_BASE_URL}/user/solvedQuestions`, { id })
-            console.log(question);
-            setFetchedQuestion(question.data.question)
-            setLoading(false)
-        } catch (error) {
-            console.log(error);
-            setLoading(false)
-        }
-    }
-    useEffect(() => {
-        if (id && solvedQ.includes(id)) {
-            setIsSolved(true);
-            fetchquestion(id);
-        } else {
-            setIsSolved(false);
-        }
-    }, [id, solvedQ])
+
+    // const fetchquestion = async (id) => {
+    //     console.log(id);
+    //     setLoading(true)
+    //     try {
+    //         const question = await axios.post(`${import.meta.env.VITE_BACKEND_BASE_URL}/user/solvedQuestions`, { id })
+    //         setFetchedQuestion(question.data.question)
+    //         setLoading(false)
+    //     } catch (error) {
+    //         console.log(error);
+    //         setLoading(false)
+    //     }
+    // }
+    // useEffect(() => {
+    //     if (id && solvedQ.includes(id)) {
+    //         setIsSolved(true);
+    //         fetchquestion(id);
+    //     } else {
+    //         setIsSolved(false);
+    //     }
+    // }, [id, solvedQ])
 
     return (
         <div>

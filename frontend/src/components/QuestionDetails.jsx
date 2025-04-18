@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import { X } from "lucide-react";
 import { motion } from "framer-motion";
 
-const QuestionDetails = ({ question, setToggle }) => {
+const QuestionDetails = ({ question, setShowQuestion }) => {
     console.log(question);
 
     const [activeIndex, setActiveIndex] = useState(null);
@@ -20,7 +20,7 @@ const QuestionDetails = ({ question, setToggle }) => {
 
                         {/* Close Button */}
                         <button
-                            onClick={() => setToggle(null)}
+                            onClick={() => setShowQuestion(null)}
                             className="absolute top-3 right-3 p-2 rounded-full bg-red-500 hover:bg-red-700 transition duration-300"
                         >
                             <X className="w-5 h-5" />
