@@ -6,7 +6,7 @@ import axios from 'axios'
 
 const InterviewPage = () => {
 
-    const { user } = useUserStore()
+    // const { user } = useUserStore()
     const [loading, setLoading] = useState()
     const [fetchedQuestion, setFetchedQuestion] = useState()
     const [showQuestion, setShowQuestion] = useState();
@@ -14,8 +14,10 @@ const InterviewPage = () => {
     const getSolved = async () => {
         setLoading(true)
         try {
-            const questions = await axios.post(`${import.meta.env.VITE_BACKEND_BASE_URL}/user/solvedQuestions`, { id: '68007fcf588386c12c02f0cf' }) /////68007fcf588386c12c02f0cf   user._id
-            setFetchedQuestion(questions.data.questions.solvedQuestions);            
+            const questions = await axios.post(`${import.meta.env.VITE_BACKEND_BASE_URL}/user/solvedQuestions`, { id: user._id}) /////68007fcf588386c12c02f0cf   
+            setFetchedQuestion(questions.data.questions.solvedQuestions);  
+            console.log(questions.data.questions.solvedQuestions);
+                      
             setLoading(false)
         } catch (error) {
             console.log(error);
