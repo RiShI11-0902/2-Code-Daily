@@ -72,7 +72,7 @@ const HomePage = () => {
                     <h1 className='montserrat-heading text-4xl sm:text-5xl md:text-6xl lg:text-7xl text-[#9290C3]'>Practice LeetCode Like a Pro</h1>
                     <p className='text-base sm:text-lg md:text-2xl text-[#535C91]'>"Turn LeetCode problems into interactive mock interviews."</p>
 
-                    <form onSubmit={handleSubmit} className="space-y-4 flex flex-col sm:flex-row sm:items-center sm:justify-center gap-4">
+                    <form onSubmit={handleSubmit} className="space-y-4 flex flex-col sm:flex-row sm:items-center sm:justify-center gap-4 items-center justify-center">
                         <input
                             type="email"
                             placeholder="Enter your email"
@@ -155,30 +155,14 @@ const HomePage = () => {
                 </div>
             </section>
 
-            {/* <section id="free" className="mt-5 p-5">
-                <div className="montserrat-heading text-center flex flex-col sm:flex-row items-center sm:space-x-5 justify-center">
-                    <p className="text-[15rem] font-extrabold text-[#9290C3]">All</p>
-                    <div className="text-[#535C91] text-2xl flex flex-col space-y-5">
-                        <p> Interviews are Free but with Ads</p>
-                        <button
-                            onClick={SignIn}
-                            className="flex montserrat-heading items-center justify-center w-full px-4 py-2 text-sm font-medium text-white bg-blue-500 rounded-lg shadow-md hover:bg-blue-600 focus:outline-none focus:ring-2 focus:ring-blue-400 focus:ring-offset-1 transition"
-                        >
-                            <AiOutlineGoogle className="w-5 h-5 mr-2" />
-                            Sign in with Google
-                        </button>
-                    </div>
-                </div>
-            </section> */}
-
 
             <section id='pricing'>
                 <div className=" text-white p-6 rounded-lg shadow-xl flex flex-col md:flex-row-reverse items-center w-full md:space-x-10 justify-center  mx-auto  overflow-hidden">
                     {/* Price Section */}
                     <div className=" text-[#9290C3] flex items-center justify-center w-full md:w-1/3 p-8">
                         <div className="text-center">
-                            <h2 className=" text-8xl md:text-[10rem] font-extrabold text-[#9290C3] leading-none">₹100</h2>
-                            <p className="text-lg text-[#535C91] mt-2">/ month for first 100 Subscribers</p>
+                            <h2 className=" text-8xl md:text-[10rem] font-extrabold text-[#9290C3] leading-none">₹200</h2>
+                            <p className="text-lg text-[#535C91] mt-2">/ month Starter </p>
                         </div>
                     </div>
 
