@@ -28,6 +28,8 @@ function App() {
           <Route path='/dashboard' element={<Dashboard />} />
           <Route path='/progress' element={<ProgressPage />} />
           <Route path='/paymentsuccess' element={<PaymentSuccess />} />
+          <Route path='/interview' element={<InterviewPage />} />
+
         </Routes>
       </Router>
     </>
