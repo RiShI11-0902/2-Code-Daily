@@ -10,7 +10,8 @@ exports.solvedQuestions = async (req, res) => {
 
   const { id } = req.body;
 
-  const foundQuestions = await User.findById(id).populate('solvedQuestions');
+  const foundQuestions = await User.findById(id).select('solvedQuestions')
+  .populate('solvedQuestions');
 
   if (foundQuestions) {
     res.status(200).json({ questions: foundQuestions });
