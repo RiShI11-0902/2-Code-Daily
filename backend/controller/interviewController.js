@@ -136,6 +136,7 @@ Follow this structured approach:
       } else {
         const lastPayment = user.payments[user.payments.length - 1];
         lastPayment.usedInterviews += 1;
+        lastPayment.usedInterviews == lastPayment.totalInterviews ? user.isSubscribed = false : ''
       }
       await user.save();
     }
