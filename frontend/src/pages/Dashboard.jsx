@@ -15,9 +15,8 @@ const Dashboard = () => {
   const [showSolved, setShowSolved] = useState(false);
   const [sidebarOpen, setSidebarOpen] = useState(false);
   const [progressBar, setProgressBar] = useState(false)
-  const [isExpired, setisExpired] = useState()
   const [visible, setVisible] = useState()
-  const [expiryDate, setexpiryDate] = useState()
+  const [remainInterview, setRemainInterview] = useState()
 
   const scrollContainerRef = useRef(null);
 
@@ -33,30 +32,16 @@ const Dashboard = () => {
   const { user, solvedQ } = useUserStore();
 
 
-  // useEffect(() => {
-  //   if (user?.currentExpiryDate) {
-  //     const expiryDate = new Date(user.currentExpiryDate);
-  //     const currentDate = new Date();
-
-  //     const options = { year: 'numeric', month: 'long', day: 'numeric' };
-  //     const format = expiryDate.toLocaleDateString('en-US', options)
-  //     setexpiryDate(format)
-  
-  //     // Calculate the time difference in milliseconds
-  //     const timeDiff = currentDate - expiryDate;
-  
-  //     // Convert milliseconds to days
-  //     const daysDiff = timeDiff / (1000 * 60 * 60 * 24);
-
-  //     console.log(daysDiff);
-      
-  
-  //     setisExpired(daysDiff >= 30);
-  //   }
-  // }, []);
+  useEffect(() => {
+    if (user?.payments.length > 0) {
+     const lastPayment = user.payments[user.payments.length - 1];
+     const remain = lastPayment.totalInterviews - lastPayment.usedInterviews;
+     setRemainInterview(remain)
+    }
+  }, []);
   
 
-  const notify = () => toast.success(`Already Subscribed!! Expiry On: ${expiryDate}`, {
+  const notify = () => toast.success(`You have ${remainInterview} Interviews Remaining`, {
     position: "top-center",
     autoClose: 5000,
     hideProgressBar: false,
@@ -146,7 +131,7 @@ const Dashboard = () => {
         className={`fixed z-40 top-0 left-0 h-screen w-64 bg-gray-800 text-white transform ${sidebarOpen ? "translate-x-0" : "-translate-x-full"
           } lg:translate-x-0 transition-transform duration-300`}
       >
-        <Sidebar scrollToTop={scrollToTop} visible={visible} isExpired={isExpired} notify={notify} setShowSolved={setShowSolved} setProgressBar={setProgressBar} />
+        <Sidebar scrollToTop={scrollToTop} visible={visible} notify={notify} setShowSolved={setShowSolved} setProgressBar={setProgressBar} />
       </div>
 
       {/* Main Content */}

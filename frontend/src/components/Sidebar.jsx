@@ -5,7 +5,7 @@ import PlanModal from './PlanModal'; // Import PlanModal component
 import useUserStore from '../store/store';
 import axios from 'axios';
 
-const Sidebar = ({ scrollToTop, notify, setShowSolved, setProgressBar, isExpired }) => {
+const Sidebar = ({ scrollToTop, notify, setShowSolved, setProgressBar }) => {
   const { user } = useUserStore();
   const [showModal, setShowModal] = useState(false); // Manage modal visibility
   const navigate = useNavigate();
@@ -45,7 +45,7 @@ const Sidebar = ({ scrollToTop, notify, setShowSolved, setProgressBar, isExpired
 
             <li onClick={() => setProgressBar(true)} className="text-lg font-semibold hover:bg-gray-800 rounded-md p-2 cursor-pointer transition duration-200">Progress</li>
 
-            <li onClick={() => (user.isSubscribed && !isExpired ? notify() : setShowModal(true))} className="text-lg font-semibold hover:bg-gray-800 rounded-md p-2 cursor-pointer transition duration-200">
+            <li onClick={() => (user.isSubscribed ? notify() : setShowModal(true))} className="text-lg font-semibold hover:bg-gray-800 rounded-md p-2 cursor-pointer transition duration-200">
               Go Premium
             </li>
 

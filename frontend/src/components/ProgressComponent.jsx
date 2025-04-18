@@ -87,23 +87,23 @@ const ProgressComponent = () => {
 
     const analyze = async () => {
         const hasNoImprovements = user?.improvements.length === 0;
-    
+
         let lastUpdate = null;
         let newUpdate = null;
-    
+
         if (!hasNoImprovements) {
             lastUpdate = new Date(user.improvements[0].dateCreated);
             newUpdate = new Date(lastUpdate);
             newUpdate.setDate(newUpdate.getDate() + 7);
         }
-    
+
         const shouldCallAPI = hasNoImprovements || (newUpdate && Date.now() >= newUpdate.getTime());
-    
+
         if (shouldCallAPI) {
             setAnalyzing(true);
             try {
                 const res = await axios.post(`${import.meta.env.VITE_BACKEND_BASE_URL}/user/analyze-progress`, { id: user._id });
-    
+
                 setShowAnalysis({
                     show: true,
                     data: res?.data?.analysis
@@ -121,14 +121,14 @@ const ProgressComponent = () => {
                 newDate: newUpdate,
                 show: false
             });
-    
+
             setShowAnalysis({
                 show: true,
                 data: user.improvements[0]?.analysis
             });
         }
     };
-    
+
     return (
         <>
 
@@ -169,64 +169,64 @@ const ProgressComponent = () => {
             </section>
 
             {
-  showAnalysis.show &&
-  <div className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50 p-4">
-    <div className="bg-[#070F2B] shadow-lg rounded-lg max-w-4xl w-full p-6 relative text-white">
-      
-      {/* Close Button */}
-      <button
-        onClick={() => setShowAnalysis({ show: false, data: {} })}
-        className="absolute top-3 right-3 bg-[#1B1A55] hover:bg-[#535C91] text-white rounded-full w-8 h-8 flex items-center justify-center transition"
-      >
-        ✕
-      </button>
+                showAnalysis.show &&
+                <div className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50 p-4 h-full">
+                    <div className="bg-[#070F2B] shadow-lg rounded-lg max-w-4xl w-full p-6 relative text-white">
 
-      {/* Modal Content */}
-      <h2 className="text-2xl font-bold mb-4 text-center">Your Future Plan to Study</h2>
-      
-      <div className="flex justify-around text-sm mb-4">
-        {user.improvements.length > 0 && (
-          <span>
-            Last Updated On: {new Date(user.improvements[0].dateCreated).toDateString()}
-          </span>
-        )}
-        {user.improvements.length === 0 && (
-          <span>No previous analysis found</span>
-        )}
-        {!update.show && update?.newDate && (
-          <span>New Update will be on: {update.newDate.toDateString()}</span>
-        )}
-      </div>
+                        {/* Close Button */}
+                        <button
+                            onClick={() => setShowAnalysis({ show: false, data: {} })}
+                            className="absolute top-3 right-3 bg-[#1B1A55] hover:bg-[#535C91] text-white rounded-full w-8 h-8 flex items-center justify-center transition"
+                        >
+                            ✕
+                        </button>
 
-      {error && <p className="text-red-700 mt-2">{error}</p>}
+                        {/* Modal Content */}
+                        <h2 className="text-2xl font-bold mb-4 text-center">Your Future Plan to Study</h2>
 
-      <div className="bg-[#1B1A55] p-4 rounded-lg text-[#9290C3] space-y-5">
-        <p className="font-semibold text-blue-300">
-          <span className="text-lg text-blue-50 font-bold">Topics:</span>{" "}
-          {showAnalysis?.data?.topics || "No topics available."}
-        </p>
-        <p className="font-semibold text-blue-300">
-          <span className="text-lg text-blue-50 font-bold">Focus:</span>{" "}
-          {showAnalysis?.data?.focus || "Nothing to focus on."}
-        </p>
-        <p className="font-semibold text-blue-300">
-          <span className="text-lg text-blue-50 font-bold">Difficulty:</span>{" "}
-          {showAnalysis?.data?.difficult || "No difficulty suggestion."}
-        </p>
-        {showAnalysis?.data?.dateCreated && (
-          <p className="text-sm text-gray-400">
-            Generated on: {new Date(showAnalysis.data.dateCreated).toDateString()}
-          </p>
-        )}
-        {showAnalysis?.data?.message && (
-          <p className="text-sm text-green-400">
-            {showAnalysis.data.message}
-          </p>
-        )}
-      </div>
-    </div>
-  </div>
-}
+                        <div className="flex justify-around text-sm mb-4">
+                            {user.improvements.length > 0 && (
+                                <span>
+                                    Last Updated On: {new Date(user.improvements[0].dateCreated).toDateString()}
+                                </span>
+                            )}
+                            {user.improvements.length === 0 && (
+                                <span>No previous analysis found</span>
+                            )}
+                            {!update.show && update?.newDate && (
+                                <span>New Update will be on: {update.newDate.toDateString()}</span>
+                            )}
+                        </div>
+
+                        {error && <p className="text-red-700 mt-2">{error}</p>}
+
+                        <div className="bg-[#1B1A55] p-4 rounded-lg text-[#9290C3] space-y-5">
+                            <p className="font-semibold text-blue-300">
+                                <span className="text-lg text-blue-50 font-bold">Topics:</span>{" "}
+                                {showAnalysis?.data?.topics || "No topics available."}
+                            </p>
+                            <p className="font-semibold text-blue-300">
+                                <span className="text-lg text-blue-50 font-bold">Focus:</span>{" "}
+                                {showAnalysis?.data?.focus || "Nothing to focus on."}
+                            </p>
+                            <p className="font-semibold text-blue-300">
+                                <span className="text-lg text-blue-50 font-bold">Difficulty:</span>{" "}
+                                {showAnalysis?.data?.difficult || "No difficulty suggestion."}
+                            </p>
+                            {showAnalysis?.data?.dateCreated && (
+                                <p className="text-sm text-gray-400">
+                                    Generated on: {new Date(showAnalysis.data.dateCreated).toDateString()}
+                                </p>
+                            )}
+                            {showAnalysis?.data?.message && (
+                                <p className="text-sm text-green-400">
+                                    {showAnalysis.data.message}
+                                </p>
+                            )}
+                        </div>
+                    </div>
+                </div>
+            }
 
 
         </>
