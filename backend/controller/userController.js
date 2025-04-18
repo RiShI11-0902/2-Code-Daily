@@ -93,7 +93,7 @@ exports.analyzeAndGeneratePlan = async (req, res) => {
     const sevenDaysAgo = new Date();
     sevenDaysAgo.setDate(sevenDaysAgo.getDate() - 7);    
 
-    const user = await User.findOne({ _id: id }).populate("solvedQuestions");
+    const user = await User.findOne({ _id: id }).populate("solvedQuestions").select("-password");
 
     const recentQuestions = user?.solvedQuestions?.filter((q) => {
       return new Date(q.createdAt) >= sevenDaysAgo;
@@ -142,7 +142,7 @@ exports.analyzeAndGeneratePlan = async (req, res) => {
 
     await user.save()
 
-    res.status(200).json({messsage:"Generated", analysis: finalJson, dateCreated: Date.now() })
+    res.status(200).json({messsage:"Generated", analysis: finalJson, dateCreated: Date.now(), user: user })
   } catch (error) {
     console.log(error);
     res.status(400).json({ message: error });
