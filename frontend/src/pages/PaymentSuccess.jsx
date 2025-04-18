@@ -6,24 +6,14 @@ const PaymentSuccess = () => {
   const location = useLocation()
 
   const [paymentId, setPaymentId] = useState("");
-  const [expiry, setExpiry] = useState()
-
-  // const refernceId = location.state.refernceId
-  // const expiry = location.state.expiry
 
   useEffect(() => {
     const queryParams = new URLSearchParams(location.search)
 
     const referenceid = queryParams.get("referenceid")
-    const expiryDate = queryParams.get("expiry")
 
-    const options = { year: 'numeric', month: 'long', day: 'numeric' };
-
-    if (referenceid && expiryDate) {
+    if (referenceid) {
       setPaymentId(referenceid);
-      const newDate = new Date(expiryDate)
-      const format = newDate.toLocaleDateString('en-US', options)
-      setExpiry(format)
     }
     console.log(referenceid);
     console.log(expiryDate);
@@ -51,7 +41,6 @@ const PaymentSuccess = () => {
         {paymentId && (
           <p className="text-gray-700 font-semibold mt-4 flex flex-col space-y-5">
             <p>Reference ID: <span className="text-blue-600">{paymentId}</span></p>
-            <p>Expiry Date: <span className="text-blue-600">{expiry}</span></p>
           </p>
         )}
 

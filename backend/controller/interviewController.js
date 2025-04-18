@@ -16,11 +16,11 @@ exports.getProblem = async (req, res) => {
       return;
     }
 
-    const lastPayment = findUser.payments
-      .filter((p) => p.status === "Paid" && p.totalInterviews !== undefined)
-      .pop(); // get latest valid plan
+    const lastPayment = findUser.payments[findUser.payments.length - 1];
 
-    if (!lastPayment) {
+      
+
+    if (!lastPayment || lastPayment.status != 'Paid') {
       return res
         .status(400)
         .json({ message: "No active plan found, please subscribe." });

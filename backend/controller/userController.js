@@ -10,10 +10,10 @@ exports.solvedQuestions = async (req, res) => {
 
   const { id } = req.body;
 
-  const foundQuestion = await Interview.findById(id);
+  const foundQuestions = await User.findById(id).populate('solvedQuestions');
 
-  if (foundQuestion) {
-    res.status(200).json({ question: foundQuestion });
+  if (foundQuestions) {
+    res.status(200).json({ questions: foundQuestions });
   } else {
     res.status(200).json({ message: "Not correct" });
   }
