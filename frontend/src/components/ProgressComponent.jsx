@@ -26,7 +26,7 @@ const ProgressComponent = () => {
     const [analyzing, setAnalyzing] = useState()
     const [error, setError] = useState()
 
-    const { user } = useUserStore();
+    const { user , userData} = useUserStore();
 
     // console.log(user?.improvements[0].dateCreated.split('T')[0]);
     ////https://two-code-daily-1.onrender.com   http://localhost:5000
@@ -108,6 +108,7 @@ const ProgressComponent = () => {
                     show: true,
                     data: res?.data?.analysis
                 });
+                userData(res?.data?.user)
             } catch (error) {
                 console.error(error);
                 setError(error.response?.data?.message || "Something went wrong");
