@@ -102,7 +102,7 @@ const ProgressComponent = () => {
         if (shouldCallAPI) {
             setAnalyzing(true);
             try {
-                const res = await axios.post("http://localhost:5000/user/analyze-progress", { id: user._id });
+                const res = await axios.post(`${import.meta.env.VITE_BACKEND_BASE_URL}/user/analyze-progress`, { id: user._id });
                 setShowAnalysis({
                     show: true,
                     data: res?.data?.improvements[0]?.analysis
