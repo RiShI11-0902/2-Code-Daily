@@ -186,7 +186,6 @@ const Dashboard = () => {
             : (filteredQuestions || questions)?.map((question, index) => (
               <QuestionBox
                 key={index}
-                setToggle={setToggle}
                 question={question}
                 index={index}
               />

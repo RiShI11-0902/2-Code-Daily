@@ -14,7 +14,7 @@ const InterviewPage = () => {
         setLoading(true)
         try {
             const questions = await axios.post(`${import.meta.env.VITE_BACKEND_BASE_URL}/user/solvedQuestions`, { id: user._id })
-            setFetchedQuestion(questions.data.question)
+            setFetchedQuestion(questions.data.questions.solvedQuestions);            
             setLoading(false)
         } catch (error) {
             console.log(error);

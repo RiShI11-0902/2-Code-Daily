@@ -15,9 +15,12 @@ function App() {
         <Routes>
           <Route path='/' element={<HomePage />} />
           <Route path='/pricing' element={<Pricing />} />
-          <Route path='/dashboard' element={<Protected><Dashboard /></Protected>} />
+          <Route path='/dashboard' element={<Dashboard />} />
           <Route path='/progress' element={<Protected><ProgressPage /></Protected>} />
           <Route path='/paymentsuccess' element={<Protected><PaymentSuccess /></Protected>} />
+          {/* <Route path='/dashboard' element={<Protected><Dashboard /></Protected>} />
+          <Route path='/progress' element={<Protected><ProgressPage /></Protected>} />
+          <Route path='/paymentsuccess' element={<Protected><PaymentSuccess /></Protected>} /> */}
         </Routes>
       </Router>
     </>
