@@ -44,17 +44,8 @@ router
       return res.status(500).json({ message: "Internal Server Error" });
     }
   })
-
-  //   .get("/isLoggedIn", async (req, res) => {
-  //     console.log("called");
-  //     if (req.user) {
-  //       console.log("called req.user");
-  //       console.log(req.user);
-  //       return res.status(200).json({ message: "Succes", data: req.user });
-  //     } else {
-  //       return res.status(401).json({ message: "Failed" });
-  //     }
-  //   })
+  .post("/register", authController.registerUser)
+.post("/login", authController.loginUser)
   .get("/logout", authController.logout);
 
 module.exports = router;
