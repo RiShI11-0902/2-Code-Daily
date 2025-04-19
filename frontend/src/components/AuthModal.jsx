@@ -2,6 +2,7 @@ import axios from "axios";
 import { useState } from "react";
 import { AiOutlineGoogle } from "react-icons/ai";
 import useUserStore from "../store/store";
+import { useNavigate } from "react-router";
 
 export default function AuthModal({ isOpen, onClose }) {
     const [isLogin, setIsLogin] = useState(true);
@@ -9,6 +10,8 @@ export default function AuthModal({ isOpen, onClose }) {
     const [error, setError] = useState()
 
     const { userData } = useUserStore()
+
+    const navigate = useNavigate()
 
     if (!isOpen) return null;
 
@@ -25,6 +28,10 @@ export default function AuthModal({ isOpen, onClose }) {
             } else {
                 const res = await axios.post(`${import.meta.env.VITE_BACKEND_BASE_URL}/auth/register`, form)
                 userData(res.data.user)
+            }
+
+            if(res.status == 200){
+                navigate("/dashboard")
             }
         } catch (error) {
             setError(error.response.message)
