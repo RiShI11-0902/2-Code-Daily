@@ -1,5 +1,6 @@
 const bcrypt = require("bcryptjs");
 const { generateToken } = require("../helpers/jwt");
+const User = require("../models/user");
 
 exports.registerUser = async (req, res) => {
   const { name, email, password } = req.body;
