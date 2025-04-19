@@ -25,15 +25,12 @@ export default function AuthModal({ isOpen, onClose }) {
         e.preventDefault();
         setLoading(true)
         try {
-            if (isLogin) {
-                const res = await axios.post(`${import.meta.env.VITE_BACKEND_BASE_URL}/auth/login`, form)
-                userData(res.data.user)
-            } else {
-                const res = await axios.post(`${import.meta.env.VITE_BACKEND_BASE_URL}/auth/register`, form)
-                userData(res.data.user)
-            }
 
-            if(res.status == 200){
+            const res = isLogin ? await axios.post(`${import.meta.env.VITE_BACKEND_BASE_URL}/auth/login`, form) : await axios.post(`${import.meta.env.VITE_BACKEND_BASE_URL}/auth/register`, form)
+
+
+            if (res.status == 200) {
+                userData(res.data.user)
                 navigate("/dashboard")
             }
         } catch (error) {
