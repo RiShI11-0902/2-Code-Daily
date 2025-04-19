@@ -1,13 +1,14 @@
 "use client"
 import React, { useState } from "react";
 import { FiMenu, FiX } from "react-icons/fi";
-import {AiOutlineGoogle} from 'react-icons/ai'
-import Register from "./Register";
 import useUserStore from "../store/store";
-import { Link } from "react-router";
+import { Link, useNavigate } from "react-router";
+import AuthModal from "../components/AuthModal";
 
 const Navbar = ({setopenForm,openForm, SignIn}) => {
   const [menuOpen, setMenuOpen] = useState(false);
+  // const [showAuthModal, setShowAuthModal] = useState(false);
+
 
   const toggleMenu = () => {
     setMenuOpen(!menuOpen);
@@ -20,6 +21,8 @@ const Navbar = ({setopenForm,openForm, SignIn}) => {
   // const user = useUserStore((state) => state.user)
 
   const {user} = useUserStore()
+
+  const navigate = useNavigate()
 
   console.log(user);
   
@@ -68,22 +71,16 @@ const Navbar = ({setopenForm,openForm, SignIn}) => {
               Dashboard
           </Link>
           }
-          {/* <li className="mx-4 my-4 md:my-0">
-            {
-               user ? <img src={user.image} className="w-10 rounded-full" /> : <button
-               onClick={SignIn}
-               className="flex items-center justify-center w-full px-4 py-2 text-sm font-medium text-white bg-blue-500 rounded-lg shadow-md hover:bg-blue-600 focus:outline-none focus:ring-2 focus:ring-blue-400 focus:ring-offset-1 transition"
-             >
-               <AiOutlineGoogle className="w-5 h-5 mr-2" />
-               Sign in with Google
-             </button>
-            }
-          </li> */}
+          <li onClick={()=> setopenForm(true)} className="mx-4 my-4 md:my-0 text-[#9290C3] hover:text-[#535C91] transition duration-300">
+          <button>
+             Log / Register
+          </button>
+          </li>
         </ul>
       </div>
     </nav>
 
-    { openForm && <Register />}
+    { openForm && <AuthModal isOpen={openForm} onClose={()=>setopenForm(false)} />}
    </>
   );
 };

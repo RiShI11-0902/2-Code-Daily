@@ -20,18 +20,7 @@ const HomePage = () => {
     console.log("Backend URL:", import.meta.env.VITE_BACKEND_BASE_URL);
 
 
-    const SignIn = () => {
-        // window.open("https://two-code-daily-1.onrender.com/auth/google/callback", "_self")
-        const popup = window.open(`${import.meta.env.VITE_BACKEND_BASE_URL}/auth/google`, "_blank", "width=500,height=600");
-
-        // Listen for auth success message from popup
-        window.addEventListener("message", (event) => {
-            if (event.data === "auth-success") {
-                // Auth was successful and cookie is set
-                window.location.href = "/dashboard";
-            }
-        });
-    }
+   
     ///https://two-code-daily.onrender.com
     useEffect(() => {
         const timer = setTimeout(() => {
@@ -65,14 +54,14 @@ const HomePage = () => {
 
     return (
         <>
-            <Navbar SignIn={SignIn} setopenForm={setopenForm} openForm={openForm} />
+            <Navbar setopenForm={setopenForm} openForm={openForm} />
 
             <section id='herosection' className='bg-gradient-to-r from-[#070F2B] to-[#1B1A55] min-h-screen flex items-center justify-center px-4'>
                 <div className='font-extrabold space-y-6 text-center'>
                     <h1 className='montserrat-heading text-4xl sm:text-5xl md:text-6xl lg:text-7xl text-[#9290C3]'>Practice LeetCode Like a Pro</h1>
                     <p className='text-base sm:text-lg md:text-2xl text-[#535C91]'>"Turn LeetCode problems into interactive mock interviews."</p>
 
-                    <form onSubmit={handleSubmit} className="space-y-4 flex flex-col sm:flex-row sm:items-center sm:justify-center gap-4 items-center justify-center">
+                    <form onSubmit={handleSubmit} className="space-y-4 sm:space-y-0 flex flex-col sm:flex-row sm:items-center sm:justify-center gap-4 items-center justify-center">
                         <input
                             type="email"
                             placeholder="Enter your email"
@@ -96,7 +85,7 @@ const HomePage = () => {
             <section id="how-it-works" class="text-[#9290C3] py-16 text-center -mt-20 montserrat-heading">
                 <div class="container mx-auto">
                     {/* <!-- Title --> */}
-                    <h2 class="text-5xl font-extrabold text-lavender mb-4">How It Works</h2>
+                    <h2 class="md:text-5xl text-4xl font-extrabold text-lavender mb-4">How It Works</h2>
                     <p class="text-[#535C91] mb-12">Get started in just 4 simple steps!</p>
 
                     {/* <!-- Steps --> */}
@@ -139,19 +128,20 @@ const HomePage = () => {
                     </div>
                 </div>
             </section>
+
             <section id='free' className='mt-5 p-5'>
                 <div className='montserrat-heading text-center flex flex-col sm:flex-row items-center sm:space-x-5 justify-center'>
                     <p className='text-8xl md:text-[10rem] font-extrabold text-[#9290C3]'>3</p>
-                    {/* <div className='text-[#535C91] text-2xl flex flex-col space-y-5 '>
+                    <div className='text-[#535C91] text-2xl flex flex-col space-y-5 '>
                         <p>Mock Interview are Free on Registration</p>
-                        <button
+                        {/* <button
                             onClick={SignIn}
                             className="flex montserrat-heading  items-center justify-center w-full px-4 py-2 text-sm font-medium text-white bg-blue-500 rounded-lg shadow-md hover:bg-blue-600 focus:outline-none focus:ring-2 focus:ring-blue-400 focus:ring-offset-1 transition"
                         >
                             <AiOutlineGoogle className="w-5 h-5 mr-2" />
                             Sign in with Google
-                        </button>
-                    </div> */}
+                        </button> */}
+                    </div>
                 </div>
             </section>
 
