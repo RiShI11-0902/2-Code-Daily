@@ -73,7 +73,7 @@ const Navbar = ({setopenForm,openForm, SignIn}) => {
           }
           <li onClick={()=> setopenForm(true)} className="mx-4 my-4 md:my-0 text-[#9290C3] hover:text-[#535C91] transition duration-300">
           <button>
-             Log / Register
+             Log In / Register
           </button>
           </li>
         </ul>

@@ -26,15 +26,17 @@ export default function AuthModal({ isOpen, onClose }) {
         setLoading(true)
         try {
 
-            const res = isLogin ? await axios.post(`${import.meta.env.VITE_BACKEND_BASE_URL}/auth/login`, form) : await axios.post(`${import.meta.env.VITE_BACKEND_BASE_URL}/auth/register`, form)
-
+            const res = isLogin
+            ? await axios.post(`${import.meta.env.VITE_BACKEND_BASE_URL}/auth/login`, form, { withCredentials: true })
+            : await axios.post(`${import.meta.env.VITE_BACKEND_BASE_URL}/auth/register`, form, { withCredentials: true });
+          
 
             if (res.status == 200) {
                 userData(res.data.user)
                 navigate("/dashboard")
             }
         } catch (error) {
-            setError(error.data.error)
+            setError(error.response?.data?.message || 'Something Wnet Wrong')
         }
 
         setLoading(false)
@@ -118,8 +120,8 @@ export default function AuthModal({ isOpen, onClose }) {
                         type="submit"
                         className="w-full py-3 rounded-xl bg-blue-400 text-black font-semibold hover:bg-gray-200 transition"
                     >
-                        {isLogin ? "Sign In" : "Register"}
-                        {loading && <Loader className="mx-auto flex items-center justify-center" />}
+                        {isLogin && !loading ? "Sign In" : "Register"}
+                        {loading && <Loader className="mx-auto animate-spin flex items-center justify-center" />}
                     </button>
                 </form>
 
