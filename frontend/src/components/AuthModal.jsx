@@ -3,11 +3,13 @@ import { useState } from "react";
 import { AiOutlineGoogle } from "react-icons/ai";
 import useUserStore from "../store/store";
 import { useNavigate } from "react-router";
+import { Loader } from "lucide-react";
 
 export default function AuthModal({ isOpen, onClose }) {
     const [isLogin, setIsLogin] = useState(true);
     const [form, setForm] = useState({ name: "", email: "", password: "" });
     const [error, setError] = useState()
+    const [loading, setLoading] = useState(false)
 
     const { userData } = useUserStore()
 
@@ -21,6 +23,7 @@ export default function AuthModal({ isOpen, onClose }) {
 
     const handleSubmit = async (e) => {
         e.preventDefault();
+        setLoading(true)
         try {
             if (isLogin) {
                 const res = await axios.post(`${import.meta.env.VITE_BACKEND_BASE_URL}/auth/login`, form)
@@ -34,9 +37,10 @@ export default function AuthModal({ isOpen, onClose }) {
                 navigate("/dashboard")
             }
         } catch (error) {
-            setError(error.response.message)
+            setError(error.data.error)
         }
 
+        setLoading(false)
     };
 
     const SignIn = () => {
@@ -118,6 +122,7 @@ export default function AuthModal({ isOpen, onClose }) {
                         className="w-full py-3 rounded-xl bg-blue-400 text-black font-semibold hover:bg-gray-200 transition"
                     >
                         {isLogin ? "Sign In" : "Register"}
+                        {loading && <Loader className="mx-auto flex items-center justify-center" />}
                     </button>
                 </form>
 
