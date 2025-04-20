@@ -7,6 +7,7 @@ import { Link } from 'react-router'
 import axios from 'axios'
 import { Loader } from 'lucide-react'
 import { time } from 'framer-motion'
+import { Footer } from '../components/Footer'
 const HomePage = () => {
     const [openForm, setopenForm] = useState(false)
     const [name, setName] = useState()
@@ -218,55 +219,7 @@ const HomePage = () => {
                 </div>
             </div> */}
 
-            <footer class="bg-gradient-to-r  from-[#070F2B] to-[#1B1A55] montserrat-heading text-white py-8 text-lavender  shadow-2xl shadow-[#a9a8d8]">
-                <div class="container mx-auto px-4">
-                    <div class="flex flex-col md:flex-row md:justify-around mb-8">
-                        <div class="text-center md:text-left">
-                            <h2 class="text-2xl font-bold mb-4 text-[#9290C3]">2Code Daily</h2>
-                            <p class="text-[#535C91] ">
-                                Practice LeetCode problems like a pro. Turn coding challenges into interactive mock interviews.
-                            </p>
-                        </div>
-
-                        <div class="text-center">
-                            <h3 class="text-xl font-semibold mb-4 text-[#9290C3]">Quick Links</h3>
-                            <ul class="space-y-2 text-[#535C91] ">
-                                <li>
-                                    <Link to={"/"} class="text-[#535C91] hover:text-lavender transition">Home</Link>
-                                </li>
-                                <li>
-                                    <Link to={"/pricing"} class="text-[#535C91] hover:text-lavender transition">Pricing</Link>
-                                </li>
-                            </ul>
-                        </div>
-
-                        <div class="text-center md:text-right">
-                            <h3 class="text-xl font-semibold mb-4 text-[#9290C3]">Contact Us</h3>
-                            <p class="text-[#535C91]">Email: <a href="mailto:support@2codedaily.com" class="hover:text-lavender transition">support@2codedaily.com</a></p>
-                            {/* <div class="flex justify-center md:justify-end mt-4 space-x-4">
-                                <a href="#" class="text-[#535C91] hover:text-lavender transition">
-                                    <i class="fab fa-facebook"></i>
-                                </a>
-                                <a href="#" class="text-[#535C91] hover:text-lavender transition">
-                                    <i class="fab fa-twitter"></i>
-                                </a>
-                                <a href="#" class="text-[#535C91] hover:text-lavender transition">
-                                    <i class="fab fa-linkedin"></i>
-                                </a>
-                                <a href="#" class="text-[#535C91] hover:text-lavender transition">
-                                    <i class="fab fa-github"></i>
-                                </a>
-                            </div> */}
-                        </div>
-                    </div>
-
-                    <div class=" pt-4 text-center">
-                        <p class="text-sm text-[#535C91]">
-                            © 2025 2Code Daily. All rights reserved.
-                        </p>
-                    </div>
-                </div>
-            </footer>
+<Footer />
 
         </>
     )

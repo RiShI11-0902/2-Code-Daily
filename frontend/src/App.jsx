@@ -7,6 +7,10 @@ import { Navigate, Route, BrowserRouter as Router, Routes } from 'react-router-d
 import ProgressPage from './pages/ProgressPage'
 import PaymentSuccess from './pages/PaymentSuccess'
 import Pricing from './pages/Pricing'
+import { CancellationRefunds } from './pages/CancellationRefunds'
+import { PrivacyPolicy } from './pages/PrivacyPolicy'
+import { ShippingPolicy } from './pages/ShippingPolicy'
+import { TermsConditions } from './pages/TermsConditions'
 
 function App() {
   return (
@@ -15,6 +19,11 @@ function App() {
         <Routes>
           <Route path='/' element={<HomePage />} />
           <Route path='/pricing' element={<Pricing />} />
+          <Route path='/refunds' element={<CancellationRefunds />} />
+          <Route path='/privacy-policy' element={<PrivacyPolicy />} />
+          <Route path='/shipping' element={<ShippingPolicy />} />
+          <Route path='/terms-conditions' element={<TermsConditions />} />
+
           <Route path='/dashboard' element={<Protected><Dashboard /></Protected>} />
           <Route path='/progress' element={<Protected><ProgressPage /></Protected>} />
           <Route path='/paymentsuccess' element={<Protected><PaymentSuccess /></Protected>} />

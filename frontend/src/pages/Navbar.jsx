@@ -71,9 +71,9 @@ const Navbar = ({setopenForm,openForm, SignIn}) => {
               Dashboard
           </Link>
           }
-          <li onClick={()=> setopenForm(true)} className="mx-4 my-4 md:my-0 text-[#9290C3] hover:text-[#535C91] transition duration-300">
-          <button>
-             Log In / Register
+          <li onClick={()=> setopenForm(true)} className="mx-4 my-4 md:my-0 text-[#07071a] hover:text-[#6a64e1] transition duration-300">
+          <button className="bg-blue-50 px-3 py-2 rounded-3xl">
+             Sign In
           </button>
           </li>
         </ul>
