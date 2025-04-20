@@ -10,16 +10,14 @@ const Navbar = ({ setopenForm, openForm }) => {
   const { user } = useUserStore();
   const navigate = useNavigate();
 
-  const toggleMenu = () => {
-    setMenuOpen(!menuOpen);
-  };
+  const toggleMenu = () => setMenuOpen(!menuOpen);
 
   return (
     <>
-      <nav className="montserrat-heading bg-gradient-to-r from-[#070F2B] to-[#1B1A55] text-white fixed top-0 left-0 w-full p-5 z-50 shadow-lg">
-        <div className="container mx-auto flex justify-between items-center px-4">
+      <nav className="relative montserrat-heading bg-gradient-to-r from-[#070F2B] to-[#1B1A55] text-white w-full p-5 z-50 shadow-lg">
+        <div className="container mx-auto flex justify-around items-center px-4">
           {/* Logo */}
-          <div className="text-2xl font-bold">
+          <div className="text-2xl font-bold cursor-pointer" onClick={() => navigate("/")}>
             <span className="text-[#9290C3]">2</span>
             <span className="text-white">Code Daily</span>
           </div>
@@ -31,9 +29,11 @@ const Navbar = ({ setopenForm, openForm }) => {
 
           {/* Navigation Links */}
           <ul
-            className={`md:flex md:items-center absolute md:static bg-black md:bg-transparent left-0 w-full h-screen md:w-auto text-center transition-all duration-500 ease-in-out z-40 ${
-              menuOpen ? "top-0 opacity-100 p-20" : "-top-96 opacity-0"
-            }`}
+            className={`${
+              menuOpen
+                ? "top-0 bg-black w-full h-fit p-5 pt-28"
+                : "-top-96"
+            } md:flex md:items-center absolute md:static left-0 w-full md:w-auto transition-all duration-300 ease-in z-40 text-center`}
           >
             <li className="mx-4 my-4 md:my-0">
               <Link
@@ -64,7 +64,7 @@ const Navbar = ({ setopenForm, openForm }) => {
             <li className="mx-4 my-4 md:my-0">
               <button
                 onClick={() => setopenForm(true)}
-                className="bg-blue-50 text-[#07071a] px-4 py-2 rounded-3xl hover:bg-white hover:text-[#1B1A55] transition duration-300"
+                className="bg-blue-50 text-[#07071a] px-4 py-2 rounded-3xl hover:text-[#6a64e1] transition duration-300"
               >
                 Sign In
               </button>
@@ -73,24 +73,22 @@ const Navbar = ({ setopenForm, openForm }) => {
         </div>
       </nav>
 
-      {/* Animated AuthModal */}
+      {/* Modal */}
       {openForm && (
-        <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 animate-fadeIn px-4 ">
-          <div className="bg-white text-black rounded-2xl shadow-2xl w-full  max-w-md p-6 relative animate-slideUp">
-            {/* Close Button */}
+        <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 animate-fadeIn px-4">
+          <div className="bg-white text-black rounded-2xl shadow-2xl w-full max-w-md p-6 relative animate-slideUp">
             <button
               onClick={() => setopenForm(false)}
               className="absolute top-4 right-4 text-gray-500 hover:text-black"
             >
               <FiX size={22} />
             </button>
-
             <AuthModal isOpen={openForm} onClose={() => setopenForm(false)} />
           </div>
         </div>
       )}
 
-      {/* Tailwind Keyframes (for animation) */}
+      {/* Tailwind Keyframes */}
       <style jsx>{`
         @keyframes fadeIn {
           0% {
