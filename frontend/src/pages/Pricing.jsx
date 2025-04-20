@@ -44,7 +44,7 @@ const Pricing = () => {
   return (
     <>
       <Navbar />
-      <div className="min-h-screen bg-gradient-to-r from-[#070F2B] to-[#1B1A55] flex flex-col items-center justify-center text-white px-4">
+      <div className="min-h-screen bg-gradient-to-r from-[#070F2B] to-[#1B1A55] flex flex-col items-center justify-center text-white px-4 pb-5">
         <h1 className="text-4xl font-bold mb-10 text-[#9290C3]">Choose Your Plan</h1>
 
         <div className="grid grid-cols-1 md:grid-cols-3 gap-8 max-w-6xl w-full">

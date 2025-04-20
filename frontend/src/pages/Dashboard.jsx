@@ -131,7 +131,7 @@ const Dashboard = () => {
         className={`fixed z-40 top-0 left-0 h-screen w-64 bg-gray-800 text-white transform ${sidebarOpen ? "translate-x-0" : "-translate-x-full"
           } lg:translate-x-0 transition-transform duration-300`}
       >
-        <Sidebar scrollToTop={scrollToTop} visible={visible} notify={notify} setShowSolved={setShowSolved} setProgressBar={setProgressBar} />
+        <Sidebar setSidebarOpen={setSidebarOpen} scrollToTop={scrollToTop} visible={visible} notify={notify} setShowSolved={setShowSolved} setProgressBar={setProgressBar} />
       </div>
 
       {/* Main Content */}

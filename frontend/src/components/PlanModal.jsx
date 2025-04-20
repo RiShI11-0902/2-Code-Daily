@@ -6,38 +6,35 @@ const PlanModal = ({ showModal, setShowModal, handlePayment, user }) => {
   const handleSelectPlan = (plan) => {
     setSelectedPlan(plan);
     handlePayment(user, plan);
-    setShowModal(false); // Close modal after selection
+    setShowModal(false);
   };
 
-  if (!showModal) return null; // If modal is not visible, don't render
+  if (!showModal) return null;
 
   return (
-    <div className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50 z-50">
-      <div className="bg-white rounded-lg w-96 p-6">
-        <h2 className="text-xl font-semibold text-center mb-4">Choose Your Plan</h2>
+    <div className="fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-60 px-4">
+      <div className="bg-[#070F2B] text-white w-full max-w-md rounded-xl p-6 shadow-2xl border border-[#1B1A55]">
+        <h2 className="text-2xl font-bold text-center text-[#9290C3] mb-6">Choose Your Plan</h2>
+
         <div className="space-y-4">
-          <button
-            onClick={() => handleSelectPlan('Starter')}
-            className="w-full p-3 bg-blue-600 text-white rounded-md hover:bg-blue-700"
-          >
-            Starter - ₹200
-          </button>
-          <button
-            onClick={() => handleSelectPlan('Pro')}
-            className="w-full p-3 bg-blue-600 text-white rounded-md hover:bg-blue-700"
-          >
-            Pro - ₹500
-          </button>
-          <button
-            onClick={() => handleSelectPlan('Elite')}
-            className="w-full p-3 bg-blue-600 text-white rounded-md hover:bg-blue-700"
-          >
-            Elite - ₹1000
-          </button>
+          {[
+            { name: 'Starter', price: '₹200' },
+            { name: 'Pro', price: '₹500' },
+            { name: 'Elite', price: '₹1000' },
+          ].map((plan) => (
+            <button
+              key={plan.name}
+              onClick={() => handleSelectPlan(plan.name)}
+              className="w-full py-3 rounded-lg bg-[#1B1A55] hover:bg-[#535C91] transition-all duration-200 text-white font-semibold"
+            >
+              {plan.name} - {plan.price}
+            </button>
+          ))}
         </div>
+
         <button
           onClick={() => setShowModal(false)}
-          className="mt-4 w-full p-3 bg-gray-300 text-black rounded-md hover:bg-gray-400"
+          className="mt-6 w-full py-3 rounded-lg bg-gray-200 text-gray-800 hover:bg-gray-300 transition-all duration-200 font-semibold"
         >
           Cancel
         </button>

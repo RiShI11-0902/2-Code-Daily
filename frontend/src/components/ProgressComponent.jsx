@@ -33,14 +33,15 @@ const ProgressComponent = () => {
     const getProgress = async () => {
         try {
             const { data } = await axios.post(`${import.meta.env.VITE_BACKEND_BASE_URL}/user/getProgress`, { id: user._id });
-            setAvg(data.average);
-            console.log(data);
+
+            if(!data.average) setAvg(data.average);
 
             setProgressData(data.progressData);  // Store full progress data
             updateChart(data.progressData); // Initially set full data in chart
             setLoading(false)
         } catch (error) {
             console.log(error);
+            setError(error.response?.data?.message || "Something went wrong");
         }
     };
 
@@ -171,7 +172,7 @@ const ProgressComponent = () => {
 
             {
                 showAnalysis.show &&
-                <div className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50 p-4 h-full">
+                <div className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50 p-4 h-fit">
                     <div className="bg-[#070F2B] shadow-lg rounded-lg max-w-4xl w-full p-6 relative text-white">
 
                         {/* Close Button */}

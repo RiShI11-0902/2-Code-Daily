@@ -120,7 +120,10 @@ export default function AuthModal({ isOpen, onClose }) {
                         type="submit"
                         className="w-full py-3 rounded-xl bg-blue-400 text-black font-semibold hover:bg-gray-200 transition"
                     >
-                        {isLogin && !loading ? "Sign In" : "Register"}
+                        {
+                            !loading && (isLogin ? "Sign In" : "Register")
+                        }
+                        {/* {isLogin && !loading ? "Sign In" : "Register"} */}
                         {loading && <Loader className="mx-auto animate-spin flex items-center justify-center" />}
                     </button>
                 </form>
