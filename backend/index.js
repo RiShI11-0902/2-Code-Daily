@@ -16,7 +16,7 @@ const userRoute = require("./routes/user");
 
 const allowedOrigins = [
   "https://leetcode.com",
-  "https://2-code-daily.netlify.app",
+  "https://2codedaily.com",
 ];
 
 connect();
