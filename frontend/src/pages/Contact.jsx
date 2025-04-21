@@ -6,7 +6,7 @@ const ContactSection = () => {
         <>
 
             <Navbar />
-            <section className="min-h-screen bg-gradient-to-r from-[#070F2B] to-[#1B1A55] text-white px-6 py-20">
+            <section className=" min-h-screen bg-gradient-to-r from-[#070F2B] to-[#1B1A55] text-white px-6 py-20">
                 <div className="max-w-4xl mx-auto bg-white/5 backdrop-blur-md p-10 rounded-2xl shadow-xl space-y-6">
                     <h2 className="text-3xl font-bold border-b border-white/20 pb-4 mb-4">📩 Contact Us</h2>
 
