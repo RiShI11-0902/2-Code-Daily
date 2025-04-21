@@ -12,6 +12,7 @@ import { PrivacyPolicy } from './pages/PrivacyPolicy'
 import { ShippingPolicy } from './pages/ShippingPolicy'
 import { TermsConditions } from './pages/TermsConditions'
 import ContactSection from './pages/Contact'
+import AboutUs from './pages/About'
 
 function App() {
   return (
@@ -21,6 +22,7 @@ function App() {
           <Route path='/' element={<HomePage />} />
           <Route path='/pricing' element={<Pricing />} />
           <Route path='/refunds' element={<CancellationRefunds />} />
+          <Route path='/about-us' element={<AboutUs />} />
           <Route path='/privacy-policy' element={<PrivacyPolicy />} />
           <Route path='/shipping' element={<ShippingPolicy />} />
           <Route path='/terms-conditions' element={<TermsConditions />} />

@@ -41,10 +41,18 @@ const Navbar = ({ setopenForm, openForm }) => {
               >
                 Home
               </Link>
+            </li> 
+            <li>
+            <Link
+                to="/about-us"
+                className="text-[#9290C3] hover:text-[#535C91] transition duration-300"
+              >
+                About us
+              </Link>
             </li>
             <li className="mx-4 my-4 md:my-0">
               <Link
-                to="/Contact-us"
+                to="/contact-us"
                 className="text-[#9290C3] hover:text-[#535C91] transition duration-300"
               >
                 Contact Us

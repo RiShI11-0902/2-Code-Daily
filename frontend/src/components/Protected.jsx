@@ -2,6 +2,7 @@ import React, { useEffect, useState } from "react";
 import { Navigate } from "react-router-dom";
 import axios from "axios";
 import useUserStore from "../store/store";
+import { Loader } from "lucide-react";
 
 const Protected = ({ children }) => {
     const [authenticate, setAuthenticate] = useState(null); // null for loading state
@@ -34,7 +35,7 @@ const Protected = ({ children }) => {
     }, []);
 
     if (authenticate === null) {
-        return <div>Loading...</div>; // Loading state
+        return <div className="w-fit"><Loader className="mx-auto flex items-center justify-center text-white w-20" /></div>; // Loading state
     }
 
     if (!authenticate) {
