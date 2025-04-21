@@ -51,7 +51,7 @@ const Sidebar = ({ setSidebarOpen, scrollToTop, notify, setShowSolved, setProgre
             }} className="text-lg font-semibold hover:bg-gray-800 rounded-md p-2 cursor-pointer transition duration-200">
               Progress
             </li>
-            <li onClick={() => (user.isSubscribed ? notify() : setShowModal(true))} className="text-lg font-semibold hover:bg-gray-800 rounded-md p-2 cursor-pointer transition duration-200">
+            <li onClick={() => (user.isSubscribed ? notify() : navigate('/pricing'))} className="text-lg font-semibold hover:bg-gray-800 rounded-md p-2 cursor-pointer transition duration-200">
               Go Premium
             </li>
             <li onClick={logout} className="text-lg font-semibold hover:bg-gray-800 rounded-md p-2 cursor-pointer transition duration-200">
