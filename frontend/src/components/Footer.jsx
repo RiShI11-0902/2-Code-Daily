@@ -54,7 +54,7 @@ export const Footer = () => {
       {/* Contact Us Section */}
       <div className="text-center md:text-left">
         <h3 className="text-xl font-semibold mb-4 text-[#9290C3]">Contact Us</h3>
-        <p className="text-[#535C91]">Email: <a href="mailto:support@2codedaily.com" className="hover:text-lavender transition">support@2codedaily.com</a></p>
+        <p className="text-[#535C91]">Email: <a href="mailto:contact2codedaily@gmail.com" className="hover:text-lavender transition">contact2codedaily@gmail.com</a></p>
         <p className="text-[#535C91]">Support Hours: Mon–Fri, 10 AM – 6 PM IST</p>
       </div>
     </div>
