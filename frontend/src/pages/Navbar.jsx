@@ -30,8 +30,8 @@ const Navbar = ({ setopenForm, openForm }) => {
           {/* Navigation Links */}
           <ul
             className={`${menuOpen
-                ? "top-0 bg-black w-full h-fit p-5 pt-28"
-                : "-top-96"
+              ? "top-0 bg-black w-full h-fit p-5 pt-28"
+              : "-top-96"
               } md:flex md:items-center absolute md:static left-0 w-full md:w-auto transition-all duration-300 ease-in z-40 text-center`}
           >
             <li className="mx-4 my-4 md:my-0">
@@ -43,7 +43,7 @@ const Navbar = ({ setopenForm, openForm }) => {
               </Link>
             </li>
             <li className="mx-4 my-4 md:my-0">
-            <Link
+              <Link
                 to="/Contact-us"
                 className="text-[#9290C3] hover:text-[#535C91] transition duration-300"
               >
@@ -69,13 +69,28 @@ const Navbar = ({ setopenForm, openForm }) => {
               </li>
             )}
             <li className="mx-4 my-4 md:my-0">
-              <button
-                onClick={() => setopenForm(true)}
-                className="bg-blue-50 text-[#07071a] px-4 py-2 rounded-3xl hover:text-[#6a64e1] transition duration-300"
-              >
-                Sign In
-              </button>
+              {user ? (
+                user.image ? (
+                  <img
+                    src={user.image}
+                    alt={user.name}
+                    className="w-10 h-10 rounded-full object-cover border-2 border-white"
+                  />
+                ) : (
+                  <div className="w-10 h-10 rounded-full bg-blue-500 text-white flex items-center justify-center font-semibold text-lg uppercase">
+                    {user.name?.charAt(0)}
+                  </div>
+                )
+              ) : (
+                <button
+                  onClick={() => setopenForm(true)}
+                  className="bg-blue-50 text-[#07071a] px-4 py-2 rounded-3xl hover:text-[#6a64e1] transition duration-300"
+                >
+                  Sign In
+                </button>
+              )}
             </li>
+
           </ul>
         </div>
       </nav>
