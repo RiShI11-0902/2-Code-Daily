@@ -57,7 +57,7 @@ const HomePage = () => {
         <>
             <Navbar setopenForm={setopenForm} openForm={openForm} />
 
-            <section id='herosection' className='bg-gradient-to-r from-[#070F2B] to-[#1B1A55] min-h-screen flex items-center justify-center px-4'>
+            <section id='herosection' className='bg-gradient-to-r from-[#070F2B] to-[#1B1A55] min-h-screen flex items-center justify-center px-4 -mt-10'>
                 <div className='font-extrabold space-y-6 text-center'>
                     <h1 className='montserrat-heading text-4xl sm:text-5xl md:text-6xl lg:text-7xl text-[#9290C3]'>Practice LeetCode Like a Pro</h1>
                     <p className='text-base sm:text-lg md:text-2xl text-[#535C91]'>"Turn LeetCode problems into interactive mock interviews."</p>
