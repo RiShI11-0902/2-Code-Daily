@@ -35,7 +35,7 @@ const Protected = ({ children }) => {
     }, []);
 
     if (authenticate === null) {
-        return <div className="w-fit"><Loader className="mx-auto flex items-center justify-center text-white w-20" /></div>; // Loading state
+        return <div className="w-full"><Loader className="mx-auto flex items-center justify-center text-white w-20 animate-spin" /></div>; // Loading state
     }
 
     if (!authenticate) {

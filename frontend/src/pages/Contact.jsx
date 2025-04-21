@@ -24,7 +24,12 @@ const ContactSection = () => {
                                 contact2codedaily@gmail.com
                             </a>
                         </div>
-
+                        <div>
+                            <span className="font-semibold text-white">📍 Operational Address:</span>
+                            <p className="text-[#A5B4FC] hover:underline">
+                                Opp. Gadikhana Ground, Dhoble Gali, Model Mill Sq. Nagpur, Maharashtra, 440032
+                            </p>
+                        </div>
                         <div>
                             <span className="font-semibold text-white">🌐 Platform:</span>{" "}
                             Fully remote – Serving coders globally 🌍

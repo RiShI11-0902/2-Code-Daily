@@ -19,7 +19,7 @@ const AboutUs = () => {
                     </div>
 
                     {/* Main Content */}
-                    <div className="p-8 md:p-12 space-y-12">
+                    <div className="md:p-12 space-y-12">
                         {/* Mission & Vision + Extension Info in Two Columns */}
                         <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
                             {/* Why I Created */}
