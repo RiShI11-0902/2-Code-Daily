@@ -29,11 +29,10 @@ const Navbar = ({ setopenForm, openForm }) => {
 
           {/* Navigation Links */}
           <ul
-            className={`${
-              menuOpen
+            className={`${menuOpen
                 ? "top-0 bg-black w-full h-fit p-5 pt-28"
                 : "-top-96"
-            } md:flex md:items-center absolute md:static left-0 w-full md:w-auto transition-all duration-300 ease-in z-40 text-center`}
+              } md:flex md:items-center absolute md:static left-0 w-full md:w-auto transition-all duration-300 ease-in z-40 text-center`}
           >
             <li className="mx-4 my-4 md:my-0">
               <Link
@@ -41,6 +40,14 @@ const Navbar = ({ setopenForm, openForm }) => {
                 className="text-[#9290C3] hover:text-[#535C91] transition duration-300"
               >
                 Home
+              </Link>
+            </li>
+            <li className="mx-4 my-4 md:my-0">
+            <Link
+                to="/Contact-us"
+                className="text-[#9290C3] hover:text-[#535C91] transition duration-300"
+              >
+                Contact Us
               </Link>
             </li>
             <li className="mx-4 my-4 md:my-0">
