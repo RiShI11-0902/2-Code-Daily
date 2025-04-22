@@ -90,42 +90,52 @@ exports.analyzeAndGeneratePlan = async (req, res) => {
   try {
     const { id } = req.body;
 
-    const sevenDaysAgo = new Date();
-    sevenDaysAgo.setDate(sevenDaysAgo.getDate() - 7);    
+    const user = await User.findOne({ _id: id })
+      .populate("solvedQuestions")
+      .select("-password");
 
-    const user = await User.findOne({ _id: id }).populate("solvedQuestions").select("-password");
+    const solvedQuestions = user?.solvedQuestions || [];
 
-    const recentQuestions = user?.solvedQuestions?.filter((q) => {
-      return new Date(q.createdAt) >= sevenDaysAgo;
-    });
+    // Sort by createdAt (oldest to newest)
+    solvedQuestions.sort((a, b) => new Date(a.createdAt) - new Date(b.createdAt));
 
-    if (recentQuestions?.length == 0) {
-      res.status(400).json({ message: "You have not Solved any Question Recently" });
-      return;
+    const totalSolved = solvedQuestions.length;
+    const lastAnalyzedCount = user.lastAnalyzedCount || 0;
+    const newQuestionsCount = totalSolved - lastAnalyzedCount;
+
+    if (newQuestionsCount < 10) {
+      return res.status(400).json({
+        message: `Not enough new questions solved since last analysis. Only ${newQuestionsCount} new solved.`,
+      });
     }
 
-    const extractText = (str)=>{
-      let strIndex = str.indexOf('?') + 1
-      let end = str.indexOf('\n', strIndex)
-      return str.substring(strIndex,end).trim()
-    }
+    // Get the next 10 questions to analyze
+    const newBatch = solvedQuestions.slice(lastAnalyzedCount, lastAnalyzedCount + 10);
 
-    const userProgress = recentQuestions.map((q)=>({
+    const extractText = (str) => {
+      let strIndex = str.indexOf("?") + 1;
+      let end = str.indexOf("\n", strIndex);
+      return str.substring(strIndex, end).trim();
+    };
+
+    const userProgress = newBatch.map((q) => ({
       question: extractText(q.problem),
       feedback: q.feedback,
-      correctness: q.correctness
-    }))
-  //  console.log(userProgress.map((i)=> i)); 
+      correctness: q.correctness,
+    }));
+
     const prompt = `
-        This is the progress ${JSON.stringify(userProgress,null,2)} of last seven days of coding interview given by the user. your task is to analyze this data and create a future plan for the user on what they have to study and focus on which topics and also the difficult level of the problems they should solve. make it like a feedback don't just name the topics and make the feedback acheivable in seven days for the user. also include the time and days they should give them make it personalize to them.
+      This is the progress ${JSON.stringify(userProgress, null, 2)} of coding interviews attempted by the user. 
+      Your task is to analyze this data and create a future plan on what they should study, focus areas, and 
+      problem difficulty level. Make the feedback personalized and achievable
 
-        IMPORTANT: Give your response in json with the following keys:
-        1) topics: contains the name of topics they have to study in future as an string only in detail.
-        2) focus: contains the focus area e.g focus on efficieny,optimixation etc in string only
-        3) difficult: contains the difficult level of problem to solve in string in string
+      IMPORTANT: Give your response in JSON with the following keys:
+      1) topics: contains the name of topics they have to study in future as a string only in detail.
+      2) focus: contains the focus area e.g focus on efficiency, optimization etc in string only.
+      3) difficult: contains the difficulty level of problems to solve in string only.
 
-        Give your response in JSON only format with the keys given above only
-      `;
+      Respond with JSON only.
+    `;
 
     const aiAnalyze = await chatSession.sendMessage(prompt);
     const markUpJSON = aiAnalyze.response
@@ -136,18 +146,26 @@ exports.analyzeAndGeneratePlan = async (req, res) => {
 
     const finalJson = JSON.parse(markUpJSON);
 
-    console.log(finalJson);
+    // Store the analysis
+    user.improvements.push({ analysis: finalJson, dateCreated: Date.now() });
 
-    user?.improvements?.push({ analysis: finalJson, dateCreated: Date.now() });
+    // Update the last analyzed count
+    user.lastAnalyzedCount = lastAnalyzedCount + 10;
 
-    await user.save()
+    await user.save();
 
-    res.status(200).json({messsage:"Generated", analysis: finalJson, dateCreated: Date.now(), user: user })
+    res.status(200).json({
+      message: "Analysis Generated",
+      analysis: finalJson,
+      dateCreated: Date.now(),
+      user,
+    });
   } catch (error) {
     console.log(error);
-    res.status(400).json({ message: error });
+    res.status(400).json({ message: error.message });
   }
 };
+
 
 exports.checked_question = (req,res)=>{
   try {

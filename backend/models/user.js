@@ -26,6 +26,8 @@ const userSchema = new Schema({
     },
   ],
 
+  lastAnalyzedCount: {type: Number, default: 0},
+
   payments: [
     {
       order_id: { type: String, required: true },

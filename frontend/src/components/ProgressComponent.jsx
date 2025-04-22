@@ -26,7 +26,7 @@ const ProgressComponent = () => {
     const [analyzing, setAnalyzing] = useState()
     const [error, setError] = useState()
 
-    const { user , userData} = useUserStore();
+    const { user, userData } = useUserStore();
 
     // console.log(user?.improvements[0].dateCreated.split('T')[0]);
     ////https://two-code-daily-1.onrender.com   http://localhost:5000
@@ -34,7 +34,7 @@ const ProgressComponent = () => {
         try {
             const { data } = await axios.post(`${import.meta.env.VITE_BACKEND_BASE_URL}/user/getProgress`, { id: user._id });
 
-            if(!data.average) setAvg(data.average);
+            if (!data.average) setAvg(data.average);
 
             setProgressData(data.progressData);  // Store full progress data
             updateChart(data.progressData); // Initially set full data in chart
@@ -87,43 +87,33 @@ const ProgressComponent = () => {
     };
 
     const analyze = async () => {
-        const hasNoImprovements = user?.improvements.length === 0;
 
-        let lastUpdate = null;
-        let newUpdate = null;
+        try {
+            const totalSolved = user?.solvedQuestions?.length || 0;
+            const lastAnalyzedCount = user?.lastAnalyzedCount || 0;
 
-        if (!hasNoImprovements) {
-            lastUpdate = new Date(user.improvements[0].dateCreated);
-            newUpdate = new Date(lastUpdate);
-            newUpdate.setDate(newUpdate.getDate() + 7);
-        }
+            const shouldCallAPI = totalSolved - lastAnalyzedCount >= 10;
 
-        const shouldCallAPI = hasNoImprovements || (newUpdate && Date.now() >= newUpdate.getTime());
+            if (shouldCallAPI) {
+                setAnalyzing(true);
+                try {
+                    const res = await axios.post(`${import.meta.env.VITE_BACKEND_BASE_URL}/user/analyze-progress`, { id: user._id });
 
-        if (shouldCallAPI) {
-            setAnalyzing(true);
-            try {
-                const res = await axios.post(`${import.meta.env.VITE_BACKEND_BASE_URL}/user/analyze-progress`, { id: user._id });
-
-                setShowAnalysis({
-                    show: true,
-                    data: res?.data?.analysis
-                });
-                userData(res?.data?.user)
-            } catch (error) {
-                console.error(error);
-                setError(error.response?.data?.message || "Something went wrong");
-            } finally {
-                setAnalyzing(false);
+                    setShowAnalysis({
+                        show: true,
+                        data: res?.data?.analysis
+                    });
+                    userData(res?.data?.user)
+                } catch (error) {
+                    console.error(error);
+                    setError(error.response?.data?.message || "Something went wrong");
+                } finally {
+                    setAnalyzing(false);
+                }
             }
-        } else {
-            // No need to call API, just show previous analysis
-            setUpdate({
-                lastDate: lastUpdate,
-                newDate: newUpdate,
-                show: false
-            });
-
+        } catch (error) {
+            setError(error?.response?.data?.message)
+        } finally {
             setShowAnalysis({
                 show: true,
                 data: user.improvements[0]?.analysis
@@ -137,11 +127,18 @@ const ProgressComponent = () => {
             <section className="flex flex-col items-center w-full p-4 space-y-10">
                 {/* Stats Section */}
                 <div className="w-full flex flex-col md:flex-row justify-center items-center space-y-4 md:space-y-0 md:space-x-10">
-                    {
-                        user?.solvedQuestions?.length > 0 && <div className="text-[#3d37ef] text-lg bg-[#ababf5] p-3 rounded-2xl w-52 max-w-xs text-center shadow-md flex flex-col items-center">
-                            <button onClick={analyze} className="text-lg font-bold">{analyzing ? "Analyzing.." : "Analyze Progress"}</button>
+                    {user?.selectedPlan === 'Elite' && user?.solvedQuestions?.length > 0 ? (
+                        <div className="text-[#3d37ef] text-lg bg-[#ababf5] p-3 rounded-2xl w-52 max-w-xs text-center shadow-md flex flex-col items-center">
+                            <button onClick={analyze} className="text-lg font-bold">
+                                {analyzing ? "Analyzing.." : "Analyze Progress"}
+                            </button>
                         </div>
-                    }
+                    ) : (
+                        <div className="text-gray-500 text-sm bg-gray-100 p-3 rounded-2xl w-52 max-w-xs text-center shadow-sm flex flex-col items-center">
+                            <p className="font-medium">Analyzing only for Elite users</p>
+                        </div>
+                    )}
+
 
                     <div className="text-[#635efc] text-lg bg-[#e6e6eb] p-3 rounded-2xl w-full max-w-xs text-center shadow-md">
                         Interview Given: <span className="text-xl font-bold">{user?.solvedQuestions?.length}</span>
@@ -194,9 +191,6 @@ const ProgressComponent = () => {
                             )}
                             {user.improvements.length === 0 && (
                                 <span>No previous analysis found</span>
-                            )}
-                            {!update.show && update?.newDate && (
-                                <span>New Update will be on: {update.newDate.toDateString()}</span>
                             )}
                         </div>
 
