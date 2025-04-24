@@ -9,7 +9,7 @@ exports.getProblem = async (req, res) => {
 
     const findUser = await User.findOne({ email: email });
 
-    if (findUser.freeInterview == 3 && !findUser.isSubscribed) {
+    if (findUser.freeInterview == 0 && !findUser.isSubscribed) {
       res.status(200).json({
         message: "You have Completed Your Free Trial Please Subscribed!",
       });
@@ -120,8 +120,6 @@ Follow this structured approach:
       .replace(/```/, "")
       .replace(/```$/, "");
 
-    console.log(markUpJSON);
-
     const finalJson = JSON.parse(markUpJSON);
 
     if (finalJson.next_question) {
@@ -132,7 +130,7 @@ Follow this structured approach:
       cuurInterview.correctness = finalJson.correctness;
       cuurInterview.answers.push(answer);
       if (!user.isSubscribed) {
-        user.freeInterview += 1;
+        user.freeInterview -= 1;
       } else {
         const lastPayment = user.payments[user.payments.length - 1];
         lastPayment.usedInterviews += 1;
