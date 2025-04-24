@@ -5,7 +5,7 @@ import PlanModal from './PlanModal';
 import useUserStore from '../store/store';
 import axios from 'axios';
 
-const Sidebar = ({ setSidebarOpen, scrollToTop, notify, setShowSolved, setProgressBar }) => {
+const Sidebar = ({ setSidebarOpen, scrollToTop, notify, setShowSolved, setProgressBar, setUserProfile }) => {
   const { user } = useUserStore();
   const [showModal, setShowModal] = useState(false);
   const navigate = useNavigate();
@@ -42,17 +42,22 @@ const Sidebar = ({ setSidebarOpen, scrollToTop, notify, setShowSolved, setProgre
               setShowSolved(true);
               setProgressBar(false);
               setSidebarOpen(false)
+              setUserProfile(false)
             }} className="text-lg font-semibold hover:bg-gray-800 rounded-md p-2 cursor-pointer transition duration-200">
               Solved
             </li>
             <li onClick={() => {
               setSidebarOpen(false)
               setProgressBar(true)
+              setUserProfile(false)
             }} className="text-lg font-semibold hover:bg-gray-800 rounded-md p-2 cursor-pointer transition duration-200">
               Progress
             </li>
             <li onClick={() => (user.isSubscribed ? notify() : navigate('/pricing'))} className="text-lg font-semibold hover:bg-gray-800 rounded-md p-2 cursor-pointer transition duration-200">
               Go Premium
+            </li>
+            <li onClick={()=>setUserProfile(true)} className="text-lg font-semibold hover:bg-gray-800 rounded-md p-2 cursor-pointer transition duration-200">
+              Account
             </li>
             <li onClick={logout} className="text-lg font-semibold hover:bg-gray-800 rounded-md p-2 cursor-pointer transition duration-200">
               Log Out

@@ -1,13 +1,12 @@
 import React, { useState, useEffect, useRef } from "react";
-import Navbar from "./Navbar";
 import Sidebar from "../components/Sidebar";
 import QuestionBox from "../components/QuestionBox";
-import QuestionDetails from "../components/QuestionDetails";
 import useUserStore from "../store/store";
 import { X, AlignJustify } from 'lucide-react'
 import ProgressComponent from "../components/ProgressComponent";
 import { ToastContainer, toast } from "react-toastify";
 import InterviewPage from "./InterviewPage";
+import UserProfile from "./UserProfile";
 
 const Dashboard = () => {
   const [questions, setQuestions] = useState();
@@ -15,7 +14,7 @@ const Dashboard = () => {
   const [showSolved, setShowSolved] = useState(false);
   const [sidebarOpen, setSidebarOpen] = useState(false);
   const [progressBar, setProgressBar] = useState(false)
-  const [visible, setVisible] = useState()
+  const [userProfile, setUserProfile] = useState(false)
   const [remainInterview, setRemainInterview] = useState()
 
   const scrollContainerRef = useRef(null);
@@ -131,7 +130,7 @@ const Dashboard = () => {
         className={`fixed z-40 top-0 left-0 h-screen w-64 bg-gray-800 text-white transform ${sidebarOpen ? "translate-x-0" : "-translate-x-full"
           } lg:translate-x-0 transition-transform duration-300`}
       >
-        <Sidebar setSidebarOpen={setSidebarOpen} scrollToTop={scrollToTop} visible={visible} notify={notify} setShowSolved={setShowSolved} setProgressBar={setProgressBar} />
+        <Sidebar setSidebarOpen={setSidebarOpen} scrollToTop={scrollToTop} notify={notify} setShowSolved={setShowSolved} setProgressBar={setProgressBar} setUserProfile={setUserProfile}/>
       </div>
 
       {/* Main Content */}
@@ -176,6 +175,11 @@ const Dashboard = () => {
               />
             ))}
         </div>}
+
+
+        {
+          userProfile && <UserProfile setUserProfile={setUserProfile}/>
+        }
 
       </div>
     </div>
