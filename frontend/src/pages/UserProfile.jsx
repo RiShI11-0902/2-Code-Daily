@@ -2,7 +2,7 @@ import React from 'react';
 import { X } from 'lucide-react';
 import useUserStore from '../store/store';
 
-const UserProfile = ({ setUserProfile }) => {
+const UserProfile = ({ setViewState }) => {
 
     // const { user } = useUserStore()
     // if (!user) return null;
@@ -89,7 +89,7 @@ const UserProfile = ({ setUserProfile }) => {
                 {/* Close Button */}
                 <button
                     className="absolute top-4 right-4 text-white hover:text-gray-300"
-                    onClick={() => setUserProfile(false)}
+                    onClick={() => setViewState('questions')}
                 >
                     <X size={20} />
                 </button>

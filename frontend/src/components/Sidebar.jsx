@@ -1,80 +1,126 @@
-import React, { useState } from 'react';
-import { Link, useNavigate } from 'react-router-dom'; // ✅ fix the import
+import React from 'react';
+import { Link, useNavigate } from 'react-router-dom';
 import handlePayment from '../utils/paymentFunction';
 import PlanModal from './PlanModal';
 import useUserStore from '../store/store';
 import axios from 'axios';
+import { toast } from 'react-toastify';
 
-const Sidebar = ({ setSidebarOpen, scrollToTop, notify, setShowSolved, setProgressBar, setUserProfile }) => {
-  const { user } = useUserStore();
-  const [showModal, setShowModal] = useState(false);
+const Sidebar = ({ 
+  setSidebarOpen, 
+  scrollToTop, 
+  notify, 
+  showSolvedView, 
+  showProgressView, 
+  showProfileView, 
+  showQuestionsView 
+}) => {
+  const { user, removeUser } = useUserStore();
+  const [showModal, setShowModal] = React.useState(false);
   const navigate = useNavigate();
 
-  const logout = async () => {
+  const handleLogout = async () => {
     try {
-      const res = await axios.get(`${import.meta.env.VITE_BACKEND_BASE_URL}/auth/logout`, { withCredentials: true });
+      const res = await axios.get(
+        `${import.meta.env.VITE_BACKEND_BASE_URL}/auth/logout`, 
+        { withCredentials: true }
+      );
+      
       if (res.status === 200) {
-        useUserStore.getState().removeUser();
+        removeUser();
+        toast.success('Logged out successfully');
+        navigate('/');
       }
-      navigate('/');
     } catch (error) {
-      console.log(error);
+      console.error('Logout error:', error);
+      toast.error('Failed to logout. Please try again.');
     }
   };
 
+  const handleNavigation = (action) => {
+    action();
+    setSidebarOpen(false);
+  };
+
+  const menuItems = [
+    {
+      name: 'Coding Sheet',
+      action: showQuestionsView,
+      testId: 'coding-sheet-btn'
+    },
+    {
+      name: 'Solved',
+      action: showSolvedView,
+      testId: 'solved-btn'
+    },
+    {
+      name: 'Progress',
+      action: showProgressView,
+      testId: 'progress-btn'
+    },
+    {
+      name: 'Go Premium',
+      action: () => user?.isSubscribed ? notify() : navigate('/pricing'),
+      testId: 'premium-btn'
+    },
+    {
+      name: 'Account',
+      action: showProfileView,
+      testId: 'account-btn'
+    },
+    {
+      name: 'Log Out',
+      action: handleLogout,
+      testId: 'logout-btn'
+    }
+  ];
+
   return (
     <>
-      {/* Sidebar */}
-      <section className="sidebar fixed montserrat-heading h-screen w-64 bg-gray-900 text-white z-40">
+      <section 
+        className="sidebar fixed h-screen w-64 bg-gray-900 text-white z-40"
+        aria-label="Main navigation"
+      >
         <div className="p-4">
-          <Link to={"/"} className="text-2xl text-[#9290C3] font-semibold p-2 cursor-pointer transition duration-200">
+          <Link 
+            to="/" 
+            className="text-2xl text-[#9290C3] font-semibold p-2 cursor-pointer transition duration-200 hover:text-white"
+            aria-label="Home"
+          >
             2Code Daily
           </Link>
+          
           <ul className="space-y-4 flex flex-col mt-5 text-[#535C91]">
-            <li onClick={() => {
-              setShowSolved(false);
-              setProgressBar(false);
-              setSidebarOpen(false)
-            }} className="text-lg font-semibold hover:bg-gray-800 rounded-md p-2 cursor-pointer transition duration-200">
-              Coding Sheet
-            </li>
-            <li onClick={() => {
-              setShowSolved(true);
-              setProgressBar(false);
-              setSidebarOpen(false)
-              setUserProfile(false)
-            }} className="text-lg font-semibold hover:bg-gray-800 rounded-md p-2 cursor-pointer transition duration-200">
-              Solved
-            </li>
-            <li onClick={() => {
-              setSidebarOpen(false)
-              setProgressBar(true)
-              setUserProfile(false)
-            }} className="text-lg font-semibold hover:bg-gray-800 rounded-md p-2 cursor-pointer transition duration-200">
-              Progress
-            </li>
-            <li onClick={() => (user.isSubscribed ? notify() : navigate('/pricing'))} className="text-lg font-semibold hover:bg-gray-800 rounded-md p-2 cursor-pointer transition duration-200">
-              Go Premium
-            </li>
-            <li onClick={() => {
-              alert("snfdj")
-              setUserProfile(true)
-            }} className="text-lg font-semibold hover:bg-gray-800 rounded-md p-2 cursor-pointer transition duration-200">
-              Account
-            </li>
-            <li onClick={logout} className="text-lg font-semibold hover:bg-gray-800 rounded-md p-2 cursor-pointer transition duration-200">
-              Log Out
-            </li>
+            {menuItems.map((item) => (
+              <li
+                key={item.name}
+                onClick={() => handleNavigation(item.action)}
+                className="text-lg font-semibold hover:bg-gray-800 rounded-md p-2 cursor-pointer transition duration-200 hover:text-white"
+                data-testid={item.testId}
+                aria-label={item.name}
+              >
+                {item.name}
+              </li>
+            ))}
           </ul>
         </div>
-        <button onClick={scrollToTop} className="fixed bottom-4 right-4 bg-blue-600 text-white px-4 py-2 rounded-full shadow-lg">
+
+        <button 
+          onClick={scrollToTop} 
+          className="fixed bottom-4 right-4 bg-blue-600 text-white px-4 py-2 rounded-full shadow-lg hover:bg-blue-700 transition-colors"
+          aria-label="Scroll to top"
+        >
           ↑ Top
         </button>
       </section>
 
-      {/* ✅ Modal rendered outside the fixed sidebar */}
       {showModal && (
-        <PlanModal showModal={showModal} setShowModal={setShowModal} handlePayment={handlePayment} user={user} />
+        <PlanModal 
+          showModal={showModal} 
+          setShowModal={setShowModal} 
+          handlePayment={handlePayment} 
+          user={user} 
+        />
       )}
     </>
   );
