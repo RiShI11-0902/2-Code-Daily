@@ -56,7 +56,10 @@ const Sidebar = ({ setSidebarOpen, scrollToTop, notify, setShowSolved, setProgre
             <li onClick={() => (user.isSubscribed ? notify() : navigate('/pricing'))} className="text-lg font-semibold hover:bg-gray-800 rounded-md p-2 cursor-pointer transition duration-200">
               Go Premium
             </li>
-            <li onClick={()=>setUserProfile(true)} className="text-lg font-semibold hover:bg-gray-800 rounded-md p-2 cursor-pointer transition duration-200">
+            <li onClick={() => {
+              alert("snfdj")
+              setUserProfile(true)
+            }} className="text-lg font-semibold hover:bg-gray-800 rounded-md p-2 cursor-pointer transition duration-200">
               Account
             </li>
             <li onClick={logout} className="text-lg font-semibold hover:bg-gray-800 rounded-md p-2 cursor-pointer transition duration-200">

@@ -178,7 +178,7 @@ const Dashboard = () => {
 
 
         {
-          userProfile && <UserProfile setUserProfile={setUserProfile}/>
+          userProfile && !progressBar && !showSolved && <UserProfile setUserProfile={setUserProfile}/>
         }
 
       </div>
