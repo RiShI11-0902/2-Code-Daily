@@ -163,8 +163,9 @@ const Dashboard = () => {
               </select>
             </div>
             <div className="flex flex-col sm:grid-cols-2 lg:grid-cols-3 gap-5 pb-3">
-              {(filteredQuestions.length > 0 ? filteredQuestions : questions).map((question) => (
+              {(filteredQuestions.length > 0 ? filteredQuestions : questions).map((question,index) => (
                 <QuestionBox
+                index={index}
                   key={question.id}
                   question={question}
                 />

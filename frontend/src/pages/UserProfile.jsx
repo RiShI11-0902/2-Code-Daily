@@ -33,7 +33,7 @@ const UserProfile = ({ setViewState }) => {
                 {/* Plan Info */}
                 <div className="mt-6 text-center space-y-1">
                     <h3 className="text-lg font-semibold">Plan: {user.selectedPlan || "Free"}</h3>
-                    <p>Subscribed: {user.isSubscribed ? "✅ Yes" : "❌ No"}</p>
+                    <p>Subscribed: {user.isSubscribed ? "Yes" : "No"}</p>
                     <p>Free Interviews Left: {user.freeInterview}</p>
                     {user.lastPaymentAmount && (
                         <p>Last Payment: ₹{user.lastPaymentAmount}</p>
