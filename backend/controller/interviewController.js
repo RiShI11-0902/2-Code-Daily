@@ -9,8 +9,11 @@ exports.getProblem = async (req, res) => {
 
     const findUser = await User.findOne({ email: email });
 
+    console.log(findUser);
+    
+
     if (findUser.freeInterview == 0 && !findUser.isSubscribed) {
-      res.status(200).json({
+      res.status(400).json({
         message: "You have Completed Your Free Trial Please Subscribed!",
       });
       return;

@@ -29,7 +29,7 @@ router
           window.close();
         </script>
       `);
-    //   res.send(200).json({success: true});
+      //   res.send(200).json({success: true});
     }
   )
   .get("/isLoggedIn", verifyToken, async (req, res) => {
@@ -38,6 +38,8 @@ router
       if (!user) {
         return res.status(401).json({ message: "User not found" });
       }
+      console.log(req.user);
+      
       return res.status(200).json({ message: "Success", data: user });
     } catch (error) {
       console.error("Error verifying user:", error);
@@ -45,7 +47,7 @@ router
     }
   })
   .post("/register", authController.registerUser)
-.post("/login", authController.loginUser)
+  .post("/login", authController.loginUser)
   .get("/logout", authController.logout);
 
 module.exports = router;
