@@ -1,83 +1,101 @@
-import React, { useState, useEffect, useRef } from "react";
+import React, { useState, useEffect, useRef, useCallback } from "react";
 import Sidebar from "../components/Sidebar";
 import QuestionBox from "../components/QuestionBox";
 import useUserStore from "../store/store";
-import { X, AlignJustify } from 'lucide-react'
+import { X, AlignJustify } from 'lucide-react';
 import ProgressComponent from "../components/ProgressComponent";
 import { ToastContainer, toast } from "react-toastify";
 import InterviewPage from "./InterviewPage";
 import UserProfile from "./UserProfile";
 
-const Dashboard = () => {
-  const [questions, setQuestions] = useState();
-  const [filteredQuestions, setFilteredQuestions] = useState();
-  const [showSolved, setShowSolved] = useState(false);
-  const [sidebarOpen, setSidebarOpen] = useState(false);
-  const [progressBar, setProgressBar] = useState(false)
-  const [userProfile, setUserProfile] = useState(false)
-  const [remainInterview, setRemainInterview] = useState()
+// Constants
+const TOAST_CONFIG = {
+  position: "top-center",
+  autoClose: 5000,
+  hideProgressBar: false,
+  closeOnClick: true,
+  pauseOnHover: true,
+  draggable: true,
+  theme: "light",
+  transition: "Bounce"
+};
 
+// Types (if using TypeScript, these would be interfaces)
+// type ViewState = 'questions' | 'progress' | 'profile' | 'solved';
+
+const Dashboard = () => {
+  // State management
+  const [questions, setQuestions] = useState([]);
+  const [filteredQuestions, setFilteredQuestions] = useState([]);
+  const [sidebarOpen, setSidebarOpen] = useState(false);
+  const [viewState, setViewState] = useState('questions'); // 'questions', 'progress', 'profile', 'solved'
+  const [remainInterview, setRemainInterview] = useState(0);
+
+  // Refs
   const scrollContainerRef = useRef(null);
 
-  const scrollToTop = () => {
-    console.log(scrollContainerRef.current);
-    
-    if (scrollContainerRef.current) {
-      scrollContainerRef.current.scrollTo({ top: 0, behavior: 'smooth' });
-    }
-  };
-
-
+  // Store
   const { user, solvedQ } = useUserStore();
 
+  // Derived state
+  const showSolved = viewState === 'solved';
+  const progressBar = viewState === 'progress';
+  const userProfile = viewState === 'profile';
 
-  useEffect(() => {
-    if (user?.payments.length > 0) {
-     const lastPayment = user.payments[user.payments.length - 1];
-     const remain = lastPayment.totalInterviews - lastPayment.usedInterviews;
-     setRemainInterview(remain)
-    }
+  // Handlers
+  const scrollToTop = useCallback(() => {
+    scrollContainerRef.current?.scrollTo({ top: 0, behavior: 'smooth' });
   }, []);
-  
 
-  const notify = () => toast.success(`You have ${remainInterview} Interviews Remaining`, {
-    position: "top-center",
-    autoClose: 5000,
-    hideProgressBar: false,
-    closeOnClick: true,
-    pauseOnHover: true,
-    draggable: true,
-    progress: undefined,
-    theme: "light",
-    transition: "Bounce",
-  });
+  const notify = useCallback(() => {
+    toast.success(`You have ${remainInterview} Interviews Remaining`, TOAST_CONFIG);
+  }, [remainInterview]);
 
+  const toggleSidebar = useCallback(() => {
+    setSidebarOpen(prev => !prev);
+  }, []);
+
+  // Data fetching
   useEffect(() => {
-    fetch("./questions.json")
-      .then((res) => res.json())
-      .then((data) => {
+    const fetchQuestions = async () => {
+      try {
+        const response = await fetch("./questions.json");
+        const data = await response.json();
         const uniqueQuestions = data?.filter(
           (item, index, self) => index === self.findIndex((q) => q.id === item.id)
         );
-        setQuestions(uniqueQuestions);
-      })
-      .catch((err) => console.error(err));
+        setQuestions(uniqueQuestions || []);
+        setFilteredQuestions(uniqueQuestions || []);
+      } catch (err) {
+        console.error("Failed to fetch questions:", err);
+        toast.error("Failed to load questions", TOAST_CONFIG);
+      }
+    };
+
+    fetchQuestions();
   }, []);
 
+  // Payment calculations
+  useEffect(() => {
+    if (user?.payments?.length > 0) {
+      const lastPayment = user.payments[user.payments.length - 1];
+      setRemainInterview(lastPayment.totalInterviews - lastPayment.usedInterviews);
+    }
+  }, [user]);
 
-  const handleSearch = (e) => {
+  // Search and filter handlers
+  const handleSearch = useCallback((e) => {
     const searchValue = e.target.value.toLowerCase();
+    
     if (!searchValue) {
       setFilteredQuestions(questions);
       return;
     }
 
     if (showSolved) {
-      console.log("Called this one");
-
-      const filteredSolved = user?.solvedQuestions?.filter((q) => {
-        q.problem.toLowerCase(searchValue);
-      });
+      const filteredSolved = user?.solvedQuestions?.filter((q) => 
+        q.problem.toLowerCase().includes(searchValue)
+      ) || [];
       setFilteredQuestions(filteredSolved);
       return;
     }
@@ -86,101 +104,116 @@ const Dashboard = () => {
       q.title.toLowerCase().includes(searchValue)
     );
     setFilteredQuestions(filtered);
+  }, [questions, showSolved, user?.solvedQuestions]);
 
-  }
-
-  const handleFilter = (e) => {
+  const handleFilter = useCallback((e) => {
     const value = e.target.value;
+    let filtered = questions;
+
     if (value === "solved") {
-      setFilteredQuestions(
-        questions.filter((q) => solvedQ.includes(q.id))
-      );
+      filtered = questions.filter((q) => solvedQ.includes(q.id));
     } else if (value === "unsolved") {
-      setFilteredQuestions(
-        questions.filter((q) => !solvedQ.includes(q.id))
-      );
-    } else {
-      setFilteredQuestions(questions);
+      filtered = questions.filter((q) => !solvedQ.includes(q.id));
+    }
+
+    setFilteredQuestions(filtered);
+  }, [questions, solvedQ]);
+
+  // View state handlers
+  const showQuestionsView = () => setViewState('questions');
+  const showProgressView = () => setViewState('progress');
+  const showProfileView = () => setViewState('profile');
+  const showSolvedView = () => setViewState('solved');
+
+  // Render functions
+  const renderMainContent = () => {
+    switch (viewState) {
+      case 'progress':
+        return <ProgressComponent />;
+      case 'profile':
+        return <UserProfile setViewState={setViewState} />;
+      case 'solved':
+        return user?.solvedQuestions?.length > 0 ? (
+          <InterviewPage />
+        ) : (
+          <p className="text-center text-gray-500 col-span-full">
+            No solved questions yet.
+          </p>
+        );
+      case 'questions':
+      default:
+        return (
+          <>
+            <div className="flex flex-col sm:flex-row justify-center sm:justify-between items-center space-y-4 sm:space-y-0 mb-8">
+              <input
+                type="text"
+                placeholder="Search questions..."
+                className="px-5 py-3 w-full sm:w-1/2 rounded-xl border border-gray-300 focus:outline-none focus:ring-2 focus:ring-blue-500"
+                onChange={handleSearch}
+                aria-label="Search questions"
+              />
+              <select
+                className="p-3 bg-gray-800 text-white rounded-xl focus:outline-none focus:ring-2 focus:ring-blue-500"
+                onChange={handleFilter}
+                aria-label="Filter questions"
+              >
+                <option value="all">All</option>
+                <option value="solved">Solved</option>
+                <option value="unsolved">Unsolved</option>
+              </select>
+            </div>
+            <div className="flex flex-col sm:grid-cols-2 lg:grid-cols-3 gap-5 pb-3">
+              {(filteredQuestions.length > 0 ? filteredQuestions : questions).map((question) => (
+                <QuestionBox
+                  key={question.id}
+                  question={question}
+                />
+              ))}
+            </div>
+          </>
+        );
     }
   };
 
   return (
-    <div className="flex flex-col lg:flex-row h-screen ">
-      <ToastContainer
-        position="top-center"
-        autoClose={5000}
-        hideProgressBar={false}
-        newestOnTop
-        closeOnClick
-        rtl={false}
-        pauseOnFocusLoss
-        draggable
-        pauseOnHover
-        theme="light"
-        transition={"Bounce"}
-      />
+    <div className="flex flex-col lg:flex-row h-screen">
+      <ToastContainer {...TOAST_CONFIG} />
+      
       {/* Sidebar */}
       <button
-        className="lg:hidden bg-gray-800 text-white p-3 w-fit fixed top-2 left-2  z-50 rounded-md"
-        onClick={() => setSidebarOpen(!sidebarOpen)}
+        className="lg:hidden bg-gray-800 text-white p-3 w-fit fixed top-2 left-2 z-50 rounded-md"
+        onClick={toggleSidebar}
+        aria-label="Toggle sidebar"
       >
-        {sidebarOpen ? <X className="w-5 h-5 fixed top-5 left-52" /> : <AlignJustify className="w-5 h-5" />}
+        {sidebarOpen ? (
+          <X className="w-5 h-5 fixed top-5 left-52" />
+        ) : (
+          <AlignJustify className="w-5 h-5" />
+        )}
       </button>
+      
       <div
-        className={`fixed z-40 top-0 left-0 h-screen w-64 bg-gray-800 text-white transform ${sidebarOpen ? "translate-x-0" : "-translate-x-full"
-          } lg:translate-x-0 transition-transform duration-300`}
+        className={`fixed z-40 top-0 left-0 h-screen w-64 bg-gray-800 text-white transform ${
+          sidebarOpen ? "translate-x-0" : "-translate-x-full"
+        } lg:translate-x-0 transition-transform duration-300`}
       >
-        <Sidebar setSidebarOpen={setSidebarOpen} scrollToTop={scrollToTop} notify={notify} setShowSolved={setShowSolved} setProgressBar={setProgressBar} setUserProfile={setUserProfile}/>
+        <Sidebar
+          setSidebarOpen={setSidebarOpen}
+          scrollToTop={scrollToTop}
+          notify={notify}
+          showSolvedView={showSolvedView}
+          showProgressView={showProgressView}
+          showProfileView={showProfileView}
+          showQuestionsView={showQuestionsView}
+        />
       </div>
 
       {/* Main Content */}
-      <div className="flex-1 ml-0 mt-20 md:mt-0 lg:ml-64 p-4 lg:p-10 overflow-y-auto  h-[100vh]" ref={scrollContainerRef} >
-        {/* Search and Filter */}
-        {
-          progressBar && <ProgressComponent />
-        }
-
-        {
-          !progressBar && !showSolved && <div className="flex flex-col sm:flex-row justify-center sm:justify-between items-center space-y-4 sm:space-y-0 mb-8">
-            <input
-              type="text"
-              placeholder="Search questions..."
-              className="px-5 py-3 w-full sm:w-1/2 rounded-xl border border-gray-300 focus:outline-none focus:ring-2 focus:ring-blue-500"
-              onChange={handleSearch}
-            />
-            <select
-              className="p-3 bg-gray-800 text-white rounded-xl focus:outline-none focus:ring-2 focus:ring-blue-500"
-              onChange={handleFilter}
-            >
-              <option value="all">All</option>
-              <option value="solved">Solved</option>
-              <option value="unsolved">Unsolved</option>
-            </select>
-          </div>
-        }
-
-        {/* Question List */}
-        {!progressBar && 
-        <div 
-          className="flex flex-col sm:grid-cols-2 lg:grid-cols-3 gap-5 pb-3 ">
-          {showSolved
-            ? user?.solvedQuestions?.length > 0
-              ? <InterviewPage/>
-              : <p className="text-center text-gray-500 col-span-full">No solved questions yet.</p>
-            : (filteredQuestions || questions)?.map((question, index) => (
-              <QuestionBox
-                key={index}
-                question={question}
-                index={index}
-              />
-            ))}
-        </div>}
-
-
-        {
-          userProfile && !progressBar && !showSolved && <UserProfile setUserProfile={setUserProfile}/>
-        }
-
+      <div
+        className="flex-1 ml-0 mt-20 md:mt-0 lg:ml-64 p-4 lg:p-10 overflow-y-auto h-[100vh]"
+        ref={scrollContainerRef}
+      >
+        {renderMainContent()}
       </div>
     </div>
   );
