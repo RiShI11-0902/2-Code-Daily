@@ -4,7 +4,7 @@ const crypto = require("node:crypto");
 
 exports.getKey = async = (req, res) => {
   try {
-    res.status(200).json({ key: process.env.RAZORPAY_TEST_ID });
+    res.status(200).json({ key: process.env.RAZORPAY_KEY_ID });
   } catch (error) {
     console.log(error);
   }
