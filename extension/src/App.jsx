@@ -21,7 +21,7 @@ function App() {
   return (
     <div id="box">
       <h1>Welcome to 2Code Daily</h1>
-      <p className="tagline">Ace your coding interviews with AI-powered LeetCode solutions!</p>
+      <p className="tagline">Ace your coding interviews with AI-powered LeetCode mock Interview!</p>
 
       <p>Sign In on our Website First: <a href="https://2codedaily.com" target="_blank" style={{ color: 'white' }}>2 Code Daily</a> </p>
 
@@ -50,7 +50,7 @@ function App() {
       <footer className="cta-section">
         <input type="email" onChange={(e) => setEmail(e.target.value)} placeholder="Enter same email you entered on our website." />
         <div id='btns'>
-          <button onClick={handleSubmit}>{loading ? "Registering..." : "Register Email"}</button>
+          <button className="text-white" onClick={handleSubmit}>{loading ? "Registering..." : "Register Email"}</button>
           <button class="cta-button"> <a href="https://2codedaily.com" target="_blank" style={{ color: 'white' }}>Unlock Premium Features</a></button>
         </div>
       </footer>
