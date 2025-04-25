@@ -7,10 +7,13 @@ exports.getProblem = async (req, res) => {
   try {
     const { problem, email } = req.body;
 
-    const findUser = await User.findOne({ email: email });
-
-    console.log(findUser);
+    const findUser = await User.findOne({ email: email });   
     
+    if (!findUser) {
+      res.status(400).json({
+        message: "We are not able to find your email please register on extension or on website",
+      });
+    }
 
     if (findUser.freeInterview == 0 && !findUser.isSubscribed) {
       res.status(400).json({
@@ -20,8 +23,6 @@ exports.getProblem = async (req, res) => {
     }
 
     const lastPayment = findUser.payments[findUser.payments.length - 1];
-
-      
 
     if (!lastPayment || lastPayment.status != 'Paid') {
       return res
