@@ -16,7 +16,6 @@ const PaymentSuccess = () => {
       setPaymentId(referenceid);
     }
     console.log(referenceid);
-    console.log(expiryDate);
     
   }, []);
 
