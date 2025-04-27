@@ -24,7 +24,7 @@ exports.checkout = async (req, res) => {
 
     // Plan-based pricing in paise (₹1 = 100 paise)
     const pricing = {
-      Starter: 100,  // ₹200
+      Starter: 25000,// ₹250
       Pro: 50000,      // ₹500
       Elite: 100000    // ₹1000
     };
