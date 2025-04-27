@@ -127,7 +127,7 @@ const ProgressComponent = () => {
             <section className="flex flex-col items-center w-full p-4 space-y-10">
                 {/* Stats Section */}
                 <div className="w-full flex flex-col md:flex-row justify-center items-center space-y-4 md:space-y-0 md:space-x-10">
-                    {user?.selectedPlan === 'Elite' && user?.solvedQuestions?.length > 0 ? (
+                    {/* {user?.selectedPlan === 'Elite' && user?.solvedQuestions?.length > 0 ? (
                         <div className="text-[#3d37ef] text-lg bg-[#ababf5] p-3 rounded-2xl w-52 max-w-xs text-center shadow-md flex flex-col items-center">
                             <button onClick={analyze} className="text-lg font-bold">
                                 {analyzing ? "Analyzing.." : "Analyze Progress"}
@@ -137,7 +137,7 @@ const ProgressComponent = () => {
                         <div className="text-gray-500 text-sm bg-gray-100 p-3 rounded-2xl w-52 max-w-xs text-center shadow-sm flex flex-col items-center">
                             <p className="font-medium">Analyzing only for Elite users</p>
                         </div>
-                    )}
+                    )} */}
 
 
                     <div className="text-[#635efc] text-lg bg-[#e6e6eb] p-3 rounded-2xl w-full max-w-xs text-center shadow-md">
