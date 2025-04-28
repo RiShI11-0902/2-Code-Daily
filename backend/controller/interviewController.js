@@ -8,40 +8,44 @@ exports.getProblem = async (req, res) => {
   try {
     const { problem, email } = req.body;
 
-    const user = await User.findOne({ email: email });
+    const user = await User.findOne({ email: email }); 
+    
+    console.log(user);
 
-    if (!user) {
+    if (!user) {      
       res.status(400).json({
         message: "We are not able to find your email please register on extension or on website",
       });
+      return
     }
 
-    if (user.freeInterview == 0 && !user.isSubscribed) {
+    if (user.freeInterview == 0 && user.isSubscribed) {
       res.status(400).json({
         message: "You have Completed Your Free Trial Please Subscribed!",
       });
       return;
     }
 
-    const lastPayment = findUser.payments[findUser.payments.length - 1];
+    const lastPayment = user.payments[user.payments.length - 1];
 
-    if (!lastPayment || lastPayment.status != 'Paid') {
-      return res
+    if (lastPayment &&  lastPayment.status != 'Paid') {      
+       res
         .status(400)
         .json({ message: "No active plan found, please subscribe." });
+        return
     }
 
-    if (lastPayment.usedInterviews >= lastPayment.totalInterviews) {
-      return res
-        .status(200)
+    if ( lastPayment && lastPayment.usedInterviews >= lastPayment.totalInterviews) {
+       res
+        .status(400)
         .json({ message: "You have used all interviews in your plan." });
+        return
     }
 
     const question = startInterview(problem)
 
     const aiResponse = await chatSession.sendMessage(question);
 
-    
     const markupJson = aiResponse.response
       .text()
       .replace(/```json/, "")
@@ -49,9 +53,10 @@ exports.getProblem = async (req, res) => {
       .replace(/```$/, "");
 
     const finalJson = JSON.parse(markupJson);
-    
-    
-    if (user) {
+
+    console.log(finalJson);
+
+   
       if (user.isSubscribed || user.freeInterview <= 3) {
         const newInterview = new Interview();
         newInterview.problem = problem;
@@ -68,9 +73,6 @@ exports.getProblem = async (req, res) => {
           .status(400)
           .json({ message: "Internal Server Error" });
       }
-    } else {
-      res.status(401).json({ message: "User is Not Registered" });
-    }
   } catch (error) {
     res.status(400).json({ message: error });
   }
