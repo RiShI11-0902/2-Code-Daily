@@ -10,7 +10,6 @@ exports.getProblem = async (req, res) => {
 
     const user = await User.findOne({ email: email });
 
-    
     if (!user) {
       res.status(400).json({
         message: "We are not able to find your email please register on extension or on website",
@@ -38,25 +37,25 @@ exports.getProblem = async (req, res) => {
         .json({ message: "You have used all interviews in your plan." });
     }
 
-    // const prompt = `You are an expert coding interviewer working in an faang and taking an interview of the user. you have to ask this ${problem} to the user in a short concise way as an real person who takes the interview, ask the user for their initial thought process only not any coding or anything. give them an small example  Give your output in json format with question as a single key  `;
-    // const aiResponse = await chatSession.sendMessage(prompt);
-
-    // const markupJson = aiResponse.response
-    //   .text()
-    //   .replace(/```json/, "")
-    //   .replace(/```/, "")
-    //   .replace(/```$/, "");
-
-    // const finalJson = JSON.parse(markupJson);
-
     const question = startInterview(problem)
 
+    const aiResponse = await chatSession.sendMessage(question);
 
+    
+    const markupJson = aiResponse.response
+      .text()
+      .replace(/```json/, "")
+      .replace(/```/, "")
+      .replace(/```$/, "");
+
+    const finalJson = JSON.parse(markupJson);
+    
+    
     if (user) {
       if (user.isSubscribed || user.freeInterview <= 3) {
         const newInterview = new Interview();
         newInterview.problem = problem;
-        newInterview.questions.push(question);
+        newInterview.questions.push(finalJson.question);
         newInterview.createdAt = Date.now();
         user.solvedQuestions.push(newInterview.id);
 
