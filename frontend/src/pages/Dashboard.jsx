@@ -48,7 +48,7 @@ const Dashboard = () => {
   }, []);
 
   const notify = useCallback(() => {
-    toast.success(`You have ${remainInterview} Interviews Remaining`, TOAST_CONFIG);
+    toast.success(`You have ${remainInterview} ${user?.isSubscribed ? '' : 'Free'} Interviews Remaining`, TOAST_CONFIG);
   }, [remainInterview]);
 
   const toggleSidebar = useCallback(() => {

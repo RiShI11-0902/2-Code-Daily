@@ -21,7 +21,7 @@ const HomePage = () => {
     console.log("Backend URL:", import.meta.env.VITE_BACKEND_BASE_URL);
 
 
-   
+
     ///https://two-code-daily.onrender.com
     useEffect(() => {
         const timer = setTimeout(() => {
@@ -61,27 +61,17 @@ const HomePage = () => {
                 <div className='font-extrabold space-y-6 text-center'>
                     <h1 className='montserrat-heading text-4xl sm:text-5xl md:text-6xl lg:text-7xl text-[#9290C3]'>Practice LeetCode Like a Pro</h1>
                     <p className='text-base sm:text-lg md:text-2xl text-[#535C91]'>"Turn LeetCode problems into interactive mock interviews."</p>
-
-                    <form onSubmit={handleSubmit} className="space-y-4 sm:space-y-0 flex flex-col sm:flex-row sm:items-center sm:justify-center gap-4 items-center justify-center">
-                        <input
-                            type="email"
-                            placeholder="Enter your email"
-                            value={email}
-                            onChange={(e) => setEmail(e.target.value)}
-                            required
-                            className="w-full sm:w-80 p-3 border border-[#535C91] bg-[#070F2B] text-white rounded-lg focus:ring-2 focus:ring-[#535C91] outline-none"
-                        />
-                        <button
-                            type="submit"
-                            className="w-full sm:w-40 bg-[#535C91] text-white font-bold py-2 rounded-lg hover:bg-[#9290C3] transition"
-                        >
-                            {loading ? <Loader className='animate-spin mx-auto' /> : "Notify Me"}
-                        </button>
-                    </form>
-
-                    {visible && <p className="text-white font-semibold">{message}</p>}
+                    <a
+                        href="https://chromewebstore.google.com/detail/2-code-daily/eamejmihabhegokmlajmahmpgkfadphl"
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className='inline-block mt-4 px-6 py-3 text-white bg-[#535C91] hover:bg-[#6b74b0] rounded-2xl text-lg font-semibold transition duration-300'
+                    >
+                        🚀 Get the Extension
+                    </a>
                 </div>
             </section>
+
 
             <section id="how-it-works" class="text-[#9290C3] py-16 text-center -mt-20 montserrat-heading">
                 <div class="container mx-auto">
@@ -219,7 +209,7 @@ const HomePage = () => {
                 </div>
             </div> */}
 
-<Footer />
+            <Footer />
 
         </>
     )
