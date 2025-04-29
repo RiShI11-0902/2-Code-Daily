@@ -71,7 +71,7 @@ const HomePage = () => {
                     </a>
                 </div>
             </section>
-            
+
             <section id="how-it-works" class="text-[#9290C3] py-16 text-center -mt-20 montserrat-heading">
                 <div class="container mx-auto">
                     {/* <!-- Title --> */}
@@ -103,8 +103,8 @@ const HomePage = () => {
                             <div class="flex items-center justify-center bg-slateBlue text-[#9290C3] w-12 h-12 rounded-full mx-auto mb-4 text-4xl">
                                 3
                             </div>
-                            <h3 class="text-lg font-bold text-lavender mb-2">Enter Your Email</h3>
-                            <p class="text-[#535C91]">Provide your email for updates.</p>
+                            <h3 class="text-lg font-bold text-lavender mb-2">Enter Your Email in Extension</h3>
+                            <p class="text-[#535C91]">Provide your email for Starting.</p>
                         </div>
 
 
@@ -141,7 +141,7 @@ const HomePage = () => {
                     {/* Price Section */}
                     <div className=" text-[#9290C3] flex items-center justify-center w-full md:w-1/3 p-8">
                         <div className="text-center">
-                            <h2 className=" text-8xl md:text-[10rem] font-extrabold text-[#9290C3] leading-none">₹200</h2>
+                            <h2 className=" text-8xl md:text-[10rem] font-extrabold text-[#9290C3] leading-none">₹250</h2>
                             <p className="text-lg text-[#535C91] mt-2">/ month Starter </p>
                         </div>
                     </div>
