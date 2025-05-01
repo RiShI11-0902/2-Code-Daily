@@ -28,8 +28,6 @@ const ProgressComponent = () => {
 
     const { user, userData } = useUserStore();
 
-    // console.log(user?.improvements[0].dateCreated.split('T')[0]);
-    ////https://two-code-daily-1.onrender.com   http://localhost:5000
     const getProgress = async () => {
         try {
             const { data } = await axios.post(`${import.meta.env.VITE_BACKEND_BASE_URL}/user/getProgress`, { id: user._id });
@@ -40,7 +38,6 @@ const ProgressComponent = () => {
             updateChart(data.progressData); // Initially set full data in chart
             setLoading(false)
         } catch (error) {
-            console.log(error);
             setError(error.response?.data?.message || "Something went wrong");
         }
     };
@@ -138,13 +135,11 @@ const ProgressComponent = () => {
                             <p className="font-medium">Analyzing only for Elite users</p>
                         </div>
                     )} */}
-
-
                     <div className="text-[#635efc] text-lg bg-[#e6e6eb] p-3 rounded-2xl w-full max-w-xs text-center shadow-md">
                         Interview Given: <span className="text-xl font-bold">{user?.solvedQuestions?.length}</span>
                     </div>
                     <div className="text-lg text-[#635efc] bg-[#e6e6eb] p-3 rounded-2xl w-full max-w-xs text-center shadow-md">
-                        Avg. Accuracy: <span className={`text-xl font-bold ${avg < 40 ? 'text-red-600' : (avg < 70 ? 'text-yellow-800' : 'text-green-700')}`}>{avg == NaN ? "0" : Number(avg?.toFixed(1))}%</span>
+                        Avg. Accuracy: <span className={`text-xl font-bold ${avg < 40 ? 'text-red-600' : (avg < 70 ? 'text-yellow-800' : 'text-green-700')}`}>{Number(avg?.toFixed(1))}%</span>
                     </div>
                 </div>
 
