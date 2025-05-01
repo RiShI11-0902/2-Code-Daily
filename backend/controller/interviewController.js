@@ -10,8 +10,6 @@ exports.getProblem = async (req, res) => {
 
     const user = await User.findOne({ email: email }); 
     
-    console.log(user);
-
     if (!user) {      
       res.status(400).json({
         message: "We are not able to find your email please register on extension or on website",
@@ -19,7 +17,7 @@ exports.getProblem = async (req, res) => {
       return
     }
 
-    if (user.freeInterview == 0 && user.isSubscribed) {
+    if (user.freeInterview == 0 && !user.isSubscribed) {
       res.status(400).json({
         message: "You have Completed Your Free Trial Please Subscribed!",
       });
