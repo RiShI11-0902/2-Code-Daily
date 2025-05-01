@@ -16,11 +16,9 @@ const InterviewPage = () => {
         try {
             const questions = await axios.post(`${import.meta.env.VITE_BACKEND_BASE_URL}/user/solvedQuestions`, { id: user._id}) /////68007fcf588386c12c02f0cf   
             setFetchedQuestion(questions.data.questions.solvedQuestions);  
-            console.log(questions.data.questions.solvedQuestions);
                       
             setLoading(false)
         } catch (error) {
-            console.log(error);
             setLoading(false)
         }
     }
@@ -34,6 +32,8 @@ const InterviewPage = () => {
 
     return (
         <>
+
+        <div className='flex flex-col mt-5 space-y-3'>
             {
                 fetchedQuestion?.slice().reverse().map((question, index) => (
                     <QuestionBox
@@ -44,6 +44,7 @@ const InterviewPage = () => {
                     />
                 ))
             }
+        </div>
 
             {/* Question Details Modal */}
             {showQuestion && (
