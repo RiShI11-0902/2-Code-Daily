@@ -32,7 +32,7 @@ const ProgressComponent = () => {
         try {
             const { data } = await axios.post(`${import.meta.env.VITE_BACKEND_BASE_URL}/user/getProgress`, { id: user._id });
 
-            if (!data.average) setAvg(data.average);
+            setAvg(data.average ?? 0);
 
             setProgressData(data.progressData);  // Store full progress data
             updateChart(data.progressData); // Initially set full data in chart
