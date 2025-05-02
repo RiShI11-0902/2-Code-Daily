@@ -7,19 +7,19 @@ const plans = [
   {
     name: 'Starter',
     price: 250,
-    interviews: '20 Mock Interviews per Month',
+    interviews: '20 Mock Interviews',
     description: 'Perfect for beginners who want steady progress.',
   },
   {
     name: 'Pro',
     price: 500,
-    interviews: '40 Mock Interviews per Month',
+    interviews: '40 Mock Interviews',
     description: 'Best for consistent daily learners.',
   },
   {
     name: 'Elite',
     price: 1000,
-    interviews: 'Unlimited',
+    interviews: '100 Mock Interviews ',
     description: 'Ideal for hardcore DSA grinders.',
   },
 ];
