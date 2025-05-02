@@ -3,8 +3,6 @@ import { X } from "lucide-react";
 import { motion } from "framer-motion";
 
 const QuestionDetails = ({ question, setShowQuestion }) => {
-    console.log(question);
-
     const [activeIndex, setActiveIndex] = useState(null);
 
     const toggle = (index) => {

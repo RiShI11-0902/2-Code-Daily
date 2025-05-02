@@ -3,6 +3,7 @@ import useUserStore from '../store/store'
 import QuestionDetails from '../components/QuestionDetails'
 import QuestionBox from '../components/QuestionBox'
 import axios from 'axios'
+import { Loader } from 'lucide-react'
 
 const InterviewPage = () => {
 
@@ -10,6 +11,7 @@ const InterviewPage = () => {
     const [loading, setLoading] = useState()
     const [fetchedQuestion, setFetchedQuestion] = useState()
     const [showQuestion, setShowQuestion] = useState();
+    const [error, setError] = useState()
 
     const getSolved = async () => {
         setLoading(true)
@@ -20,6 +22,7 @@ const InterviewPage = () => {
             setLoading(false)
         } catch (error) {
             setLoading(false)
+            setError(error.data.message)
         }
     }
 
@@ -34,8 +37,9 @@ const InterviewPage = () => {
         <>
 
         <div className='flex flex-col mt-5 space-y-3'>
+            { error && <p className='mt-10 text-red-500'>{error}</p>}
             {
-                fetchedQuestion?.slice().reverse().map((question, index) => (
+             loading ? <Loader className='mt-10 animate-spin w-28 flex items-center justify-center h-screen' /> :   fetchedQuestion?.slice().reverse().map((question, index) => (
                     <QuestionBox
                         key={index}
                         setShowQuestion={setShowQuestion}

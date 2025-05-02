@@ -16,10 +16,6 @@ const HomePage = () => {
     const [email, setEmail] = useState()
     const [loading, setLoading] = useState()
     const [duration, setduration] = useState(3000)
-    const [visible, setVisible] = useState(true);
-
-    console.log("Backend URL:", import.meta.env.VITE_BACKEND_BASE_URL);
-
 
    
     ///https://two-code-daily.onrender.com
@@ -35,11 +31,8 @@ const HomePage = () => {
     const handleSubmit = async (e) => {
         e.preventDefault();
         setLoading(true)
-        // if (!suggestion.trim()) return;
-        // console.log("Suggestion submitted:", { name, suggestion });
         try {
             const response = await axios.post("https://two-code-daily-1.onrender.com/user/email", { email })
-            console.log(response);
 
             if (response.status == 200) {
                 setMessage(response.data.message)
@@ -47,8 +40,6 @@ const HomePage = () => {
             }
         } catch (error) {
             setMessage(error.data.message)
-            console.log(error);
-
         }
 
     };

@@ -15,7 +15,6 @@ const PaymentSuccess = () => {
     if (referenceid) {
       setPaymentId(referenceid);
     }
-    console.log(referenceid);
     
   }, []);
 
