@@ -6,19 +6,19 @@ import handlePayment from '../utils/paymentFunction'; // Accepts `user` and `pla
 const plans = [
   {
     name: 'Starter',
-    price: 200,
+    price: 250,
     interviews: '20 Mock Interviews per Month',
     description: 'Perfect for beginners who want steady progress.',
   },
   {
     name: 'Pro',
-    price: 400,
+    price: 500,
     interviews: '40 Mock Interviews per Month',
     description: 'Best for consistent daily learners.',
   },
   {
     name: 'Elite',
-    price: 600,
+    price: 1000,
     interviews: 'Unlimited',
     description: 'Ideal for hardcore DSA grinders.',
   },

@@ -36,10 +36,10 @@ const InterviewPage = () => {
     return (
         <>
 
-        <div className='flex flex-col mt-5 space-y-3'>
+        <div className='flex flex-col mt-5 space-y-3 h-screen'>
             { error && <p className='mt-10 text-red-500'>{error}</p>}
             {
-             loading ? <Loader className=' animate-spin w-5 flex items-center justify-center h-screen' /> :   fetchedQuestion?.slice().reverse().map((question, index) => (
+             loading ? <Loader className=' animate-spin w-5 flex items-center justify-center ' /> :   fetchedQuestion?.slice().reverse().map((question, index) => (
                     <QuestionBox
                         key={index}
                         setShowQuestion={setShowQuestion}
