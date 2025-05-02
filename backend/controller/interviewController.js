@@ -17,7 +17,7 @@ exports.getProblem = async (req, res) => {
       return
     }
 
-    if (user.freeInterview == 0 && !user.isSubscribed) {
+    if (user.freeInterview <= 0 && !user.isSubscribed) {
       res.status(400).json({
         message: "You have Completed Your Free Trial Please Subscribed!",
       });
@@ -51,9 +51,6 @@ exports.getProblem = async (req, res) => {
       .replace(/```$/, "");
 
     const finalJson = JSON.parse(markupJson);
-
-    console.log(finalJson);
-
    
       if (user.isSubscribed || user.freeInterview <= 3) {
         const newInterview = new Interview();
@@ -125,10 +122,8 @@ exports.verifyEmail = async (req, res) => {
   try {
     const { email } = req.body;
     const verifedEmail = await User.findOne({ email: email });
-    // console.log(verifedEmail);
     res.json({ messsage: "user Verified start Practising Leetcode " });
   } catch (error) {
-    // console.log(error);
     res.json({ messsage: error });
   }
 };
