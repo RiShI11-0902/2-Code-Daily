@@ -7,4 +7,3 @@ exports.instance = new Razorpay({
     }
   });
   
-// instance.orders.all().then(console.log).catch(console.error);

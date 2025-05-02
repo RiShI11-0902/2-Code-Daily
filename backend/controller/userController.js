@@ -6,7 +6,6 @@ const Email = require("../models/emailSchema");
 const User = require("../models/user");
 
 exports.solvedQuestions = async (req, res) => {
-  console.log(req.body);
 
   const { id } = req.body;
 
@@ -16,14 +15,13 @@ exports.solvedQuestions = async (req, res) => {
   if (foundQuestions) {
     res.status(200).json({ questions: foundQuestions });
   } else {
-    res.status(200).json({ message: "Not correct" });
+    res.status(200).json({ message: "No questions Found" });
   }
 };
 
 exports.getProgress = async (req, res) => {
   try {
     const { id } = req.body;
-    console.log("id is" + id);
 
     const user = await User.findById(id).populate("solvedQuestions");
 
@@ -34,24 +32,17 @@ exports.getProgress = async (req, res) => {
     const totalCorrectness = user.solvedQuestions.reduce((sum, interview) => {
       return sum + ( (interview.correctness != undefined ? interview.correctness  : 0)  && interview.correctness);
     }, 0);
-
-    console.log(user.solvedQuestions.length, totalCorrectness);
     
     const avg = totalCorrectness / user.solvedQuestions.length;
 
     const progressData = user.solvedQuestions.map((interview) => ({
       date: interview.createdAt,
       correctness: interview.correctness,
-    }));
-
-    console.log(progressData);
-    
-
-    console.log(avg);
+    }));    
 
     res.status(200).json({ average: avg, progressData: progressData });
   } catch (error) {
-    console.log(error);
+    res.status(400).json({ error: error.message });    
   }
 };
 
@@ -65,12 +56,9 @@ exports.totalUsers = async (req, res) => {
 };
 
 exports.emails = async (req, res) => {
-  console.log("called");
 
   try {
     const { email } = req.body;
-
-    console.log(req.body);
 
     const newEmail = new Email({
       email
@@ -161,7 +149,6 @@ exports.analyzeAndGeneratePlan = async (req, res) => {
       user,
     });
   } catch (error) {
-    console.log(error);
     res.status(400).json({ message: error.message });
   }
 };

@@ -17,10 +17,6 @@ router
       session: true,
     }),
     (req, res) => {
-      console.log("✅ Google OAuth Success");
-      console.log("Session ID:", req.sessionID);
-      console.log("Cookie:", req.headers.cookie);
-      console.log("User:", req.user);
 
       generateToken(res, req.user._id);
       res.send(`
@@ -29,16 +25,15 @@ router
           window.close();
         </script>
       `);
-      //   res.send(200).json({success: true});
     }
   )
   .get("/isLoggedIn", verifyToken, async (req, res) => {
     try {
-      const user = await User.findById(req.userId).select("-password"); // Exclude password field if present
+      const user = await User.findById(req.userId).select("-password");
+      
       if (!user) {
         return res.status(401).json({ message: "User not found" });
       }
-      console.log(req.user);
       
       return res.status(200).json({ message: "Success", data: user });
     } catch (error) {

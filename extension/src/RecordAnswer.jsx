@@ -22,8 +22,6 @@ const RecordAnswer = ({ setQuestion, id, question, error, email }) => {
     continuous: true,
     useLegacyResults: false
   });
-  console.log(error);
-
   const extractCode = (userCodes) => {
     const tempDiv = document.createElement('div')
     tempDiv.innerHTML = userCodes
