@@ -1,9 +1,6 @@
 import React, { useEffect, useState } from 'react'
 import "../App.css"
 import Navbar from './Navbar'
-import { AiOutlineGoogle } from 'react-icons/ai'
-import handlePayment from '../utils/paymentFunction'// import from 'razo'
-import { Link } from 'react-router'
 import axios from 'axios'
 import { Loader } from 'lucide-react'
 import { time } from 'framer-motion'
