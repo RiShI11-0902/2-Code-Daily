@@ -13,7 +13,7 @@ const plans = [
   {
     name: 'Pro',
     price: 500,
-    interviews: '40 Mock Interviews',
+    interviews: '50 Mock Interviews',
     description: 'Best for consistent daily learners.',
   },
   {
