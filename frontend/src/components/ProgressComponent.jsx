@@ -46,11 +46,21 @@ const ProgressComponent = () => {
         getProgress();
     }, []);
 
-    // Function to filter and update chart data
     const updateChart = (data) => {
-        const labels = data.map((interview) => new Date(interview.date).toLocaleDateString());
-        const correctness = data.map((interview) => interview.correctness);
-
+        if (data.length === 0) {
+            setChartData({ labels: [], datasets: [] });
+            return;
+        }
+    
+        // Sort data by date ascending
+        const sortedData = [...data].sort((a, b) => new Date(a.date) - new Date(b.date));
+    
+        const labels = sortedData.map((interview) =>
+            new Date(interview.date).toLocaleDateString()
+        );
+    
+        const correctness = sortedData.map((interview) => interview.correctness);
+    
         setChartData({
             labels,
             datasets: [
@@ -59,12 +69,14 @@ const ProgressComponent = () => {
                     data: correctness,
                     borderColor: "rgb(54, 162, 235)",
                     backgroundColor: "rgba(54, 162, 235, 0.2)",
-                    tension: 0.4,
+                    tension: 0.4,  // Smooth line
+                    spanGaps: true  // Connect all points, ignoring gaps
                 }
             ]
         });
-        setLoading(false)
+        setLoading(false);
     };
+    
 
     // Handle date filtering
     const handleDateChange = (event) => {
