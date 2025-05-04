@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import Navbar from './Navbar';
 import useUserStore from '../store/store';
 import handlePayment from '../utils/paymentFunction'; // Accepts `user` and `plan`
+import { Loader } from 'lucide-react';
 
 const plans = [
   {
@@ -27,8 +28,9 @@ const plans = [
 const Pricing = () => {
   const { user } = useUserStore();
   const [error, setError] = useState('');
-
+  const [loading, setLoading] = useState(false)
   const handleClick = (planName) => {
+
     if (!user) {
       setError("Please register or log in first.");
       return;
@@ -37,8 +39,9 @@ const Pricing = () => {
       setError("You already have an active plan.");
       return;
     }
-
-    handlePayment(user, planName); // Modify this function to accept plan name
+    setLoading(true)
+    handlePayment(user, planName); 
+    setLoading(false)
   };
 
   return (
@@ -61,7 +64,10 @@ const Pricing = () => {
                 onClick={() => handleClick(plan.name)}
                 className="bg-[#535C91] hover:bg-[#9290C3] text-white py-2 px-6 rounded-lg transition"
               >
-                Get Started
+              {
+                loading ? <Loader className='animate-spin w-fit justify-center items-center text-white' /> : "Buy Now"
+              }
+                
               </button>
             </div>
           ))}
