@@ -30,16 +30,17 @@ const Pricing = () => {
   const [error, setError] = useState('');
   const [loading, setLoading] = useState(false)
   const handleClick = (planName) => {
-
+    setLoading(true)
     if (!user) {
       setError("Please register or log in first.");
+      setLoading(false)
       return;
     }
     if (user.isSubscribed) {
       setError("You already have an active plan.");
+      setLoading(false)
       return;
     }
-    setLoading(true)
     handlePayment(user, planName); 
     setLoading(false)
   };
