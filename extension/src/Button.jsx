@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import axios from 'axios'
 import "./css files/Button.css"
 import RecordAnswer from './RecordAnswer';
@@ -10,7 +10,10 @@ const Button = () => {
   const [box, setBox] = useState(false)
   const [question, setQuestion] = useState("")
   const [interviewId, setInterviewId] = useState(null)
-  const [error, setError] = useState(null)
+  const [error, setError] = useState({
+    type: null,
+    message: null,
+  })
   const [loading, setLoading] = useState(true)
   const [email, setEmail] = useState()
   const [isPaused, setIsPaused] = useState(false);
@@ -29,14 +32,15 @@ const Button = () => {
     const descriptionEle = document.querySelector('meta[name=description]')
     const problemState = descriptionEle?.getAttribute('content')
 
+
     setBox(true);
 
     chrome.runtime.sendMessage({ type: 'GET_EMAIL' }, async (response) => {
       if (response?.email) {
         setEmail(response.email);
-///http://localhost:5000/  https://two-code-daily-1.onrender.com
+        ///http://localhost:5000/  https://two-code-daily-1.onrender.com
         try {
-          const sendInterviewProblem = await axios.post("http://localhost:5000/api/getProblem", {
+          const sendInterviewProblem = await axios.post("https://two-code-daily-1.onrender.com/api/getProblem", {
             problem: problemState,
             email: response.email
           });
@@ -45,11 +49,17 @@ const Button = () => {
           setInterviewId(sendInterviewProblem?.data?.interview?._id);
           setLoading(false);
         } catch (error) {
-          setError(error.response?.data?.message || "Something went wrong");
+          setError({
+            message: error.response?.data?.message || 'Something Went Wrong',
+            type: error.response?.data?.type
+          });
           setLoading(false);
         }
       } else {
-        setError("Email not found");
+        setError({
+          message: "We did not got your email please enter your email in Extension",
+          type: 'Extension'
+        });
         setLoading(false);
       }
     });
@@ -62,18 +72,25 @@ const Button = () => {
   };
 
   const clickSpeak = () => {
+    const synth = window.speechSynthesis;
+
     if (isSpeaking && !isPaused) {
-      window.speechSynthesis.pause();
+      synth.pause();
       setIsPaused(true);
     } else if (isSpeaking && isPaused) {
-      window.speechSynthesis.resume();
+      synth.resume();
       setIsPaused(false);
-    } else {
+    }
+  };
+
+  useEffect(() => {
+    if (question) {
+      window.speechSynthesis.cancel();
       speak({ text: question });
       setIsSpeaking(true);
       setIsPaused(false);
     }
-  };
+  }, [question]);
 
   return (
     <>
@@ -84,58 +101,62 @@ const Button = () => {
       {
         box ?
 
-        <Draggable handle=".handle">
-  <div
-    style={{
-      width: '400px',
-      padding: '20px',
-      borderRadius: '12px',
-      position: 'fixed',
-      top: '20%',
-      left: '50%',
-      transform: 'translateX(-50%)',
-      backgroundColor: '#111',
-      zIndex: 1000,
-      boxShadow: '0 0 20px rgba(0,0,0,0.5)',
-    }}
-    className="text-white"
-  >
-    <div className="handle cursor-move text-center font-bold text-xl mb-4">Interview</div>
+          <Draggable handle=".handle">
+            <div
+              style={{
+                width: '400px',
+                padding: '20px',
+                borderRadius: '12px',
+                position: 'fixed',
+                top: '20%',
+                left: '50%',
+                transform: 'translateX(-50%)',
+                backgroundColor: '#111',
+                zIndex: 1000,
+                boxShadow: '0 0 20px rgba(0,0,0,0.5)',
+              }}
+              className="text-white"
+            >
+              <div className="handle cursor-move text-center font-bold text-xl mb-4">Interview</div>
 
-    <div className="mb-4">
-      <p>
-        {loading ? 'Loading...' : question}
-        <button className="ml-2" onClick={clickSpeak}>
-          {getIcon()}
-        </button>
-      </p>
-    </div>
+              <div className="mb-4">
+                <p>
+                  {loading ? 'Loading...' : question}
+                  <button className="ml-2" onClick={clickSpeak}>
+                    {getIcon()}
+                  </button>
+                </p>
+              </div>
 
-    <RecordAnswer
-      loading={loading}
-      setLoading={setLoading}
-      id={interviewId}
-      setQuestion={setQuestion}
-      question={question}
-      error={error}
-      email={email}
-    />
+              <RecordAnswer
+                loading={loading}
+                setLoading={setLoading}
+                id={interviewId}
+                setQuestion={setQuestion}
+                question={question}
+                error={error}
+                email={email}
+                setIsPaused={setIsPaused}
+                setIsSpeaking={setIsSpeaking}
+              />
 
-    <button
-      onClick={() => {
-        setBox(false);
-        setError(null);
-        setLoading(true);
-        setQuestion('');
-      }}
-      className="mt-6 px-4 py-2 bg-red-600 hover:bg-red-700 rounded-lg w-full font-semibold"
-    >
-      Close Interview
-    </button>
-  </div>
-</Draggable>
+              <button
+                onClick={() => {
+                  setBox(false);
+                  setError(null);
+                  setLoading(true);
+                  setQuestion('');
+                }}
+                className="mt-6 px-4 py-2 bg-red-600 hover:bg-red-700 rounded-lg w-full font-semibold"
+              >
+                Close Interview
+              </button>
+              <span>For any queires/suggestion email us at: contact2codedaily@gmail.com
+              </span>
+            </div>
+          </Draggable>
 
-        : ""
+          : ""
       }
     </>
 
