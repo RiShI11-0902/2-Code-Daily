@@ -25,6 +25,7 @@ const ProgressComponent = () => {
     })
     const [analyzing, setAnalyzing] = useState()
     const [error, setError] = useState()
+    const [solvedLen, setsolvedLen] = useState(0)
 
     const { user, userData } = useUserStore();
 
@@ -36,6 +37,7 @@ const ProgressComponent = () => {
 
             setProgressData(data.progressData);  // Store full progress data
             updateChart(data.progressData); // Initially set full data in chart
+            setsolvedLen(data.foundQuestions)
             setLoading(false)
         } catch (error) {
             setError(error.response?.data?.message || "Something went wrong");
@@ -148,7 +150,7 @@ const ProgressComponent = () => {
                         </div>
                     )} */}
                     <div className="text-[#635efc] text-lg bg-[#e6e6eb] p-3 rounded-2xl w-full max-w-xs text-center shadow-md">
-                        Interview Given: <span className="text-xl font-bold">{user?.solvedQuestions?.length}</span>
+                        Interview Given: <span className="text-xl font-bold">{solvedLen}</span>
                     </div>
                     <div className="text-lg text-[#635efc] bg-[#e6e6eb] p-3 rounded-2xl w-full max-w-xs text-center shadow-md">
                         Avg. Accuracy: <span className={`text-xl font-bold ${avg < 40 ? 'text-red-600' : (avg < 70 ? 'text-yellow-800' : 'text-green-700')}`}>{Number(avg?.toFixed(1))}%</span>

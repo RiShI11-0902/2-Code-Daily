@@ -43,7 +43,7 @@ exports.getProgress = async (req, res) => {
       correctness: interview.correctness,
     }));    
 
-    res.status(200).json({ average: avg, progressData: progressData });
+    res.status(200).json({ average: avg, progressData: progressData, foundQuestions: foundQuestions.length });
   } catch (error) {
     res.status(400).json({ error: error.message });    
   }
