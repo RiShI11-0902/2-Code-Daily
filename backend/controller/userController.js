@@ -1,8 +1,5 @@
 const { chatSession } = require("../aiConfig");
-const { generateToken } = require("../helpers/jwt");
-const Interview = require("../models/interviewSchema");
 const Email = require("../models/emailSchema");
-// const Email = require("../models/suggestionSchme");
 const User = require("../models/user");
 
 exports.solvedQuestions = async (req, res) => {

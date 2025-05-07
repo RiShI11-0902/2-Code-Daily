@@ -8,11 +8,14 @@ exports.getProblem = async (req, res) => {
   try {
     const { problem, email } = req.body;
 
-    const user = await User.findOne({ email: email }); 
+    console.log(email);
+
+    const user = await User.findOne({ email: email });
     
     if (!user) {      
       res.status(400).json({
-        message: "We are not able to find your email please register on extension or on website",
+        type:'Website',
+        message: "We are not able to find your email please register on website",
       });
       return
     }
