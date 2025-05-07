@@ -7,9 +7,6 @@ const { getAnswer, startInterview } = require("../utils/prompts");
 exports.getProblem = async (req, res) => {
   try {
     const { problem, email } = req.body;
-
-    console.log(email);
-
     const user = await User.findOne({ email: email });
     
     if (!user) {      
