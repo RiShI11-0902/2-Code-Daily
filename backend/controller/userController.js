@@ -6,8 +6,11 @@ exports.solvedQuestions = async (req, res) => {
 
   const { id } = req.body;
 
-  const foundQuestions = await User.findById(id).select('solvedQuestions')
+  const user = await User.findById(id)
+  .select('solvedQuestions')
   .populate('solvedQuestions');
+
+  const foundQuestions = user.solvedQuestions.filter(q => q.correctness && q.feedback)
 
   if (foundQuestions) {
     res.status(200).json({ questions: foundQuestions });
@@ -26,11 +29,14 @@ exports.getProgress = async (req, res) => {
       return res.status(401).json({ message: "user not found" });
     }
 
-    const totalCorrectness = user.solvedQuestions.reduce((sum, interview) => {
-      return sum + ( (interview.correctness != undefined ? interview.correctness  : 0)  && interview.correctness);
+    const foundQuestions = user.solvedQuestions.filter(q => q.correctness && q.feedback)
+
+    const totalCorrectness = foundQuestions.reduce((sum, interview) => {
+      return sum + interview.correctness
     }, 0);
+
     
-    const avg = totalCorrectness / user.solvedQuestions.length;
+    const avg = totalCorrectness / foundQuestions.length;
 
     const progressData = user.solvedQuestions.map((interview) => ({
       date: interview.createdAt,
