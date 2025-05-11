@@ -2,7 +2,7 @@
   "manifest_version": 3,
   "name": "2 Code Daily",
   "description": "Ace coding interviews with this AI-powered LeetCode extension. Practice mock interviews, track progress, and get smart insights!",
-  "version": "1.0.3",
+  "version": "1.1.0",
   "action": {
     "default_popup": "index.html"
   },

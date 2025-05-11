@@ -6,16 +6,15 @@ import { FaMicrophoneSlash } from "react-icons/fa";
 import axios from 'axios';
 import { handleSubmit } from './utils/storeEmail';
 
-const RecordAnswer = ({ setQuestion, id, question, error, email, setIsPaused, setIsSpeaking }) => {
+const RecordAnswer = ({ setQuestion, id, question, error, email, setIsPaused, setIsSpeaking, setisSubmitting, isSubmitting, timer }) => {
 
   const [editableText, setEditableText] = useState("")
   const [userCode, setUserCode] = useState()
   const [settingCode, setSettingCode] = useState(false)
-  const [issubmitting, setisSubmitting] = useState(null)
   const [endInterview, setendInterview] = useState(false)
   const [userEmail, setUserEmail] = useState()
-  const [loading, setLoading] = useState()
   const [correctNess, setCorrectNess] = useState()
+  const [isSaved, setIsSaved] = useState(false)
 
   const {
     isRecording,
@@ -47,10 +46,9 @@ const RecordAnswer = ({ setQuestion, id, question, error, email, setIsPaused, se
     }, 100);
   }
 
-
   const submitAnswer = async () => {
     setisSubmitting(true)
-    const response = await axios.post("https://two-code-daily-1.onrender.com/getAnswer", { answer: editableText, id: id, question: question, code: userCode, email: email })
+    const response = await axios.post("https://two-code-daily-1.onrender.com/api/getAnswer", { answer: editableText, id: id, question: question, code: userCode, email: email, time: timer })
     if (response?.data?.question?.feedback) {
       setQuestion(response?.data?.question?.feedback)
       setCorrectNess(response?.data?.question?.correctness)
@@ -71,42 +69,31 @@ const RecordAnswer = ({ setQuestion, id, question, error, email, setIsPaused, se
     }
   }, [results])
 
-
   return (
     <>
-      {!error ? (
+      {error?.message ? (
         <p className="text-center">
-          <p className='p-5'>{error.message}</p>
+          <p className='p-5'>{error?.message}</p>
           {
-            error.type == 'Website' ?
-              <a
-                href="https://2codedaily.com"
-                target="_blank"
-                rel="noopener noreferrer"
-                className='mt-3'
+            <div className='flex flex-col space-y-4 mt-4 items-center justify-center'>
+              <input
+                type="email"
+                onChange={(e) => setUserEmail(e.target.value)}
+                placeholder="Enter same email you entered on our website."
+                className="p-2 rounded-md text-sm bg-[#10194a] placeholder-[#ccc] text-white focus:outline-none focus:ring-2 focus:ring-blue-400"
+              />
+              <button
+                onClick={() => handleSubmit(userEmail, setIsSaved)}
+                className="bg-blue-600 hover:bg-blue-700 transition text-white p-2 rounded-md text-sm w-full sm:w-1/2"
               >
-                <span className="text-blue-400 cursor-pointer text-sm mt-5 border border-white px-3 py-1 bg-blue-700 rounded ml-4">
-                  Register here
-                </span>
-              </a> : <div className='flex flex-col space-y-4 mt-4 items-center justify-center'>
-                <input
-                  type="email"
-                  onChange={(e) => setUserEmail(e.target.value)}
-                  placeholder="Enter same email you entered on our website."
-                  className="p-2 rounded-md text-sm bg-[#10194a] placeholder-[#ccc] text-white focus:outline-none focus:ring-2 focus:ring-blue-400"
-                />
-                <button
-                  onClick={() => handleSubmit(userEmail, setLoading)}
-                  className="bg-blue-600 hover:bg-blue-700 transition text-white p-2 rounded-md text-sm w-full sm:w-1/2"
-                >
-                  {loading ? "Registering..." : "Register Email"}
-                </button>
-              </div>
+                {isSaved ? "Email Saved" : "Save Email"}
+              </button>
+            </div>
           }
         </p>
       ) : (
         <section className="flex flex-col items-center space-y-4 text-sm">
-          {correctNess && <span className='text-green-500 p-2' style={{color:'green'}}> Correctness: {correctNess}%</span>}
+          {correctNess && <span className='text-green-500 p-2' style={{ color: 'green' }}> Correctness: {correctNess}%</span>}
           {/* Record Button */}
           <button
             id="recordBtn"
@@ -139,7 +126,7 @@ const RecordAnswer = ({ setQuestion, id, question, error, email, setIsPaused, se
                 className="flex-1 py-2 px-3 border border-blue-300 text-blue-400 rounded hover:bg-blue-800"
                 onClick={submitAnswer}
               >
-                {issubmitting ? 'Submitting...' : 'Submit Answer'}
+                {isSubmitting ? 'Submitting...' : 'Submit Answer'}
               </button>
             </div>
           )}
