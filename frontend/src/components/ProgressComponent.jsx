@@ -26,6 +26,7 @@ const ProgressComponent = () => {
     const [analyzing, setAnalyzing] = useState()
     const [error, setError] = useState()
     const [solvedLen, setsolvedLen] = useState(0)
+    const [avgTime, setAvgTime] = useState(0)
 
     const { user, userData } = useUserStore();
 
@@ -34,6 +35,7 @@ const ProgressComponent = () => {
             const { data } = await axios.post(`${import.meta.env.VITE_BACKEND_BASE_URL}/user/getProgress`, { id: user._id });
 
             setAvg(data.average ?? 0);
+            setAvgTime(data.avgTime ?? 0)
 
             setProgressData(data.progressData);  // Store full progress data
             updateChart(data.progressData); // Initially set full data in chart
@@ -53,16 +55,16 @@ const ProgressComponent = () => {
             setChartData({ labels: [], datasets: [] });
             return;
         }
-    
+
         // Sort data by date ascending
         const sortedData = [...data].sort((a, b) => new Date(a.date) - new Date(b.date));
-    
+
         const labels = sortedData.map((interview) =>
             new Date(interview.date).toLocaleDateString()
         );
-    
+
         const correctness = sortedData.map((interview) => interview.correctness);
-    
+
         setChartData({
             labels,
             datasets: [
@@ -78,7 +80,7 @@ const ProgressComponent = () => {
         });
         setLoading(false);
     };
-    
+
 
     // Handle date filtering
     const handleDateChange = (event) => {
@@ -96,6 +98,14 @@ const ProgressComponent = () => {
 
         updateChart(filteredData);
     };
+
+    const formatTime = (averageTime) => {
+        const avgMinutes = Math.floor(averageTime / 60);
+        const avgSeconds = Math.floor(averageTime % 60);
+
+        return `Average time per question: ${avgMinutes}m ${avgSeconds}s`
+
+    }
 
     const analyze = async () => {
 
@@ -154,6 +164,9 @@ const ProgressComponent = () => {
                     </div>
                     <div className="text-lg text-[#635efc] bg-[#e6e6eb] p-3 rounded-2xl w-full max-w-xs text-center shadow-md">
                         Avg. Accuracy: <span className={`text-xl font-bold ${avg < 40 ? 'text-red-600' : (avg < 70 ? 'text-yellow-800' : 'text-green-700')}`}>{Number(avg?.toFixed(1))}%</span>
+                    </div>
+                    <div className="text-lg text-[#635efc] bg-[#e6e6eb] p-3 rounded-2xl w-full max-w-xs text-center shadow-md">
+                        Avg. Time: <span className={`text-xl font-bold `}>{formatTime(avgTime)}</span>
                     </div>
                 </div>
 
