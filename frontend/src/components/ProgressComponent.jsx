@@ -103,7 +103,7 @@ const ProgressComponent = () => {
         const avgMinutes = Math.floor(averageTime / 60);
         const avgSeconds = Math.floor(averageTime % 60);
 
-        return `Average time per question: ${avgMinutes}m ${avgSeconds}s`
+        return ` ${avgMinutes}m ${avgSeconds}s`
 
     }
 
