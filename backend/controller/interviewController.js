@@ -12,7 +12,7 @@ exports.getProblem = async (req, res) => {
     if (!user) {      
       res.status(400).json({
         type:'Website',
-        message: "We are not able to find your email please register on website",
+        message: "We are not able to find your email please register on website ( https://2codedaily.com ) then enter the email down below",
       });
       return
     }
@@ -75,7 +75,7 @@ exports.getProblem = async (req, res) => {
 
 exports.getAnswer = async (req, res) => {
   try {
-    const { answer, id, question, code, email } = req.body;
+    const { answer, id, question, code, email, time } = req.body;
 
     const cuurInterview = await Interview.findById(id);
 
@@ -99,6 +99,7 @@ exports.getAnswer = async (req, res) => {
     } else {
       cuurInterview.feedback = finalJson.feedback;
       cuurInterview.correctness = finalJson.correctness;
+      cuurInterview.time = time
       cuurInterview.answers.push(answer);
       if (!user.isSubscribed) {
         user.freeInterview -= 1;

@@ -35,7 +35,11 @@ exports.getProgress = async (req, res) => {
       return sum + interview.correctness
     }, 0);
 
-    
+    const totalime = foundQuestions.reduce((time,interview)=>{
+      return time + interview.time
+    })
+
+    const avgTime = totalime / foundQuestions.length
     const avg = totalCorrectness / foundQuestions.length;
 
     const progressData = user.solvedQuestions.map((interview) => ({
@@ -43,7 +47,7 @@ exports.getProgress = async (req, res) => {
       correctness: interview.correctness,
     }));    
 
-    res.status(200).json({ average: avg, progressData: progressData, foundQuestions: foundQuestions.length });
+    res.status(200).json({ average: avg, avgTime:avgTime, progressData: progressData, foundQuestions: foundQuestions.length });
   } catch (error) {
     res.status(400).json({ error: error.message });    
   }
