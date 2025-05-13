@@ -3,14 +3,15 @@ const Email = require("../models/emailSchema");
 const User = require("../models/user");
 
 exports.solvedQuestions = async (req, res) => {
-
   const { id } = req.body;
 
   const user = await User.findById(id)
-  .select('solvedQuestions')
-  .populate('solvedQuestions');
+    .select("solvedQuestions")
+    .populate("solvedQuestions");
 
-  const foundQuestions = user.solvedQuestions.filter(q => q.correctness && q.feedback)
+  const foundQuestions = user.solvedQuestions.filter(
+    (q) => q.correctness && q.feedback
+  );
 
   if (foundQuestions) {
     res.status(200).json({ questions: foundQuestions });
@@ -29,27 +30,36 @@ exports.getProgress = async (req, res) => {
       return res.status(401).json({ message: "user not found" });
     }
 
-    const foundQuestions = user.solvedQuestions.filter(q => q.correctness && q.feedback)
+    const foundQuestions = user.solvedQuestions.filter(
+      (q) => q.correctness && q.feedback
+    );
 
     const totalCorrectness = foundQuestions.reduce((sum, interview) => {
-      return sum + interview.correctness
+      return sum + interview.correctness;
     }, 0);
 
-    const totalime = foundQuestions.reduce((time,interview)=>{
-      return time + interview.time
-    })
+    const totalime = foundQuestions.reduce((time, interview) => {
+      return time + (interview.time != null ? interview.time : 0);
+    },0);
 
-    const avgTime = totalime / foundQuestions.length
+    const avgTime = totalime / foundQuestions.length;
     const avg = totalCorrectness / foundQuestions.length;
 
     const progressData = user.solvedQuestions.map((interview) => ({
       date: interview.createdAt,
       correctness: interview.correctness,
-    }));    
+    }));
 
-    res.status(200).json({ average: avg, avgTime:avgTime, progressData: progressData, foundQuestions: foundQuestions.length });
+    res
+      .status(200)
+      .json({
+        average: avg,
+        avgTime: avgTime,
+        progressData: progressData,
+        foundQuestions: foundQuestions.length,
+      });
   } catch (error) {
-    res.status(400).json({ error: error.message });    
+    res.status(400).json({ error: error.message });
   }
 };
 
@@ -63,12 +73,11 @@ exports.totalUsers = async (req, res) => {
 };
 
 exports.emails = async (req, res) => {
-
   try {
     const { email } = req.body;
 
     const newEmail = new Email({
-      email
+      email,
     });
 
     await newEmail.save();
@@ -92,7 +101,9 @@ exports.analyzeAndGeneratePlan = async (req, res) => {
     const solvedQuestions = user?.solvedQuestions || [];
 
     // Sort by createdAt (oldest to newest)
-    solvedQuestions.sort((a, b) => new Date(a.createdAt) - new Date(b.createdAt));
+    solvedQuestions.sort(
+      (a, b) => new Date(a.createdAt) - new Date(b.createdAt)
+    );
 
     const totalSolved = solvedQuestions.length;
     const lastAnalyzedCount = user.lastAnalyzedCount || 0;
@@ -105,7 +116,10 @@ exports.analyzeAndGeneratePlan = async (req, res) => {
     }
 
     // Get the next 10 questions to analyze
-    const newBatch = solvedQuestions.slice(lastAnalyzedCount, lastAnalyzedCount + 10);
+    const newBatch = solvedQuestions.slice(
+      lastAnalyzedCount,
+      lastAnalyzedCount + 10
+    );
 
     const extractText = (str) => {
       let strIndex = str.indexOf("?") + 1;
@@ -120,7 +134,11 @@ exports.analyzeAndGeneratePlan = async (req, res) => {
     }));
 
     const prompt = `
-      This is the progress ${JSON.stringify(userProgress, null, 2)} of coding interviews attempted by the user. 
+      This is the progress ${JSON.stringify(
+        userProgress,
+        null,
+        2
+      )} of coding interviews attempted by the user. 
       Your task is to analyze this data and create a future plan on what they should study, focus areas, and 
       problem difficulty level. Make the feedback personalized and achievable
 
@@ -160,13 +178,11 @@ exports.analyzeAndGeneratePlan = async (req, res) => {
   }
 };
 
-
-exports.checked_question = (req,res)=>{
+exports.checked_question = (req, res) => {
   try {
-    const {qId, userId} = req.body
-    // const 
+    const { qId, userId } = req.body;
+    // const
   } catch (error) {
     console.log(error);
-    
   }
-}
+};
