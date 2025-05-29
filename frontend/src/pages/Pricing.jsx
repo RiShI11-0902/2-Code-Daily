@@ -48,14 +48,14 @@ const Pricing = () => {
   return (
     <>
       <Navbar />
-      <div className="min-h-screen bg-gradient-to-r from-[#070F2B] to-[#1B1A55] flex flex-col items-center justify-center text-white px-4 pb-5">
+      <div className="min-h-screen bg-stone-950  flex flex-col items-center justify-center text-white px-4 pb-5">
         <h1 className="text-4xl font-bold mb-10 text-[#9290C3]">Choose Your Plan</h1>
 
         <div className="grid grid-cols-1 md:grid-cols-3 gap-8 max-w-6xl w-full">
           {plans.map((plan) => (
             <div
               key={plan.name}
-              className="bg-[#1B1A55] rounded-2xl shadow-xl p-6 flex flex-col items-center justify-between"
+              className="bg-stone-950 shadow-sm shadow-neutral-500 rounded-2xl p-6 flex flex-col items-center justify-between"
             >
               <h2 className="text-2xl font-bold text-[#535C91] mb-2">{plan.name}</h2>
               <p className="text-3xl font-semibold mb-2">₹{plan.price}/month</p>

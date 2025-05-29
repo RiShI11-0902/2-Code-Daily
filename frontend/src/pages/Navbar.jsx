@@ -15,7 +15,7 @@ const Navbar = ({ setopenForm, openForm }) => {
 
   return (
     <>
-      <nav className="relative montserrat-heading bg-gradient-to-r from-[#070F2B] to-[#1B1A55] text-white w-full p-5 z-50 shadow-lg">
+      <nav className=" montserrat-heading bg-stone-950 fixed text-white w-full p-5 z-50 shadow-lg">
         <div className="container mx-auto flex justify-around items-center px-4">
           {/* Logo */}
           <div className="text-2xl font-bold cursor-pointer" onClick={() => navigate("/")}>

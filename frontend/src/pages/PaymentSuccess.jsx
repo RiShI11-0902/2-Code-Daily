@@ -19,7 +19,7 @@ const PaymentSuccess = () => {
   }, []);
 
   return (
-    <div className="flex items-center justify-center h-screen bg-gradient-to-r from-[#070F2B] to-[#1B1A55]">
+    <div className="flex items-center justify-center h-screen bg-stone-950">
       <div className="bg-white shadow-lg rounded-lg p-8 text-center max-w-md">
         <svg
           className="w-16 h-16 text-green-500 mx-auto"

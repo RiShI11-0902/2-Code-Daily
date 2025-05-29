@@ -6,10 +6,10 @@ const AboutUs = () => {
     return (
         <>
             <Navbar />
-            <div className="min-h-screen bg-gradient-to-r from-[#070F2B] to-[#1B1A55] flex items-center justify-center p-6">
-                <div className="w-full max-w-6xl bg-white/5 backdrop-blur-md text-white rounded-2xl shadow-xl overflow-hidden border border-white/10">
+            <div className="min-h-screen bg-stone-950  flex items-center justify-center p-6">
+                <div className="w-full mt-20 max-w-6xl bg-white/5 backdrop-blur-md text-white rounded-2xl shadow-xl overflow-hidden border border-white/10">
                     {/* Hero Header */}
-                    <div className="bg-gradient-to-r from-[#1B1A55]/80 to-[#070F2B]/80 p-8 md:p-12 border-b border-white/10">
+                    <div className="bg-stone-950/80 p-8 md:p-12 border-b border-white/10">
                         <h2 className="text-4xl md:text-5xl font-bold text-center mb-4 bg-clip-text text-transparent bg-gradient-to-r from-white to-blue-200">
                             About Us
                         </h2>
@@ -53,7 +53,7 @@ const AboutUs = () => {
                             </div>
 
                             {/* About the Extension */}
-                            <div className="bg-gradient-to-br from-[#1B1A55]/40 to-[#070F2B]/40 rounded-xl p-6 border border-white/10 md:col-span-2 hover:shadow-lg transition-all duration-300">
+                            <div className="bg-stone-950/40 rounded-xl p-6 border border-white/10 md:col-span-2 hover:shadow-lg transition-all duration-300">
                                 <h3 className="text-3xl font-semibold mb-6 text-center bg-clip-text text-transparent bg-gradient-to-r from-white to-blue-300">About the Extension</h3>
                                 <p className="text-blue-100 text-center max-w-4xl mx-auto leading-relaxed">
                                     This extension simulates AI-powered mock interviews based on real LeetCode questions. Whether you're preparing for tech interviews or just want to sharpen your coding skills under pressure, it provides realistic, interactive sessions that help you practice like it's the real thing. Simple, effective, and focused — it's the ultimate prep tool for aspiring developers.
