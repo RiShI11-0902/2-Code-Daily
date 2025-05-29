@@ -38,7 +38,7 @@ const HomePage = () => {
 
             {/* Hero Section */}
             <section className="bg-stone-950 min-h-screen flex items-center justify-center">
-                <div className="w-fit flex flex-row items-center justify-center gap-10 p-8 rounded-xl">
+                <div className="w-full flex flex-col sm:flex-row items-center justify-center gap-10 p-8 rounded-xl">
                     <div className="text-left space-y-6 max-w-xl">
                         <h1 className="montserrat-heading text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-extrabold text-[#9290C3]">
                             Practice LeetCode Like a Pro
@@ -57,12 +57,18 @@ const HomePage = () => {
                         </a>
                     </div>
 
-                    <div>
-                        <img src="/fullbox.png" className="w-[30rem]" alt="Extension preview" />
+                    {/* Image only on tablets and larger */}
+                    <div className="hidden sm:block">
+                        <img
+                            src="/fullbox.png"
+                            alt="Extension preview"
+                            className="w-[20rem] md:w-[25rem] lg:w-[30rem] object-contain"
+                        />
                     </div>
                 </div>
+
             </section>
-            <MoveDown className='text-[#9290C3] w-fit mx-auto relative bottom-24 animate-bounce' /> 
+            <MoveDown className='text-[#9290C3] w-fit mx-auto relative bottom-24 animate-bounce' />
 
 
             <section className="bg-stone-950 py-16 px-6 text-center">
