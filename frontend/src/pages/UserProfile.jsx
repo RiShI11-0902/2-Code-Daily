@@ -9,7 +9,7 @@ const UserProfile = ({ setViewState }) => {
 
     return (
         <div className="fixed inset-0 z-50 flex items-center justify-center bg-stone-950 bg-opacity-50 p-4">
-            <div className="relative w-full max-w-2xl rounded-2xl shadow-lg bg-stone-800 text-white montserrat-heading p-6 max-h-[90vh] overflow-y-auto">
+            <div className="relative w-full max-w-2xl rounded-2xl shadow-lg bg-stone-950 text-white montserrat-heading p-6 max-h-[90vh] overflow-y-auto">
 
                 {/* Close Button */}
                 <button

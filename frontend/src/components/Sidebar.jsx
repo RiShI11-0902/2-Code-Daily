@@ -78,10 +78,10 @@ const Sidebar = ({
   return (
     <>
       <section 
-        className="sidebar fixed h-screen w-64 bg-stone-900 border-r border-white text-white z-40"
+        className="sidebar fixed h-screen w-64 bg-stone-950 border-r border-white text-white z-40"
         aria-label="Main navigation"
       >
-        <div className="p-4">
+        <div className="p-4 bg-stone-950">
           <Link 
             to="/" 
             className="text-2xl text-[#9290C3] font-semibold p-2 cursor-pointer transition duration-200 hover:text-white"
