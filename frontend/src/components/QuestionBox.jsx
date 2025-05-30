@@ -22,7 +22,7 @@ const QuestionBox = ({ question, index, setShowQuestion, id }) => {
             {
                 <div
                     key={index}
-                    className="bg-[#9290C3] shadow-md hover:scale-105 transition-transform hover:bg-[#535C91] rounded-lg text-[#1B1A55] font-semibold text-lg md:text-xl flex flex-col md:flex-row justify-between items-center border border-[#6983de] p-5 space-y-4 md:space-y-0 md:space-x-7 cursor-pointer "
+                    className="bg-stone-600 shadow-md rounded-lg text-[#1B1A55] font-semibold text-lg md:text-xl flex flex-col md:flex-row justify-between items-center border border-[#050918] p-2 space-y-4 md:space-y-0 md:space-x-7 cursor-pointer "
                 >
                     <p className="text-sm md:text-base">{index + 1 + ")"}</p>
                     <p className="text-base md:text-lg flex-1 text-center md:text-left">
