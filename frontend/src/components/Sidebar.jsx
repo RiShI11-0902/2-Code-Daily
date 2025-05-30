@@ -78,7 +78,7 @@ const Sidebar = ({
   return (
     <>
       <section 
-        className="sidebar fixed h-screen w-64 bg-stone-900 border-r border-r-gray-500 text-white z-40"
+        className="sidebar fixed h-screen w-64 bg-stone-900 border-r border-white text-white z-40"
         aria-label="Main navigation"
       >
         <div className="p-4">
@@ -90,7 +90,7 @@ const Sidebar = ({
             2Code Daily
           </Link>
           
-          <ul className="space-y-4 flex flex-col mt-5 text-[#535C91]">
+          <ul className="space-y-4 flex flex-col mt-5 text-[#f0f1f6]">
             {menuItems.map((item) => (
               <li
                 key={item.name}
