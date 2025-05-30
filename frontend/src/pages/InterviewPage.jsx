@@ -3,6 +3,7 @@ import useUserStore from '../store/store'
 import QuestionDetails from '../components/QuestionDetails'
 import QuestionBox from '../components/QuestionBox'
 import axios from 'axios'
+import { Loader } from 'lucide-react'
 
 const InterviewPage = () => {
 
@@ -10,18 +11,21 @@ const InterviewPage = () => {
     const [loading, setLoading] = useState()
     const [fetchedQuestion, setFetchedQuestion] = useState()
     const [showQuestion, setShowQuestion] = useState();
+    const [error, setError] = useState()
 
     const getSolved = async () => {
         setLoading(true)
         try {
+            const questions = await axios.post(`${import.meta.env.VITE_BACKEND_BASE_URL}/user/solvedQuestions`, { id: user._id}) /////68007fcf588386c12c02f0cf   
+            setFetchedQuestion(questions.data.questions);  
             const questions = await axios.post(`${import.meta.env.VITE_BACKEND_BASE_URL}/user/solvedQuestions`, { id: '68007fcf588386c12c02f0cf'}) /////68007fcf588386c12c02f0cf   
             setFetchedQuestion(questions.data.questions.solvedQuestions);  
             console.log(questions.data.questions.solvedQuestions);
                       
             setLoading(false)
         } catch (error) {
-            console.log(error);
             setLoading(false)
+            setError(error.data.message)
         }
     }
 
@@ -34,8 +38,11 @@ const InterviewPage = () => {
 
     return (
         <>
+
+        <div className='flex flex-col mt-5 space-y-3 h-screen'>
+            { error && <p className='mt-10 text-red-500'>{error}</p>}
             {
-                fetchedQuestion?.slice().reverse().map((question, index) => (
+             loading ? <Loader className=' animate-spin w-5 flex items-center justify-center ' /> :   fetchedQuestion?.slice().reverse().map((question, index) => (
                     <QuestionBox
                         key={index}
                         setShowQuestion={setShowQuestion}
@@ -44,6 +51,7 @@ const InterviewPage = () => {
                     />
                 ))
             }
+        </div>
 
             {/* Question Details Modal */}
             {showQuestion && (

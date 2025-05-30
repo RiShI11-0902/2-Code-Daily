@@ -1,29 +1,28 @@
 const { chatSession } = require("../aiConfig");
-const { generateToken } = require("../helpers/jwt");
-const Interview = require("../models/interviewSchema");
 const Email = require("../models/emailSchema");
-// const Email = require("../models/suggestionSchme");
 const User = require("../models/user");
 
 exports.solvedQuestions = async (req, res) => {
-  console.log(req.body);
-
   const { id } = req.body;
 
-  const foundQuestions = await User.findById(id).select('solvedQuestions')
-  .populate('solvedQuestions');
+  const user = await User.findById(id)
+    .select("solvedQuestions")
+    .populate("solvedQuestions");
+
+  const foundQuestions = user.solvedQuestions.filter(
+    (q) => q.correctness && q.feedback
+  );
 
   if (foundQuestions) {
     res.status(200).json({ questions: foundQuestions });
   } else {
-    res.status(200).json({ message: "Not correct" });
+    res.status(200).json({ message: "No questions Found" });
   }
 };
 
 exports.getProgress = async (req, res) => {
   try {
     const { id } = req.body;
-    console.log("id is" + id);
 
     const user = await User.findById(id).populate("solvedQuestions");
 
@@ -31,27 +30,36 @@ exports.getProgress = async (req, res) => {
       return res.status(401).json({ message: "user not found" });
     }
 
-    const totalCorrectness = user.solvedQuestions.reduce((sum, interview) => {
-      return sum + ( (interview.correctness != undefined ? interview.correctness  : 0)  && interview.correctness);
+    const foundQuestions = user.solvedQuestions.filter(
+      (q) => q.correctness && q.feedback
+    );
+
+    const totalCorrectness = foundQuestions.reduce((sum, interview) => {
+      return sum + interview.correctness;
     }, 0);
 
-    console.log(user.solvedQuestions.length, totalCorrectness);
-    
-    const avg = totalCorrectness / user.solvedQuestions.length;
+    const totalime = foundQuestions.reduce((time, interview) => {
+      return time + (interview.time != null ? interview.time : 0);
+    },0);
+
+    const avgTime = totalime / foundQuestions.length;
+    const avg = totalCorrectness / foundQuestions.length;
 
     const progressData = user.solvedQuestions.map((interview) => ({
       date: interview.createdAt,
       correctness: interview.correctness,
     }));
 
-    console.log(progressData);
-    
-
-    console.log(avg);
-
-    res.status(200).json({ average: avg, progressData: progressData });
+    res
+      .status(200)
+      .json({
+        average: avg,
+        avgTime: avgTime,
+        progressData: progressData,
+        foundQuestions: foundQuestions.length,
+      });
   } catch (error) {
-    console.log(error);
+    res.status(400).json({ error: error.message });
   }
 };
 
@@ -65,15 +73,11 @@ exports.totalUsers = async (req, res) => {
 };
 
 exports.emails = async (req, res) => {
-  console.log("called");
-
   try {
     const { email } = req.body;
 
-    console.log(req.body);
-
     const newEmail = new Email({
-      email
+      email,
     });
 
     await newEmail.save();
@@ -97,7 +101,9 @@ exports.analyzeAndGeneratePlan = async (req, res) => {
     const solvedQuestions = user?.solvedQuestions || [];
 
     // Sort by createdAt (oldest to newest)
-    solvedQuestions.sort((a, b) => new Date(a.createdAt) - new Date(b.createdAt));
+    solvedQuestions.sort(
+      (a, b) => new Date(a.createdAt) - new Date(b.createdAt)
+    );
 
     const totalSolved = solvedQuestions.length;
     const lastAnalyzedCount = user.lastAnalyzedCount || 0;
@@ -110,7 +116,10 @@ exports.analyzeAndGeneratePlan = async (req, res) => {
     }
 
     // Get the next 10 questions to analyze
-    const newBatch = solvedQuestions.slice(lastAnalyzedCount, lastAnalyzedCount + 10);
+    const newBatch = solvedQuestions.slice(
+      lastAnalyzedCount,
+      lastAnalyzedCount + 10
+    );
 
     const extractText = (str) => {
       let strIndex = str.indexOf("?") + 1;
@@ -125,7 +134,11 @@ exports.analyzeAndGeneratePlan = async (req, res) => {
     }));
 
     const prompt = `
-      This is the progress ${JSON.stringify(userProgress, null, 2)} of coding interviews attempted by the user. 
+      This is the progress ${JSON.stringify(
+        userProgress,
+        null,
+        2
+      )} of coding interviews attempted by the user. 
       Your task is to analyze this data and create a future plan on what they should study, focus areas, and 
       problem difficulty level. Make the feedback personalized and achievable
 
@@ -161,18 +174,15 @@ exports.analyzeAndGeneratePlan = async (req, res) => {
       user,
     });
   } catch (error) {
-    console.log(error);
     res.status(400).json({ message: error.message });
   }
 };
 
-
-exports.checked_question = (req,res)=>{
+exports.checked_question = (req, res) => {
   try {
-    const {qId, userId} = req.body
-    // const 
+    const { qId, userId } = req.body;
+    // const
   } catch (error) {
     console.log(error);
-    
   }
-}
+};

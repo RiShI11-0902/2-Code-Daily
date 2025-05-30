@@ -1,15 +1,16 @@
 #box {
   background: linear-gradient(to right, #070F2B, #1B1A55);
   font-size: larger;
-  padding: 10px 20px;
+  padding: 10px;
   display: flex;
   flex-direction: column;
-  height: 450px;
-  width: 350px;
+  height: 500px;
+  width: 400px;
   justify-content: center;
   border-radius: 2%;
   color: #9290C3;
 }
+
 
 .leetcode_ai_widget {
   position: fixed;

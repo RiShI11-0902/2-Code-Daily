@@ -17,6 +17,7 @@ const interviewSchema = new Schema({
         type: String
     },
     correctness:{type: Number},
+    time: {type: Number},
     createdAt: {type: Date}
 })
 

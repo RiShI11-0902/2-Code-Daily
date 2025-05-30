@@ -25,22 +25,23 @@ const ProgressComponent = () => {
     })
     const [analyzing, setAnalyzing] = useState()
     const [error, setError] = useState()
+    const [solvedLen, setsolvedLen] = useState(0)
+    const [avgTime, setAvgTime] = useState(0)
 
     const { user, userData } = useUserStore();
 
-    // console.log(user?.improvements[0].dateCreated.split('T')[0]);
-    ////https://two-code-daily-1.onrender.com   http://localhost:5000
     const getProgress = async () => {
         try {
             const { data } = await axios.post(`${import.meta.env.VITE_BACKEND_BASE_URL}/user/getProgress`, { id: user._id });
 
-            if (!data.average) setAvg(data.average);
+            setAvg(data.average ?? 0);
+            setAvgTime(data.avgTime ?? 0)
 
             setProgressData(data.progressData);  // Store full progress data
             updateChart(data.progressData); // Initially set full data in chart
+            setsolvedLen(data.foundQuestions)
             setLoading(false)
         } catch (error) {
-            console.log(error);
             setError(error.response?.data?.message || "Something went wrong");
         }
     };
@@ -49,10 +50,20 @@ const ProgressComponent = () => {
         getProgress();
     }, []);
 
-    // Function to filter and update chart data
     const updateChart = (data) => {
-        const labels = data.map((interview) => new Date(interview.date).toLocaleDateString());
-        const correctness = data.map((interview) => interview.correctness);
+        if (data.length === 0) {
+            setChartData({ labels: [], datasets: [] });
+            return;
+        }
+
+        // Sort data by date ascending
+        const sortedData = [...data].sort((a, b) => new Date(a.date) - new Date(b.date));
+
+        const labels = sortedData.map((interview) =>
+            new Date(interview.date).toLocaleDateString()
+        );
+
+        const correctness = sortedData.map((interview) => interview.correctness);
 
         setChartData({
             labels,
@@ -62,12 +73,14 @@ const ProgressComponent = () => {
                     data: correctness,
                     borderColor: "rgb(54, 162, 235)",
                     backgroundColor: "rgba(54, 162, 235, 0.2)",
-                    tension: 0.4,
+                    tension: 0.4,  // Smooth line
+                    spanGaps: true  // Connect all points, ignoring gaps
                 }
             ]
         });
-        setLoading(false)
+        setLoading(false);
     };
+
 
     // Handle date filtering
     const handleDateChange = (event) => {
@@ -85,6 +98,14 @@ const ProgressComponent = () => {
 
         updateChart(filteredData);
     };
+
+    const formatTime = (averageTime) => {
+        const avgMinutes = Math.floor(averageTime / 60);
+        const avgSeconds = Math.floor(averageTime % 60);
+
+        return ` ${avgMinutes}m ${avgSeconds}s`
+
+    }
 
     const analyze = async () => {
 
@@ -127,7 +148,7 @@ const ProgressComponent = () => {
             <section className="flex flex-col items-center w-full p-4 space-y-10">
                 {/* Stats Section */}
                 <div className="w-full flex flex-col md:flex-row justify-center items-center space-y-4 md:space-y-0 md:space-x-10">
-                    {user?.selectedPlan === 'Elite' && user?.solvedQuestions?.length > 0 ? (
+                    {/* {user?.selectedPlan === 'Elite' && user?.solvedQuestions?.length > 0 ? (
                         <div className="text-[#3d37ef] text-lg bg-[#ababf5] p-3 rounded-2xl w-52 max-w-xs text-center shadow-md flex flex-col items-center">
                             <button onClick={analyze} className="text-lg font-bold">
                                 {analyzing ? "Analyzing.." : "Analyze Progress"}
@@ -137,14 +158,15 @@ const ProgressComponent = () => {
                         <div className="text-gray-500 text-sm bg-gray-100 p-3 rounded-2xl w-52 max-w-xs text-center shadow-sm flex flex-col items-center">
                             <p className="font-medium">Analyzing only for Elite users</p>
                         </div>
-                    )}
-
-
+                    )} */}
                     <div className="text-[#635efc] text-lg bg-[#e6e6eb] p-3 rounded-2xl w-full max-w-xs text-center shadow-md">
-                        Interview Given: <span className="text-xl font-bold">{user?.solvedQuestions?.length}</span>
+                        Interview Given: <span className="text-xl font-bold">{solvedLen}</span>
                     </div>
                     <div className="text-lg text-[#635efc] bg-[#e6e6eb] p-3 rounded-2xl w-full max-w-xs text-center shadow-md">
-                        Avg. Accuracy: <span className={`text-xl font-bold ${avg < 40 ? 'text-red-600' : (avg < 70 ? 'text-yellow-800' : 'text-green-700')}`}>{avg == NaN ? "0" : Number(avg?.toFixed(1))}%</span>
+                        Avg. Accuracy: <span className={`text-xl font-bold ${avg < 40 ? 'text-red-600' : (avg < 70 ? 'text-yellow-800' : 'text-green-700')}`}>{Number(avg?.toFixed(1))}%</span>
+                    </div>
+                    <div className="text-lg text-[#635efc] bg-[#e6e6eb] p-3 rounded-2xl w-full max-w-xs text-center shadow-md">
+                        Avg. Time: <span className={`text-xl font-bold `}>{formatTime(avgTime)}</span>
                     </div>
                 </div>
 

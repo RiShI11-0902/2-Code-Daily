@@ -14,9 +14,7 @@ const Protected = ({ children }) => {
             const res = await axios.get(`${import.meta.env.VITE_BACKEND_BASE_URL}/auth/isLoggedIn`, {
                 withCredentials: true,
             });
-            console.log("Response from /auth/isLoggedIn:", res.data);
             if (res.status === 200 && res.data?.data) {
-                console.log(res.data.data);
                 
                 userData(res.data.data); // Set user data in the store
                 setAuthenticate(true); // User is authenticated
@@ -35,7 +33,7 @@ const Protected = ({ children }) => {
     }, []);
 
     if (authenticate === null) {
-        return <div className="w-full"><Loader className="mx-auto flex items-center justify-center text-white w-20 animate-spin" /></div>; // Loading state
+        return <div className="w-full"><Loader className="mx-auto flex items-center justify-center text-white w-5 animate-spin h-screen" /></div>; // Loading state
     }
 
     if (!authenticate) {

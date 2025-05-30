@@ -3,7 +3,6 @@ exports.generateToken = (res, id) => {
   const token = jwt.sign({ id }, process.env.JWT_SEC, {
     expiresIn: "7d",
   });
-  console.log("token", token);
 
   res.cookie("token", token, {
     httpOnly: true, // safe from xss attacks
@@ -14,16 +13,14 @@ exports.generateToken = (res, id) => {
 };
 
 exports.verifyToken = (req, res, next) => {
-  // console.log(req.cookies);
 
   const token = req.cookies.token;
-  console.log("cookie from frontend is ",token);
 
   try {
     if (!token) {
       return res
         .status(401)
-        .json({ success: false, message: "unauthorised u fool" });
+        .json({ success: false, message: "unauthorized" });
     }
 
     const decoded = jwt.verify(token, process.env.JWT_SEC);
@@ -37,6 +34,8 @@ exports.verifyToken = (req, res, next) => {
     req.userId = decoded.id;
     next();
   } catch (error) {
-    console.log(error);
+    return res
+        .status(401)
+        .json({ success: false, message: "unauthorised - Invalid Token " });
   }
 };

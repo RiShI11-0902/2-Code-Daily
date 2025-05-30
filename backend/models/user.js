@@ -59,7 +59,7 @@ const userSchema = new Schema({
 
   freeInterview: {
     type: Number,
-    default: 0,
+    default: 3,
   },
 
   improvements: [

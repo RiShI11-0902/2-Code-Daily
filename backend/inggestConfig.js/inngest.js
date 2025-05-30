@@ -13,7 +13,6 @@ exports.analyzeUserProgress = inngest.createFunction(
   { name: "Analyze Progress" },
   { cron: "0 0 * * 0" },
   async ({ event, step }) => {
-    console.log("Running weekly analysis for users...");
 
     const users = await User.find({ isSubscribed: true }).populate(
       "solvedQuestions"
@@ -57,12 +56,8 @@ exports.analyzeUserProgress = inngest.createFunction(
       .replace(/```json/, "")
       .replace(/```/, "")
       .replace(/```$/, "");
-  
-    // console.log(markUpJSON);
-  
+    
     const finalJson = JSON.parse(markUpJSON);
-
-    console.log(finalJson);
     
     }
   }
