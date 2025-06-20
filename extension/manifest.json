@@ -9,10 +9,22 @@
   "content_scripts": [
     {
       "js": [
-        "src/Content.jsx"
+        "src/LeetCodeContent.jsx"
       ],
       "matches": [
         "https://leetcode.com/problems/*"
+      ],
+      "type": "module"
+    },
+    {
+      "js": [
+        "src/JDContent.jsx"
+      ],
+      "matches": [
+        "<all_urls>"
+      ],
+      "exclude_matches": [
+        "https://leetcode.com/*"
       ],
       "type": "module"
     }

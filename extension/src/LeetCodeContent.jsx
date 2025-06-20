@@ -1,6 +1,6 @@
 import React from 'react'
 import ReactDOM from 'react-dom/client';
-import Button from './Button';
+import LeetCodeButton from './LeetCodeButton';
 import "./App.css";
 
 const root = document.createElement("div")
@@ -12,5 +12,5 @@ const rootDiv = ReactDOM.createRoot(root);
 
 
 rootDiv.render(
-    <Button />
+    <LeetCodeButton />
 );
