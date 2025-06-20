@@ -20,3 +20,7 @@ Output:
 - If ending: { "feedback": "...", "correctness": 0-100, "end": true }
 Only reply with JSON.`;
 };
+
+exports.generateInterviewFromJD = (jd)=>{
+return `Based on the following job description, generate title for interview and a set of effective interview questions that assess both technical skills and behavioral traits required for this role. Include a mix of easy, medium, and hard-level questions. give the output in json array with these keys {question} JD: ${jd}`
+}

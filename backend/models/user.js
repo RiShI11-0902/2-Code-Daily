@@ -19,6 +19,13 @@ const userSchema = new Schema({
     default: false,
   },
 
+  interviewGiven:[
+    {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: "interview",
+    },
+  ],
+
   solvedQuestions: [
     {
       type: mongoose.Schema.Types.ObjectId,
