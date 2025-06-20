@@ -6,7 +6,7 @@ import { X, AlignJustify } from 'lucide-react';
 import ProgressComponent from "../components/ProgressComponent";
 import { ToastContainer, toast } from "react-toastify";
 import InterviewPage from "./InterviewPage";
-import UserProfile from "./UserProfile";
+import {UserProfile} from "./UserProfile";
 
 // Constants
 const TOAST_CONFIG = {

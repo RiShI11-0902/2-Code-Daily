@@ -6,11 +6,6 @@ import { Footer } from '../components/Footer';
 import { ArrowBigDown, MoveDown } from 'lucide-react';
 
 const HomePage = () => {
-    const [openForm, setopenForm] = useState(false);
-    const [email, setEmail] = useState('');
-    const [message, setMessage] = useState(null);
-    const [loading, setLoading] = useState(false);
-    const [duration] = useState(3000);
 
     const [openForm, setopenForm] = useState(false)
     const [name, setName] = useState()

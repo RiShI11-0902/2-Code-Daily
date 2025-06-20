@@ -2,8 +2,7 @@ import React from 'react';
 import { X } from 'lucide-react';
 import useUserStore from '../store/store';
 
-const UserProfile = ({ setViewState }) => {
-const UserProfile = ({ setViewState }) => {
+export const UserProfile = ({ setViewState }) => {
 
     // const { user } = useUserStore()
     // if (!user) return null;
@@ -145,5 +144,3 @@ const UserProfile = ({ setViewState }) => {
         </div>
     );
 };
-
-export default UserProfile;
