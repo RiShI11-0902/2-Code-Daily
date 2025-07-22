@@ -30,7 +30,7 @@ const useUserStore = create(
   devtools(
     persist(userStore, {
       name: "user",
-      // partialize: (state)=> ({solvedQ: state.solvedQ}) // for partialize means if want only some things to srtore
+      partialize: (state)=> ({solvedQ: state.solvedQ}) // for partialize means if want only some things to store
     })
   )
 );
