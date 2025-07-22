@@ -32,7 +32,6 @@ const Sidebar = ({
         navigate('/');
       }
     } catch (error) {
-      console.error('Logout error:', error);
       toast.error('Failed to logout. Please try again.');
     }
   };
@@ -105,13 +104,7 @@ const Sidebar = ({
           </ul>
         </div>
 
-        <button 
-          onClick={scrollToTop} 
-          className="fixed bottom-4 right-4 bg-blue-600 text-white px-4 py-2 rounded-full shadow-lg hover:bg-blue-700 transition-colors"
-          aria-label="Scroll to top"
-        >
-          ↑ Top
-        </button>
+        
       </section>
 
       {showModal && (
