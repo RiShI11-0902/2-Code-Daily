@@ -9,13 +9,10 @@ const QuestionBox = ({ question, index, setShowQuestion, id }) => {
     const [loading, setLoading] = useState()
     const { addQuestions, solvedQ } = useUserStore()
 
-    useEffect(() => {
-        if (id && solvedQ.includes(id)) {
-            setIsSolved(true);
-        } else {
-            setIsSolved(false);
-        }
-    }, [id, solvedQ])
+  useEffect(() => {    
+    setIsSolved(solvedQ.includes(id));
+    
+}, [id, solvedQ]);
 
     return (
         <div>
