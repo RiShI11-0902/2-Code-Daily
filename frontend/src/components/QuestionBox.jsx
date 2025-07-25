@@ -7,8 +7,22 @@ const QuestionBox = ({ question, index, setShowQuestion, id }) => {
 
     const [isSolved, setIsSolved] = useState(false)
     const [loading, setLoading] = useState()
+    const [fetchedQuestion, setFetchedQuestion] = useState()
     const { addQuestions, solvedQ } = useUserStore()
 
+
+    // const fetchquestion = async (id) => {
+    //     console.log(id);
+    //     setLoading(true)
+    //     try {
+    //         const question = await axios.post(`${import.meta.env.VITE_BACKEND_BASE_URL}/user/solvedQuestions`, { id })
+    //         setFetchedQuestion(question.data.question)
+    //         setLoading(false)
+    //     } catch (error) {
+    //         console.log(error);
+    //         setLoading(false)
+    //     }
+    // }
     useEffect(() => {
         if (id && solvedQ.includes(id)) {
             setIsSolved(true);
