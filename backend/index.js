@@ -19,13 +19,6 @@ const userRoute = require("./routes/user");
 const allowedOrigins = [
   "https://leetcode.com",
   "https://2codedaily.com",
-   "https://leetcode.com",
-  "https://2codedaily.com",
-  "https://www.linkedin.com",
-  "https://www.naukri.com",
-  "https://www.indeed.com",
-  "https://wellfound.com",
-  "https://www.glassdoor.com"
 ];
 
 connect();
