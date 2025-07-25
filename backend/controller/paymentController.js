@@ -6,7 +6,7 @@ exports.getKey = async = (req, res) => {
   try {
     res.status(200).json({ key: process.env.RAZORPAY_KEY_ID });
   } catch (error) {
-    res.status(400).json({ error: 'Internal Server Error' });
+    res.status(400).json({ error: "Internal Server Error" });
   }
 };
 
@@ -24,15 +24,13 @@ exports.checkout = async (req, res) => {
 
     // Plan-based pricing in paise (₹1 = 100 paise)
     const pricing = {
-      Starter: 25000,// ₹250
-      Pro: 50000,      // ₹500
-      Elite: 100000    // ₹1000
+      Regular: 59900,
+      Early: 84900,
     };
 
     const interviews = {
-      Starter: 20,
-      Pro: 50,
-      Elite: 100
+     Regular: 5,
+     Early: 5
     };
 
     const amount = pricing[plan];
@@ -51,6 +49,10 @@ exports.checkout = async (req, res) => {
     const options = {
       amount,
       currency: "INR",
+      receipt: "rcpt_" + Date.now(),
+      notes: { plan },
+      // OPTIONAL: shows approx $ value on Razorpay checkout
+      display_currency: "USD",
     };
 
     const order = await instance.orders.create(options);
@@ -59,7 +61,6 @@ exports.checkout = async (req, res) => {
       success: true,
       order,
     });
-
   } catch (error) {
     res.status(500).json({
       success: false,
@@ -68,10 +69,14 @@ exports.checkout = async (req, res) => {
   }
 };
 
-
 exports.paymentVerification = async (req, res) => {
   try {
-    const { razorpay_payment_id, razorpay_order_id, razorpay_signature, email } = req.body;
+    const {
+      razorpay_payment_id,
+      razorpay_order_id,
+      razorpay_signature,
+      email,
+    } = req.body;
 
     const body = razorpay_order_id + "|" + razorpay_payment_id;
     const expectedSignature = crypto
@@ -82,7 +87,9 @@ exports.paymentVerification = async (req, res) => {
     const findUser = await User.findOne({ email });
 
     if (!findUser) {
-      return res.status(404).json({ success: false, message: "User not found" });
+      return res
+        .status(404)
+        .json({ success: false, message: "User not found" });
     }
 
     const isAuthenticate = expectedSignature === razorpay_signature;
@@ -93,7 +100,7 @@ exports.paymentVerification = async (req, res) => {
       const totalInterviews = {
         Starter: 20,
         Pro: 50,
-        Elite: 100
+        Elite: 100,
       }[plan];
 
       findUser.payments.push({
@@ -105,7 +112,7 @@ exports.paymentVerification = async (req, res) => {
         expiresAt: null, // not time-bound anymore
         planName: plan,
         totalInterviews,
-        usedInterviews: 0
+        usedInterviews: 0,
       });
 
       findUser.isSubscribed = true;
@@ -132,4 +139,3 @@ exports.paymentVerification = async (req, res) => {
     });
   }
 };
-
