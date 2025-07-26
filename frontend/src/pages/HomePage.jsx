@@ -37,15 +37,14 @@ const HomePage = () => {
             <Navbar setopenForm={setopenForm} openForm={openForm} />
 
             {/* Hero Section */}
-            <section className="bg-stone-950 min-h-screen flex items-center justify-center">
-                <div className="w-full flex flex-col sm:flex-row items-center justify-center gap-10 p-8 rounded-xl">
-                    <div className="text-left space-y-6 max-w-xl">
+            <section className="bg-stone-950 min-h-screen text-center mx-auto flex items-center justify-center">
+                <div className="w-fit text-center items-center justify-center gap-10 p-8 rounded-xl">
+                    <div className="text-center space-y-6">
                         <h1 className="montserrat-heading text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-extrabold text-[#9290C3]">
                             Practice LeetCode Like a Pro
                         </h1>
-                        <p className="text-[#535C91] text-base sm:text-lg md:text-lg">
-                            Instant mock interviews on LeetCode questions, guided by AI.
-                            Prep like you're sitting across the table—every single time.
+                        <p className="text-[#535C91] max-w-2xl mx-auto text-base sm:text-lg md:text-xl">
+                            Not just coding—explain your thinking, like in real interviews.
                         </p>
                         <a
                             href="https://chromewebstore.google.com/detail/2-code-daily/eamejmihabhegokmlajmahmpgkfadphl"
@@ -58,15 +57,14 @@ const HomePage = () => {
                     </div>
 
                     {/* Image only on tablets and larger */}
-                    <div className="hidden sm:block">
+                    {/* <div className="hidden sm:block">
                         <img
                             src="/fullbox.png"
                             alt="Extension preview"
                             className="w-[20rem] md:w-[25rem] lg:w-[30rem] object-contain"
                         />
-                    </div>
+                    </div> */}
                 </div>
-
             </section>
             <MoveDown className='text-[#9290C3] w-fit mx-auto relative bottom-24 animate-bounce' />
 
@@ -123,47 +121,42 @@ const HomePage = () => {
                         </p>
                     </div>
                     <p className="mt-4 text-lg text-[#535C91]">Get started instantly. No credit card needed.</p>
+
                 </div>
 
-                {/* Pricing Plans */}
-                <div className="max-w-7xl mx-auto grid grid-cols-1 md:grid-cols-3 gap-8">
-                    {/* Plan Card */}
-                    {[
-                        {
-                            name: 'Starter',
-                            price: 250,
-                            interviews: '20 Mock Interviews',
-                            description: 'Perfect for beginners who want steady progress.',
-                        },
-                        {
-                            name: 'Pro',
-                            price: 500,
-                            interviews: '50 Mock Interviews',
-                            description: 'Best for consistent daily learners.',
-                        },
-                        {
-                            name: 'Elite',
-                            price: 1000,
-                            interviews: '100 Mock Interviews',
-                            description: 'Ideal for hardcore DSA grinders.',
-                        },
-                    ].map((plan, index) => (
-                        <div
-                            key={index}
-                            className="bg-[#1c1b29] rounded-xl shadow-lg p-8 flex flex-col justify-between text-left"
-                        >
-                            <div>
-                                <h3 className="text-3xl font-bold text-[#9290C3]">{plan.name}</h3>
-                                <p className="text-[#535C91] text-xl mt-2">{plan.description}</p>
-                                <h2 className="text-5xl font-extrabold mt-6 text-[#9290C3]">₹{plan.price}</h2>
-                                <p className="text-[#535C91] mt-1">{plan.interviews}</p>
+                <div className='flex flex-col space-y-5'>
+                    <p className='text-5xl font-extrabold'>Paid Plans</p>
+                    <div className="max-w-7xl mx-auto grid grid-cols-1 md:grid-cols-2 gap-8">
+                        {/* Plan Card */}
+                        {[
+                            {
+                                name: 'Early Bird',
+                                price: 849,
+                                interviews: '5 Interviews / day for Integer.MAX days',
+                                description: 'For First 100 users only.',
+                            },
+                            {
+                                name: 'Regular',
+                                price: 599,
+                                interviews: '100 Mock Interviews, 5 Interviews / day',
+                                description: 'Perfect for beginners who want steady progress.',
+                            },
+                        ].map((plan, index) => (
+                            <div
+                                key={index}
+                                className="bg-[#1c1b29] rounded-xl shadow-lg p-8 flex flex-col justify-between text-left"
+                            >
+                                <div>
+                                    <h3 className="text-3xl font-bold text-[#9290C3]">{plan.name}</h3>
+                                    <p className="text-[#535C91] text-xl mt-2">{plan.description}</p>
+                                    <h2 className="text-5xl font-extrabold mt-6 text-[#9290C3]">₹{plan.price}</h2>
+                                    <p className="text-[#535C91] mt-1">{plan.interviews}</p>
+                                </div>
                             </div>
-                            <button className="mt-6 bg-[#535C91] text-white py-3 px-6 rounded-lg hover:bg-[#6b74b0] transition">
-                                Choose {plan.name}
-                            </button>
-                        </div>
-                    ))}
+                        ))}
+                    </div>
                 </div>
+
             </section>
 
             <Footer />

@@ -12,7 +12,7 @@ const plans = [
     description: 'Perfect for beginners who want steady progress.',
   },
   {
-    name: 'Early',
+    name: 'Early Bird',
     price: 849,
     interviews: '5 Interviews / day for Integer.MAX days',
     description: 'For First 100 users.',
