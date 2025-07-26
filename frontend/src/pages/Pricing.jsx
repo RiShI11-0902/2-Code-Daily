@@ -52,7 +52,7 @@ const Pricing = () => {
               className="bg-stone-950 shadow-sm shadow-neutral-500 rounded-2xl p-6 flex flex-col items-center justify-between"
             >
               <h2 className="text-2xl font-bold text-[#535C91] mb-2">{plan.name}</h2>
-              <p className="text-3xl font-semibold mb-2">{plan.price}</p>
+              <p className="text-3xl font-semibold mb-2">₹{plan.price}</p>
               <p className="text-lg mb-4 text-[#9290C3]">{plan.interviews}</p>
               <p className="text-center text-sm mb-6 text-gray-300">{plan.description}</p>
               <button
