@@ -78,7 +78,7 @@ const userSchema = new Schema({
 
   selectedPlan: {
     type: String,
-    enum: ["Starter", "Pro", "Elite"],
+    enum: ["Early", "Regular"],
     default: null,
   },
 

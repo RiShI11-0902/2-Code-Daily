@@ -52,7 +52,6 @@ exports.checkout = async (req, res) => {
       receipt: "rcpt_" + Date.now(),
       notes: { plan },
       // OPTIONAL: shows approx $ value on Razorpay checkout
-      display_currency: "USD",
     };
 
     const order = await instance.orders.create(options);
