@@ -1,5 +1,6 @@
 require("dotenv").config();
 const { chatSession } = require("../aiConfig");
+const { checkAndUpdateInterviewLimit } = require("../helpers/checkLimit");
 const Interview = require("../models/interviewSchema");
 const User = require("../models/user");
 const { getAnswer, startInterview } = require("../utils/prompts");
@@ -74,6 +75,8 @@ exports.getProblem = async (req, res) => {
 
     return res.status(200).json({ interview: newInterview });
   } catch (error) {
+    console.log(error);
+    
     return res.status(500).json({ message: "Internal Server Error", error: error.message });
   }
 };
