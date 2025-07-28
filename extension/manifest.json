@@ -15,7 +15,18 @@
         "https://leetcode.com/problems/*"
       ],
       "type": "module"
+    },
+    {
+      "js": [
+        "src/AuthContent.js"
+      ],
+      "matches": [
+        "https://2codedaily.com/authenticate-extension*"
+      ]
     }
+  ],
+  "host_permissions": [
+    "https://2codedaily.com/*"
   ],
   "background": {
     "service_worker": "src/background.js",
