@@ -2,7 +2,6 @@ const mongoose = require("mongoose");
 const { Schema } = mongoose;
 const bcrypt = require("bcryptjs");
 
-
 const userSchema = new Schema({
   googleId: String,
   name: String,
@@ -33,7 +32,7 @@ const userSchema = new Schema({
     },
   ],
 
-  lastAnalyzedCount: {type: Number, default: 0},
+  lastAnalyzedCount: { type: Number, default: 0 },
 
   payments: [
     {
@@ -75,6 +74,16 @@ const userSchema = new Schema({
       dateCreated: { type: Date, default: Date.now },
     },
   ],
+
+  interviewsPerDay: {
+    type: Number,
+    default: 5,
+  },
+
+  lastInterviewDate: {
+    type: Date,
+    default: null,
+  },
 
   selectedPlan: {
     type: String,

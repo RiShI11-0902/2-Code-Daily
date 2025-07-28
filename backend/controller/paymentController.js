@@ -7,6 +7,7 @@ exports.getKey = async = (req, res) => {
     res.status(200).json({ key: process.env.RAZORPAY_KEY_ID });
   } catch (error) {
     res.status(400).json({ error: "Internal Server Error" });
+    res.status(400).json({ error: "Internal Server Error" });
   }
 };
 
@@ -24,6 +25,8 @@ exports.checkout = async (req, res) => {
 
     // Plan-based pricing in paise (₹1 = 100 paise)
     const pricing = {
+      Regular: 59900,
+      Early: 84900,
       Regular: 59900,
       Early: 84900,
     };
