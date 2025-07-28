@@ -10,33 +10,17 @@ const QuestionBox = ({ question, index, setShowQuestion, id }) => {
     const [fetchedQuestion, setFetchedQuestion] = useState()
     const { addQuestions, solvedQ } = useUserStore()
 
-
-    // const fetchquestion = async (id) => {
-    //     console.log(id);
-    //     setLoading(true)
-    //     try {
-    //         const question = await axios.post(`${import.meta.env.VITE_BACKEND_BASE_URL}/user/solvedQuestions`, { id })
-    //         setFetchedQuestion(question.data.question)
-    //         setLoading(false)
-    //     } catch (error) {
-    //         console.log(error);
-    //         setLoading(false)
-    //     }
-    // }
-    useEffect(() => {
-        if (id && solvedQ.includes(id)) {
-            setIsSolved(true);
-        } else {
-            setIsSolved(false);
-        }
-    }, [id, solvedQ])
+  useEffect(() => {    
+    setIsSolved(solvedQ.includes(id));
+    
+}, [id, solvedQ]);
 
     return (
         <div>
             {
                 <div
                     key={index}
-                    className="bg-[#9290C3] shadow-md hover:scale-105 transition-transform hover:bg-[#535C91] rounded-lg text-[#1B1A55] font-semibold text-lg md:text-xl flex flex-col md:flex-row justify-between items-center border border-[#6983de] p-5 space-y-4 md:space-y-0 md:space-x-7 cursor-pointer "
+                    className="bg-stone-900 shadow-md rounded-lg text-[#fcfcff] font-semibold text-lg md:text-xl flex flex-wrap md:flex-row justify-between items-center border border-[#050918] p-2 space-y-4 md:space-y-0 md:space-x-7 cursor-pointer "
                 >
                     <p className="text-sm md:text-base">{index + 1 + ")"}</p>
                     <p className="text-base md:text-lg flex-1 text-center md:text-left">

@@ -18,9 +18,8 @@ const PlanModal = ({ showModal, setShowModal, handlePayment, user }) => {
 
         <div className="space-y-4">
           {[
-            { name: 'Starter', price: '₹200' },
-            { name: 'Pro', price: '₹500' },
-            { name: 'Elite', price: '₹1000' },
+            { name: 'Regular', price: '₹59900' },
+            { name: 'Early', price: '₹84990' },
           ].map((plan) => (
             <button
               key={plan.name}

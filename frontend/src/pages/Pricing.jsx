@@ -6,22 +6,16 @@ import { Loader } from 'lucide-react';
 
 const plans = [
   {
-    name: 'Starter',
-    price: 250,
-    interviews: '20 Mock Interviews',
+    name: 'Regular',
+    price: 599,
+    interviews: '100 Mock Interviews, 5 Interviews / day',
     description: 'Perfect for beginners who want steady progress.',
   },
   {
-    name: 'Pro',
-    price: 500,
-    interviews: '50 Mock Interviews',
-    description: 'Best for consistent daily learners.',
-  },
-  {
-    name: 'Elite',
-    price: 1000,
-    interviews: '100 Mock Interviews ',
-    description: 'Ideal for hardcore DSA grinders.',
+    name: 'Early Bird',
+    price: 849,
+    interviews: '5 Interviews / day for Integer.MAX days',
+    description: 'For First 100 users.',
   },
 ];
 
@@ -51,14 +45,14 @@ const Pricing = () => {
       <div className="min-h-screen bg-stone-950  flex flex-col items-center justify-center text-white px-4 pb-5">
         <h1 className="text-4xl font-bold mb-10 text-[#9290C3]">Choose Your Plan</h1>
 
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-8 max-w-6xl w-full">
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-8 max-w-6xl w-full">
           {plans.map((plan) => (
             <div
               key={plan.name}
               className="bg-stone-950 shadow-sm shadow-neutral-500 rounded-2xl p-6 flex flex-col items-center justify-between"
             >
               <h2 className="text-2xl font-bold text-[#535C91] mb-2">{plan.name}</h2>
-              <p className="text-3xl font-semibold mb-2">₹{plan.price}/month</p>
+              <p className="text-3xl font-semibold mb-2">₹{plan.price}</p>
               <p className="text-lg mb-4 text-[#9290C3]">{plan.interviews}</p>
               <p className="text-center text-sm mb-6 text-gray-300">{plan.description}</p>
               <button

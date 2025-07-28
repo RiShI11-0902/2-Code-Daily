@@ -1,6 +1,6 @@
 const express = require('express')
 const router = express.Router()
-const problemController = require("../controller/interviewController")
+const problemController = require("../controller/problemController")
 
 router
 .post("/getProblem", problemController.getProblem )

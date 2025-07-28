@@ -9,7 +9,7 @@
   "content_scripts": [
     {
       "js": [
-        "src/Content.jsx"
+        "src/LeetCodeContent.jsx"
       ],
       "matches": [
         "https://leetcode.com/problems/*"

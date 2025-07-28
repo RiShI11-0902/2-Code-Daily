@@ -19,6 +19,13 @@ const userSchema = new Schema({
     default: false,
   },
 
+  interviewGiven:[
+    {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: "interview",
+    },
+  ],
+
   solvedQuestions: [
     {
       type: mongoose.Schema.Types.ObjectId,
@@ -71,7 +78,7 @@ const userSchema = new Schema({
 
   selectedPlan: {
     type: String,
-    enum: ["Starter", "Pro", "Elite"],
+    enum: ["Early", "Regular"],
     default: null,
   },
 

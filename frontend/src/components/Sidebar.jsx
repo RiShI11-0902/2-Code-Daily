@@ -32,7 +32,6 @@ const Sidebar = ({
         navigate('/');
       }
     } catch (error) {
-      console.error('Logout error:', error);
       toast.error('Failed to logout. Please try again.');
     }
   };
@@ -78,10 +77,10 @@ const Sidebar = ({
   return (
     <>
       <section 
-        className="sidebar fixed h-screen w-64 bg-gray-900 text-white z-40"
+        className="sidebar fixed h-screen w-64 bg-stone-950 border-r border-white text-white z-40"
         aria-label="Main navigation"
       >
-        <div className="p-4">
+        <div className="p-4 bg-stone-950">
           <Link 
             to="/" 
             className="text-2xl text-[#9290C3] font-semibold p-2 cursor-pointer transition duration-200 hover:text-white"
@@ -90,7 +89,7 @@ const Sidebar = ({
             2Code Daily
           </Link>
           
-          <ul className="space-y-4 flex flex-col mt-5 text-[#535C91]">
+          <ul className="space-y-4 flex flex-col mt-5 text-[#f0f1f6]">
             {menuItems.map((item) => (
               <li
                 key={item.name}
@@ -105,13 +104,7 @@ const Sidebar = ({
           </ul>
         </div>
 
-        <button 
-          onClick={scrollToTop} 
-          className="fixed bottom-4 right-4 bg-blue-600 text-white px-4 py-2 rounded-full shadow-lg hover:bg-blue-700 transition-colors"
-          aria-label="Scroll to top"
-        >
-          ↑ Top
-        </button>
+        
       </section>
 
       {showModal && (

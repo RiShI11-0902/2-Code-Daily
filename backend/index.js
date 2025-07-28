@@ -10,6 +10,8 @@ const { initializingPassport } = require("./passportConfig");
 const passport = require("passport");
 
 const problemRoute = require("./routes/problemRoutes");
+const interviewRoute = require("./routes/interviewRoute");
+
 const authRoute = require("./routes/auth");
 const paymentRoute = require("./routes/paymentRoute");
 const userRoute = require("./routes/user");
@@ -56,6 +58,7 @@ app.use(passport.session());
 app.use("/auth", authRoute);
 app.use("/user", userRoute);
 app.use("/api", problemRoute);
+app.use("/create", interviewRoute)
 app.use("/userpayment", paymentRoute);
 
 app.listen(5000);

@@ -2,7 +2,7 @@ import React, { useState, useEffect, useRef, useCallback } from "react";
 import Sidebar from "../components/Sidebar";
 import QuestionBox from "../components/QuestionBox";
 import useUserStore from "../store/store";
-import { X, AlignJustify } from 'lucide-react';
+import { X, AlignJustify, MoveUp } from 'lucide-react';
 import ProgressComponent from "../components/ProgressComponent";
 import { ToastContainer, toast } from "react-toastify";
 import InterviewPage from "./InterviewPage";
@@ -86,14 +86,14 @@ const Dashboard = () => {
   // Search and filter handlers
   const handleSearch = useCallback((e) => {
     const searchValue = e.target.value.toLowerCase();
-    
+
     if (!searchValue) {
       setFilteredQuestions(questions);
       return;
     }
 
     if (showSolved) {
-      const filteredSolved = user?.solvedQuestions?.filter((q) => 
+      const filteredSolved = user?.solvedQuestions?.filter((q) =>
         q.problem.toLowerCase().includes(searchValue)
       ) || [];
       setFilteredQuestions(filteredSolved);
@@ -162,11 +162,20 @@ const Dashboard = () => {
                 <option value="unsolved">Unsolved</option>
               </select>
             </div>
+            <button
+              onClick={scrollToTop}
+              className="fixed bottom-4 left-1/2 transform -translate-x-1/2 w-12 h-12 rounded-full bg-blue-600 flex items-center justify-center shadow-lg hover:bg-blue-700 transition-colors"
+              aria-label="Scroll to top"
+            >
+              <MoveUp className="text-[#f1f1f3] w-5 h-5" />
+            </button>
             <div className="flex flex-col sm:grid-cols-2 lg:grid-cols-3 gap-5 pb-3">
-              {(filteredQuestions.length > 0 ? filteredQuestions : questions).map((question) => (
+              {(filteredQuestions.length > 0 ? filteredQuestions : questions).map((question, index) => (
                 <QuestionBox
+                  index={index}
                   key={question.id}
                   question={question}
+                  id={question.id}
                 />
               ))}
             </div>
@@ -178,7 +187,7 @@ const Dashboard = () => {
   return (
     <div className="flex flex-col lg:flex-row h-screen">
       <ToastContainer {...TOAST_CONFIG} />
-      
+
       {/* Sidebar */}
       <button
         className="lg:hidden bg-gray-800 text-white p-3 w-fit fixed top-2 left-2 z-50 rounded-md"
@@ -191,11 +200,10 @@ const Dashboard = () => {
           <AlignJustify className="w-5 h-5" />
         )}
       </button>
-      
+
       <div
-        className={`fixed z-40 top-0 left-0 h-screen w-64 bg-gray-800 text-white transform ${
-          sidebarOpen ? "translate-x-0" : "-translate-x-full"
-        } lg:translate-x-0 transition-transform duration-300`}
+        className={`fixed z-40 top-0 left-0 h-screen w-64 bg-gray-800 text-white transform ${sidebarOpen ? "translate-x-0" : "-translate-x-full"
+          } lg:translate-x-0 transition-transform duration-300`}
       >
         <Sidebar
           setSidebarOpen={setSidebarOpen}

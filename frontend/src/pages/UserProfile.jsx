@@ -83,8 +83,8 @@ export const UserProfile = ({ setViewState }) => {
   }
 
     return (
-        <div className="fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-50 p-4">
-            <div className="relative w-full max-w-4xl rounded-2xl shadow-lg bg-gradient-to-r from-[#070F2B] to-[#1B1A55] text-white montserrat-heading p-6 max-h-[90vh] overflow-y-auto">
+        <div className="fixed inset-0 z-50 flex items-center justify-center bg-stone-950 bg-opacity-50 p-4">
+            <div className="relative w-full max-w-2xl rounded-2xl shadow-lg bg-stone-950 text-white montserrat-heading p-6 max-h-[90vh] overflow-y-auto">
 
                 {/* Close Button */}
                 <button
@@ -123,7 +123,7 @@ export const UserProfile = ({ setViewState }) => {
                             {user?.payments.map((payment, index) => (
                                 <div
                                     key={index}
-                                    className="bg-[#1B1A55] border border-white/10 rounded-lg p-4 text-sm space-y-1"
+                                    className="bg-[#07061f] border border-white/10 rounded-lg p-4 text-sm space-y-1"
                                 >
                                     <p><span className="font-semibold">Plan:</span> {payment.planName}</p>
                                     <p><span className="font-semibold">Amount:</span> ₹{payment.amount}</p>

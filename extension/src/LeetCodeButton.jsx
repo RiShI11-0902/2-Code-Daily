@@ -6,7 +6,7 @@ import Draggable from 'react-draggable'
 import { FaVolumeUp, FaPause, FaPlay } from 'react-icons/fa';
 import { useSpeechSynthesis } from 'react-speech-kit';
 
-const Button = () => {
+const LeetCodeButton = () => {
   const [box, setBox] = useState(false)
   const [question, setQuestion] = useState("")
   const [interviewId, setInterviewId] = useState(null)
@@ -195,4 +195,4 @@ const Button = () => {
   )
 }
 
-export default Button
+export default LeetCodeButton
