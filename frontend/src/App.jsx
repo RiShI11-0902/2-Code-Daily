@@ -13,6 +13,7 @@ import { ShippingPolicy } from './pages/ShippingPolicy'
 import { TermsConditions } from './pages/TermsConditions'
 import ContactSection from './pages/Contact'
 import AboutUs from './pages/About'
+import AuthenticateExtension from './pages/AuthenticateExtension'
 
 function App() {
   return (
@@ -21,14 +22,11 @@ function App() {
         <Routes>
           <Route path='/' element={<HomePage />} />
           <Route path='/pricing' element={<Pricing />} />
+          <Route path='/authenticate-extension' element={<AuthenticateExtension />}/>
           
-          {/* <Route path='/dashboard' element={<Protected><Dashboard /></Protected>} />
+          <Route path='/dashboard' element={<Protected><Dashboard /></Protected>} />
           <Route path='/progress' element={<Protected><ProgressPage /></Protected>} />
-          <Route path='/paymentsuccess' element={<Protected><PaymentSuccess /></Protected>} /> */}
-          <Route path='/dashboard' element={<Dashboard />} />
-          <Route path='/progress' element={<ProgressPage />} />
-          <Route path='/paymentsuccess' element={<PaymentSuccess />} />
-          <Route path='/interview' element={<InterviewPage />} />
+          <Route path='/paymentsuccess' element={<Protected><PaymentSuccess /></Protected>} />
 
         </Routes>
       </Router>
