@@ -5,6 +5,7 @@ import PlanModal from './PlanModal';
 import useUserStore from '../store/store';
 import axios from 'axios';
 import { toast } from 'react-toastify';
+import { useState } from 'react';
 
 const Sidebar = ({ 
   setSidebarOpen, 
@@ -18,6 +19,7 @@ const Sidebar = ({
   const { user, removeUser } = useUserStore();
   const [showModal, setShowModal] = React.useState(false);
   const navigate = useNavigate();
+  const [selected, setSelected] = useState('coding-sheet-btn')
 
   const handleLogout = async () => {
     try {
@@ -93,8 +95,11 @@ const Sidebar = ({
             {menuItems.map((item) => (
               <li
                 key={item.name}
-                onClick={() => handleNavigation(item.action)}
-                className="text-lg font-semibold hover:bg-gray-800 rounded-md p-2 cursor-pointer transition duration-200 hover:text-white"
+                onClick={() => {
+                  handleNavigation(item.action)
+                  setSelected(item.testId)
+                }}
+                className={`text-lg font-semibold hover:bg-gray-800 rounded-md p-2 cursor-pointer transition duration-200 hover:text-white ${item.testId == selected ? 'bg-gray-800' : '' } `}
                 data-testid={item.testId}
                 aria-label={item.name}
               >
