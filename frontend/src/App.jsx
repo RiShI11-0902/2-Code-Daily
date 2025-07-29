@@ -22,8 +22,16 @@ function App() {
         <Routes>
           <Route path='/' element={<HomePage />} />
           <Route path='/pricing' element={<Pricing />} />
-          <Route path='/authenticate-extension' element={<AuthenticateExtension />}/>
-          
+          <Route path='/authenticate-extension' element={<AuthenticateExtension />} />
+          <Route path='/contact-us' element={<ContactSection />} />
+          <Route path='/about-us' element={<AboutUs />} />
+
+          <Route path='/pricing' element={<Pricing />} />
+          <Route path='/terms-conditions' element={<TermsConditions />} />
+          <Route path='/privacy-policy' element={<PrivacyPolicy />} />
+          <Route path='/refunds' element={<CancellationRefunds />} />
+          <Route path='/shipping' element={<ShippingPolicy />} />
+
           <Route path='/dashboard' element={<Protected><Dashboard /></Protected>} />
           <Route path='/progress' element={<Protected><ProgressPage /></Protected>} />
           <Route path='/paymentsuccess' element={<Protected><PaymentSuccess /></Protected>} />

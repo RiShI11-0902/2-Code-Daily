@@ -16,7 +16,6 @@ const HomePage = () => {
     const [duration, setduration] = useState(3000)
     const [visible, setVisible] = useState(true);
 
-    console.log("Backend URL:", import.meta.env.VITE_BACKEND_BASE_URL);
 
 
 
