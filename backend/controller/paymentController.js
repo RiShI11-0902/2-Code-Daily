@@ -27,13 +27,11 @@ exports.checkout = async (req, res) => {
     const pricing = {
       Regular: 59900,
       Early: 84900,
-      Regular: 59900,
-      Early: 84900,
     };
 
     const interviews = {
-     Regular: 5,
-     Early: 5
+      Regular: 5,
+      Early: 5,
     };
 
     const amount = pricing[plan];
@@ -100,10 +98,9 @@ exports.paymentVerification = async (req, res) => {
       const plan = findUser.selectedPlan;
       const amount = findUser.lastPaymentAmount;
       const totalInterviews = {
-        Starter: 20,
-        Pro: 50,
-        Elite: 100,
-      }[plan];
+        Regular: 100,
+        Early: Number.MAX_SAFE_INTEGER,
+      }[plan] ?? 0;
 
       findUser.payments.push({
         order_id: razorpay_order_id,

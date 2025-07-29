@@ -19,7 +19,6 @@ const userRoute = require("./routes/user");
 const allowedOrigins = [
   "https://leetcode.com",
   "https://2codedaily.com",
-  "http://localhost:5173"
 ];
 
 connect();
