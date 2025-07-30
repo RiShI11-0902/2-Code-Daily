@@ -16,9 +16,9 @@ const InterviewPage = () => {
     const getSolved = async () => {
         setLoading(true)
         try {
-            const questions = await axios.post(`${import.meta.env.VITE_BACKEND_BASE_URL}/user/solvedQuestions`, { id: '68007fcf588386c12c02f0cf'}) /////68007fcf588386c12c02f0cf   
-            setFetchedQuestion(questions.data.questions.solvedQuestions);  
-            console.log(questions.data.questions.solvedQuestions);
+            const questions = await axios.post(`${import.meta.env.VITE_BACKEND_BASE_URL}/user/solvedQuestions`, { id: user._id}) 
+            setFetchedQuestion(questions.data.questions);  
+            console.log(questions.data.questions);
                       
             setLoading(false)
         } catch (error) {
