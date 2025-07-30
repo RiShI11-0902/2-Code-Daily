@@ -4,14 +4,15 @@ import { FiMenu, FiX } from "react-icons/fi";
 import useUserStore from "../store/store";
 import { Link, useNavigate } from "react-router-dom";
 import AuthModal from "../components/AuthModal";
-
-const Navbar = ({ setopenForm, openForm }) => {
+///{ setopenForm, openForm }
+const Navbar = () => {
   const [menuOpen, setMenuOpen] = useState(false);
+  const [openForm, setopenForm] = useState(false)
   const { user } = useUserStore();
   const navigate = useNavigate();
 
   const toggleMenu = () => setMenuOpen(!menuOpen);
-  
+
 
   return (
     <>
@@ -42,9 +43,9 @@ const Navbar = ({ setopenForm, openForm }) => {
               >
                 Home
               </Link>
-            </li> 
+            </li>
             <li>
-            <Link
+              <Link
                 to="/about-us"
                 className="text-[#9290C3] hover:text-[#535C91] transition duration-300"
               >

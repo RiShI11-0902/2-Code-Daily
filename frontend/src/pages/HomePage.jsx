@@ -7,7 +7,6 @@ import { ArrowBigDown, MoveDown } from 'lucide-react';
 
 const HomePage = () => {
 
-    const [openForm, setopenForm] = useState(false)
     const [name, setName] = useState()
     const [suggestion, setSuggestion] = useState()
     const [message, setMessage] = useState()
@@ -15,9 +14,6 @@ const HomePage = () => {
     const [loading, setLoading] = useState()
     const [duration, setduration] = useState(3000)
     const [visible, setVisible] = useState(true);
-
-
-
 
     ///https://two-code-daily.onrender.com
     useEffect(() => {
@@ -42,7 +38,7 @@ const HomePage = () => {
 
     return (
         <>
-            <Navbar setopenForm={setopenForm} openForm={openForm} />
+            <Navbar/>
 
             {/* Hero Section */}
             <section className="bg-stone-950 min-h-screen text-center mx-auto flex items-center justify-center">
