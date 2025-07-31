@@ -5,8 +5,6 @@ const Interview = require("../models/interviewSchema");
 const User = require("../models/user");
 const { getAnswer, startInterview } = require("../utils/prompts");
 
-
-
 exports.getProblem = async (req, res) => {
   try {
     const { problem, email } = req.body;
@@ -20,28 +18,17 @@ exports.getProblem = async (req, res) => {
       });
     }
 
-    // Free user limit check
-    if (!user.isSubscribed && user.freeInterview <= 0) {
-      return res
-        .status(400)
-        .json({ message: "You have completed your free trial. Please subscribe!" });
-    }
+    const lastPayment = user.payments.at(-1);
 
-    const lastPayment = user.payments.at(-1); // Get latest payment safely
+    // Check subscription or free trial
+    const hasValidSubscription = user.isSubscribed && lastPayment?.status === "Paid";
+    const isFreeUserAllowed = !user.isSubscribed && user.freeInterview > 0;
+    
 
-    // If subscribed but last payment is not valid
-    if (user.isSubscribed) {
-      if (!lastPayment || lastPayment.status !== "Paid") {
-        return res
-          .status(400)
-          .json({ message: "No active plan found. Please subscribe." });
-      }
-
-      if (lastPayment.usedInterviews >= lastPayment.totalInterviews) {
-        return res
-          .status(400)
-          .json({ message: "You have used all interviews in your plan." });
-      }
+    if (!hasValidSubscription && !isFreeUserAllowed) {
+      return res.status(400).json({
+        message: "You have completed your free trial or have no active plan. Please subscribe!",
+      });
     }
 
     // Daily interview limit check
@@ -70,16 +57,21 @@ exports.getProblem = async (req, res) => {
 
     user.solvedQuestions.push(newInterview._id);
 
+    // Decrement free interview count if not subscribed
+    if (!hasValidSubscription) {
+      user.freeInterview -= 1;
+    }
+
     await newInterview.save();
     await user.save();
 
     return res.status(200).json({ interview: newInterview });
   } catch (error) {
     console.log(error);
-    
     return res.status(500).json({ message: "Internal Server Error", error: error.message });
   }
 };
+
 
 exports.getAnswer = async (req, res) => {
   try {
@@ -123,6 +115,7 @@ exports.getAnswer = async (req, res) => {
           if (lastPayment.usedInterviews >= lastPayment.totalInterviews) {
             user.isSubscribed = false;
           }
+          user.markModified("payments");
         }
       }
 
@@ -133,7 +126,9 @@ exports.getAnswer = async (req, res) => {
 
     return res.status(200).json({ question: finalJson });
   } catch (error) {
-    return res.status(500).json({ message: "Internal Server Error", error: error.message });
+    return res
+      .status(500)
+      .json({ message: "Internal Server Error", error: error.message });
   }
 };
 
